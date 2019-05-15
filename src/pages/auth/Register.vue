@@ -1,12 +1,173 @@
 <template>
-  <div>My component</div>
+  <div class="q-pa-md column justify-center items-center">
+    <q-icon name="person_outline" size="5rem" color="secondary"></q-icon>
+
+    <q-banner class="bg-secondary text-white">
+      Для регистрации введите имя пользователя и пароль, а так-же Ваше имя, отчество, фамилию
+    </q-banner>
+
+    <base-form :form="form"
+               ref="form"
+               @on-form-input="onFormInput"
+    ></base-form>
+
+    <div class="row q-mt-md">
+      <q-btn @click="submit" color="primary" class="q-mx-md">Регистрация</q-btn>
+      <q-btn @click="onCancel" class="q-mx-md">Отмена</q-btn>
+    </div>
+
+  </div>
 </template>
 
 <script>
+
+import authMixin from './auth.mixin'
+import BaseForm from '../../components/ui/form/BaseForm'
+
 export default {
-  // name: 'ComponentName',
+  name: 'Register',
+  components: { BaseForm },
+  mixins: [ authMixin ],
   data () {
-    return {}
+    return {
+      form: [
+        {
+          name: 'login',
+          label: 'Имя пользователя',
+          value: '',
+          type: 'text',
+          autofocus: true,
+          validations: [
+            val => !!val || 'Имя пользователя должно быть заполнено',
+            val => (val && val.length > 1) || `Имя пользователя не менее 1 символа`,
+            val => (val && val.length < 50) || `Имя пользователя не более 50 символов`
+          ],
+          icons: [
+            {
+              name: 'person_outline',
+              slot: 'before'
+            }
+          ]
+
+        },
+        {
+          name: 'password',
+          label: 'Пароль',
+          value: '',
+          type: 'password',
+          autofocus: false,
+          validations: [
+            val => !!val || 'Пароль должен быть заполнен',
+            val => (val && val.length >= 6) || `Пароль не менее 6 символов`,
+            val => (val && val.length < 15) || `Пароль не более 15 символов`
+          ],
+          icons: [
+            {
+              name: 'vpn_key',
+              slot: 'before'
+            },
+            {
+              name: 'visibility_off',
+              slot: 'append',
+              action: () => this.revertPasswordVisibility('password')
+            }
+          ]
+        },
+        {
+          name: 'repeatPassword',
+          label: 'Повтор пароля',
+          value: '',
+          type: 'password',
+          autofocus: false,
+          validations: [
+            val => !!val || 'Повтор пароля должен быть заполнен',
+            val => (val && val.length >= 6) || `Повтор пароля не менее 6 символов`,
+            val => (val && val.length < 15) || `Повтор пароля не более 15 символов`,
+            val => (val && val === this.getFormItemByName('password').value) || `Пароль и подтверждение пароля не совпадают`
+          ],
+          icons: [
+            {
+              name: 'vpn_key',
+              slot: 'before'
+            },
+            {
+              name: 'visibility_off',
+              slot: 'append',
+              action: () => this.revertPasswordVisibility('repeatPassword')
+            }
+          ]
+        },
+
+        {
+          name: 'firstName',
+          label: 'Имя',
+          value: '',
+          type: 'text',
+          autofocus: false,
+          validations: [
+            val => !!val || 'Имя должно быть заполнено',
+            val => (val && val.length > 1) || `Имя не менее 1 символа`,
+            val => (val && val.length < 50) || `Имя не более 50 символов`
+          ],
+          icons: [
+            {
+              name: 'edit',
+              slot: 'before'
+            }
+          ]
+        },
+        {
+          name: 'secondName',
+          label: 'Отчество',
+          value: '',
+          type: 'text',
+          autofocus: false,
+          validations: [
+            val => !!val || 'Отчество должно быть заполнено',
+            val => (val && val.length > 1) || `Отчество не менее 1 символа`,
+            val => (val && val.length < 50) || `Отчество не более 50 символов`
+          ],
+          icons: [
+            {
+              name: 'edit',
+              slot: 'before'
+            }
+          ]
+        },
+        {
+          name: 'lastName',
+          label: 'Фамилия пользователя',
+          value: '',
+          type: 'text',
+          autofocus: false,
+          validations: [
+            val => !!val || 'Фамилия должно быть заполнено',
+            val => (val && val.length > 1) || `Фамилия не менее 1 символа`,
+            val => (val && val.length < 50) || `Фамилия не более 50 символов`
+          ],
+          icons: [
+            {
+              name: 'edit',
+              slot: 'before'
+            }
+          ]
+        },
+        {
+          name: 'birthday',
+          label: 'Дата рождения',
+          value: '',
+          type: 'date',
+          autofocus: false,
+          validations: [],
+          icons: [
+            {
+              name: 'date_range',
+              slot: 'before'
+            }
+          ]
+        }
+      ]
+    }
   }
 }
 </script>
