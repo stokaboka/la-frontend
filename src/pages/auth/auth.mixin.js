@@ -13,7 +13,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('auth', ['signin']),
+    ...mapActions('auth', ['signin', 'register']),
     getFormItemIndexByName (name) {
       return this.getItemByName(this.form, name)
     },
@@ -59,8 +59,12 @@ export default {
         const form = {}
         // eslint-disable-next-line no-return-assign
         this.form.forEach(item => form[item.name] = item.value)
-        await this.signin(form)
-
+        if (this.type === 'signin') {
+          await this.signin(form)
+        }
+        if (this.type === 'register') {
+          await this.register(form)
+        }
         if (this.isLogged) {
           this.$router.push({ name: 'home' })
         }

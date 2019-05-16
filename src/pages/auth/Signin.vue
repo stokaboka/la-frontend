@@ -31,6 +31,7 @@ export default {
   mixins: [ authMixin ],
   data () {
     return {
+      type: 'signin',
       form: [
         {
           name: 'login',
