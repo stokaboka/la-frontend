@@ -2,10 +2,6 @@
   <div class="q-pa-md column justify-center items-center">
     <q-icon name="person_outline" size="5rem" color="secondary"></q-icon>
 
-    <q-banner class="bg-secondary text-white">
-      Для регистрации введите имя пользователя и пароль, а так-же Ваше имя, отчество, фамилию
-    </q-banner>
-
     <base-form :form="form"
                ref="form"
                @on-form-input="onFormInput"
@@ -28,6 +24,13 @@ export default {
   name: 'Register',
   components: { BaseForm },
   mixins: [ authMixin ],
+  mounted () {
+    this.$q.notify({
+      message: 'Для регистрации введите имя пользователя и пароль, а так-же Ваше имя, отчество, фамилию',
+      color: 'green',
+      textColor: 'black'
+    })
+  },
   data () {
     return {
       type: 'register',

@@ -4,10 +4,6 @@
       <q-icon name="person_outline" size="5rem" color="secondary"></q-icon>
     </q-avatar>
 
-    <q-banner class="shadow-1">
-      Для входа введите имя пользователя и пароль
-    </q-banner>
-
     <base-form :form="form"
                 ref="form"
                 @on-form-input="onFormInput"
@@ -31,6 +27,13 @@ export default {
   name: 'Signin',
   components: { BaseForm },
   mixins: [ authMixin ],
+  mounted () {
+    this.$q.notify({
+      message: 'Для входа введите имя пользователя и пароль',
+      color: 'green',
+      textColor: 'black'
+    })
+  },
   data () {
     return {
       type: 'signin',

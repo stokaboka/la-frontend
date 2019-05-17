@@ -1,44 +1,54 @@
 import axios from 'axios'
 import { Notify } from 'quasar'
 
-const showUserNotify = function (user, act) {
-  let message = {
-    positive: '',
-    negative: ''
+const showUserNotify = function (user, action) {
+  let notify = {
+    signin: {
+      positive: {
+        message: `Выполнен вход пользователя: ${user.login}`,
+        color: 'green',
+        textColor: 'black',
+        icon: 'done'
+      },
+      negative: {
+        message: 'Пользователь не найден или неверный пароль',
+        color: 'red',
+        textColor: 'black',
+        icon: 'warning'
+      }
+    },
+    signout: {
+      positive: {
+        message: 'Выполнен выход',
+        color: 'yellow',
+        textColor: 'black',
+        icon: 'done'
+      },
+      negative: {
+        message: 'Выполнен выход',
+        color: 'yellow',
+        textColor: 'black',
+        icon: 'done'
+      }
+    },
+    register: {
+      positive: {
+        message: `Зарегистрирован пользователь: ${user.login}`,
+        color: 'green',
+        textColor: 'black',
+        icon: 'done'
+      },
+      negative: {
+        message: `При регистрирации пользователя произошла ошибка`,
+        color: 'red',
+        textColor: 'white',
+        icon: 'error_outline'
+      }
+    }
   }
 
-  switch (act) {
-    case 'signin':
-      message.positive = `Выполнен вход пользователя: ${user.login}`
-      message.negative = 'Пользователь не найден или неверный пароль'
-      break
-    case 'signout':
-      message.positive = `Выполнен выход`
-      message.negative = `Выполнен выход`
-      break
-    case 'register':
-      message.positive = `Зарегистрирован пользователь: ${user.login}`
-      message.negative = `При регистрирации пользователя произошла ошибка`
-      break
-  }
-  if (user) {
-    if (user.login) {
-      Notify.create({
-        message: message.positive,
-        color: 'positive'
-      })
-    } else {
-      Notify.create({
-        message: message.negative,
-        color: 'red'
-      })
-    }
-  } else {
-    Notify.create({
-      message: message.positive,
-      color: 'green'
-    })
-  }
+  const result = (user && user.login) ? 'positive' : 'negative'
+  Notify.create(notify[action][result])
 }
 
 export const signin = ({ commit, getters, rootGetters }, playload = { login: '-', password: '-' }) => {
