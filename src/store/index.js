@@ -11,13 +11,24 @@ Vue.use(Vuex)
  * directly export the Store instantiation
  */
 
-export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      app,
-      auth
-    }
-  })
+// export default function (/* { ssrContext } */) {
+//   const Store = new Vuex.Store({
+//     modules: {
+//       app,
+//       auth
+//     }
+//   })
+//
+//   return Store
+// }
 
-  return Store
-}
+const store = new Vuex.Store({
+  modules: {
+    app,
+    auth
+  },
+
+  strict: process.env.NODE_ENV !== 'production'
+})
+
+export default store

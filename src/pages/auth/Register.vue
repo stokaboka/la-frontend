@@ -27,8 +27,8 @@ export default {
   mounted () {
     this.$q.notify({
       message: 'Для регистрации введите имя пользователя и пароль, а так-же Ваше имя, отчество, фамилию',
-      color: 'green',
-      textColor: 'black'
+      color: 'accent',
+      textColor: 'white'
     })
   },
   data () {

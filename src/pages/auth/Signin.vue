@@ -30,8 +30,8 @@ export default {
   mounted () {
     this.$q.notify({
       message: 'Для входа введите имя пользователя и пароль',
-      color: 'green',
-      textColor: 'black'
+      color: 'accent',
+      textColor: 'white'
     })
   },
   data () {
@@ -41,7 +41,7 @@ export default {
         {
           name: 'login',
           label: 'Имя пользователя',
-          value: '',
+          value: '111',
           type: 'text',
           autofocus: true,
           validations: [
@@ -60,7 +60,7 @@ export default {
         {
           name: 'password',
           label: 'Пароль',
-          value: '',
+          value: '111111',
           type: 'password',
           autofocus: false,
           validations: [
