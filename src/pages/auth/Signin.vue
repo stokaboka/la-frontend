@@ -1,8 +1,10 @@
 <template>
   <div class="q-pa-md column justify-center items-center">
-    <q-icon name="person_outline" size="5rem" color="secondary"></q-icon>
+    <q-avatar size="5rem">
+      <q-icon name="person_outline" size="5rem" color="secondary"></q-icon>
+    </q-avatar>
 
-    <q-banner class="bg-secondary text-white">
+    <q-banner class="shadow-1">
       Для входа введите имя пользователя и пароль
     </q-banner>
 

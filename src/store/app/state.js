@@ -1,3 +1,4 @@
+console.log(process.env)
 export default {
   title: 'Свобода слова - Language Assessment©',
   version: '0.2.0',

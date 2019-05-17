@@ -2,19 +2,6 @@
 
 module.exports = function (ctx) {
   return {
-    build: {
-      sourceMap: !!ctx.dev,
-      minify: !ctx.dev,
-      env: ctx.dev
-        ? { // so on dev we'll have
-          API: JSON.stringify('http://localhost:3333'),
-          MODE: JSON.stringify('DEVELOPMENT')
-        }
-        : { // and on build (production):
-          API: JSON.stringify(''),
-          MODE: JSON.stringify('PRODUCTION')
-        }
-    },
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
@@ -39,6 +26,7 @@ module.exports = function (ctx) {
 
       components: [
         'QBanner',
+        'QAvatar',
         'QLayout',
         'QHeader',
         'QDrawer',
@@ -74,6 +62,17 @@ module.exports = function (ctx) {
     supportIE: false,
 
     build: {
+      sourceMap: !!ctx.dev,
+      minify: !ctx.dev,
+      env: ctx.dev
+        ? { // so on dev we'll have
+          API: JSON.stringify('http://localhost:4444'),
+          MODE: JSON.stringify('DEVELOPMENT')
+        }
+        : { // and on build (production):
+          API: JSON.stringify(''),
+          MODE: JSON.stringify('PRODUCTION')
+        },
       scopeHoisting: true,
       // vueRouterMode: 'history',
       // vueCompiler: true,
