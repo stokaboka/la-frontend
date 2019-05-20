@@ -1,6 +1,6 @@
 <template>
   <div id="q-app">
-    <router-view />
+    <router-view/>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: antiquewhite;
+    background-color: whitesmoke;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;

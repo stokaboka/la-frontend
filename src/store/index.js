@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import app from './app'
 import auth from './auth'
+import one from './one'
 
 Vue.use(Vuex)
 
@@ -25,7 +26,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     app,
-    auth
+    auth,
+    one
   },
 
   strict: process.env.NODE_ENV !== 'production'

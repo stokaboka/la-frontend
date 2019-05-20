@@ -2,6 +2,18 @@ export function title (state) {
   return state.title
 }
 
+export function leftDrawer (state) {
+  return state.leftDrawer
+}
+
+export function rightDrawer (state) {
+  return state.rightDrawer
+}
+
+export function module (state) {
+  return state.module
+}
+
 export function version (state) {
   return state.version
 }

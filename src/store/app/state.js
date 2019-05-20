@@ -5,5 +5,8 @@ export default {
   api: process.env.NODE_ENV === 'development' ? 'http://localhost:4444' : '',
   allowResume: true,
   allowCancel: false,
-  lockResume: false
+  lockResume: false,
+  leftDrawer: false,
+  rightDrawer: false,
+  module: ''
 }

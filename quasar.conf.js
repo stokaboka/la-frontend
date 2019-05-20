@@ -31,6 +31,9 @@ module.exports = function (ctx) {
         'QLayout',
         'QHeader',
         'QDrawer',
+        'QFooter',
+        'QPageSticky',
+        'QPageScroller',
         'QPageContainer',
         'QPage',
         'QToolbar',
@@ -44,6 +47,7 @@ module.exports = function (ctx) {
         'QInput',
         'QTabs',
         'QTab',
+        'QParallax',
         'QRouteTab'
       ],
 
@@ -105,7 +109,9 @@ module.exports = function (ctx) {
       'fadeInRight',
       'fadeOutLeft',
       'fadeIn',
-      'fadeOut'
+      'fadeOut',
+      'slideInDown',
+      'slideOutDown'
     ],
 
     ssr: {
