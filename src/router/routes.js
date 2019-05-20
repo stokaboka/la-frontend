@@ -56,6 +56,11 @@ const routes = [
             component: () => import('pages/la/LaOneTest.vue')
           },
           {
+            path: 'oneend',
+            name: 'la-one-end',
+            component: () => import('pages/la/LaOneEnd.vue')
+          },
+          {
             path: 'two',
             name: 'la-two',
             component: () => import('pages/la/LaTwo.vue')

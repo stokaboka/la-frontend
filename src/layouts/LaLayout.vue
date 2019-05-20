@@ -25,7 +25,7 @@
     <left-drawer :module="module"></left-drawer>
   </q-drawer>
 
-  <q-drawer v-model="rightDrawer" side="right" elevated>
+  <q-drawer v-model="right" side="right" elevated>
   </q-drawer>
 
   <q-page-container>
@@ -67,6 +67,12 @@ export default {
     left: {
       get: function () {
         return this.leftDrawer
+      },
+      set: function (v) {}
+    },
+    right: {
+      get: function () {
+        return this.rightDrawer
       },
       set: function (v) {}
     },

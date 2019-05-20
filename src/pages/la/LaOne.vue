@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
-    <h4 v-html="title"></h4>
-    <h6 v-html="description"></h6>
+    <div v-html="title"></div>
+    <div v-html="description"></div>
     <q-btn
       label="Продолжить"
       color="primary"

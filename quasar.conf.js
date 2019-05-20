@@ -44,6 +44,8 @@ module.exports = function (ctx) {
         'QItem',
         'QItemSection',
         'QItemLabel',
+        'QRadio',
+        'QOptionGroup',
         'QInput',
         'QTabs',
         'QTab',
