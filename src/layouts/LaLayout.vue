@@ -21,13 +21,6 @@
     </q-toolbar>
   </q-header>
 
-  <q-drawer v-model="left" side="left" elevated>
-    <left-drawer :module="module"></left-drawer>
-  </q-drawer>
-
-  <q-drawer v-model="right" side="right" elevated>
-  </q-drawer>
-
   <q-page-container>
     <transition
       appear
@@ -51,11 +44,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import UserLogInOutButton from 'components/ui/auth/UserLogInOutButton'
-import LeftDrawer from '../components/LeftDrawer'
 
 export default {
   name: 'LaLayout',
-  components: { LeftDrawer, UserLogInOutButton },
+  components: { UserLogInOutButton },
   data () {
     return {
       selectedTab: 'about'
@@ -64,18 +56,6 @@ export default {
   methods: {
   },
   computed: {
-    left: {
-      get: function () {
-        return this.leftDrawer
-      },
-      set: function (v) {}
-    },
-    right: {
-      get: function () {
-        return this.rightDrawer
-      },
-      set: function (v) {}
-    },
     ...mapGetters('auth', ['isLogged', 'isAdmin', 'isOperator', 'isUser', 'user']),
     ...mapGetters('app', ['title', 'leftDrawer', 'rightDrawer', 'module'])
   }

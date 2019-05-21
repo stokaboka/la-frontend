@@ -11,8 +11,19 @@ const errorNotify = function (error) {
   })
 }
 
+export const count = ({ commit, getters, rootGetters }, parameters) => {
+  return axios.get(`${rootGetters['app/api']}/questions/count/${getters['paramsCount']}`)
+    .then(response => {
+      commit('SET_PHASE_QUESTIONS_COUNT', response.data)
+    })
+    .catch(error => {
+      commit('SET_PHASE_QUESTIONS_COUNT', 0)
+      errorNotify(error.message)
+    })
+}
+
 export const load = ({ commit, getters, rootGetters }, parameters) => {
-  return axios.get(`${rootGetters['app/api']}/questions/${getters['params']}`)
+  return axios.get(`${rootGetters['app/api']}/questions/list/${getters['paramsList']}`)
     .then(response => {
       commit('SET_QUESTIONS', response.data)
       commit('SET_QUESTION_INDEX', 0)

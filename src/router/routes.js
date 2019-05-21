@@ -51,16 +51,6 @@ const routes = [
             component: () => import('pages/la/LaOne.vue')
           },
           {
-            path: 'onetest',
-            name: 'la-one-test',
-            component: () => import('pages/la/LaOneTest.vue')
-          },
-          {
-            path: 'oneend',
-            name: 'la-one-end',
-            component: () => import('pages/la/LaOneEnd.vue')
-          },
-          {
             path: 'two',
             name: 'la-two',
             component: () => import('pages/la/LaTwo.vue')
@@ -69,6 +59,11 @@ const routes = [
             path: 'tree',
             name: 'la-tree',
             component: () => import('pages/la/LaTree.vue')
+          },
+          {
+            path: 'end',
+            name: 'la-end',
+            component: () => import('pages/la/LaEnd.vue')
           }
         ]
       }

@@ -49,4 +49,8 @@ export default {
     background: rgba(0,0,0,0.6);
   }
 
+  q {
+    quotes: "\00ab" "\00bb";
+  }
+
 </style>

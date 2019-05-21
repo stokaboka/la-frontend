@@ -113,7 +113,11 @@ module.exports = function (ctx) {
       'fadeIn',
       'fadeOut',
       'slideInDown',
-      'slideOutDown'
+      'slideOutDown',
+      'slideInLeft',
+      'slideOutRight',
+      'slideInRight',
+      'slideOutLeft'
     ],
 
     ssr: {

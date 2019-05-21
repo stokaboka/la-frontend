@@ -14,6 +14,10 @@ export function module (state) {
   return state.module
 }
 
+export function modules (state) {
+  return state.modules
+}
+
 export function version (state) {
   return state.version
 }

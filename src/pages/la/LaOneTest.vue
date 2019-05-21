@@ -10,13 +10,38 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import MultiChoice from '../../components/la/MultiChoice'
 
+import TimerHelper from '../../lib/TimerHelper'
+let timer = null
+let audio = null
+
 export default {
   name: 'LaOneTest',
   components: { MultiChoice },
   data () {
     return {}
   },
+  beforeDestroy () {
+    if (timer) {
+      timer.stop()
+      timer
+        .off('START', this.onTimerFired)
+        .off('PAUSE', this.onTimerFired)
+        .off('RESUME', this.onTimerFired)
+        .off('PROGRESS', this.onTimerFired)
+        .off('COMPLETE', this.onTimerFired)
+
+      timer = null
+    }
+  },
   mounted () {
+    timer = new TimerHelper(this)
+    timer
+      .on('START', this.onTimerFired)
+      .on('PAUSE', this.onTimerFired)
+      .on('RESUME', this.onTimerFired)
+      .on('PROGRESS', this.onTimerFired)
+      .on('COMPLETE', this.onTimerFired)
+
     this.SET_MODULE('one')
 
     this.SET_LEFT_DRAWER(true)
@@ -27,6 +52,7 @@ export default {
     this.SET_PHASE(1)
 
     this.RESET_CATEGORY()
+    this.initQuestionsTotalCount()
     this.initQuestions()
   },
   methods: {
@@ -41,8 +67,11 @@ export default {
     async initQuestions () {
       await this.load()
     },
+    async initQuestionsTotalCount () {
+      await this.count()
+    },
     nextCategory () {
-      if (this.category < this.max) {
+      if (this.category < this.maxCategory) {
         this.NEXT_CATEGORY()
         this.initQuestions()
       } else {
@@ -54,6 +83,33 @@ export default {
         this.NEXT_QUESTION()
       } else {
         this.nextCategory()
+      }
+    },
+    onTimerFired (event) {
+      switch (event.event) {
+        case 'START' :
+          break
+        case 'PAUSE':
+          if (audio) {
+            audio.pause()
+          }
+          break
+        case 'RESUME' :
+          if (audio) {
+            audio.resume()
+          }
+          break
+        case 'PROGRESS' :
+          break
+        case 'COMPLETE' :
+          this.doNextAction()
+          break
+      }
+    },
+
+    startTimer () {
+      if (this.time && this.time > 0) {
+        timer.start(this.time)
       }
     },
     ...mapMutations('app', [
@@ -70,13 +126,12 @@ export default {
       'RESET_CATEGORY',
       'NEXT_QUESTION'
     ]),
-    ...mapActions('questions', ['load']),
+    ...mapActions('questions', ['load', 'count']),
     ...mapMutations('one', ['ADD_ANSWER', 'ADD_RESULT'])
   },
   computed: {
-    ...mapGetters('auth', ['isLogged', 'user']),
     ...mapGetters('app', ['api']),
-    ...mapGetters('one', ['title', 'description', 'max']),
+    ...mapGetters('one', ['maxCategory', 'time']),
     ...mapGetters('questions', [
       'question',
       'questions',

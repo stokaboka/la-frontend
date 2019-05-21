@@ -7,7 +7,10 @@ export function SET_RIGHT_DRAWER (state, playload) {
 }
 
 export function SET_MODULE (state, playload) {
-  state.module = playload
+  const nextModule = state.modules.find(e => e.id === playload)
+  if (nextModule) {
+    state.module = nextModule
+  }
 }
 
 // *******************

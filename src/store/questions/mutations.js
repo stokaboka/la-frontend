@@ -2,6 +2,10 @@ export const SET_QUESTIONS = (state, playload) => {
   state.questions = playload.sort(() => Math.random() - 0.5)
 }
 
+export const SET_PHASE_QUESTIONS_COUNT = (state, playload) => {
+  state.phaseQuestionsTotal = playload
+}
+
 export const NEXT_QUESTION = (state, playload) => {
   if (state.current < state.questions.length - 1) {
     state.current++

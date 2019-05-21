@@ -4,5 +4,7 @@ export default {
   phase: 1,
   category: 1,
   questions: [],
+  total: 0,
+  phaseQuestionsTotal: 0,
   current: 0
 }

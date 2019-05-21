@@ -1,7 +1,15 @@
 <template>
-  <div>
+  <div style="width: 100%;">
     <div v-if="question">
-      <h4 v-html="question.question"></h4>
+      <q-banner class="bg-secondary text-white" rounded>
+        <span class="text-h4">{{question.question}}</span>
+      </q-banner>
+      <div class="text-h6">
+      это:
+      <span class="text-grey-14 text-body1">
+        (выберите один вариант ответа)
+      </span>
+      </div>
       <div class="q-pa-md">
         <q-option-group
           :options="answerOptions"
@@ -11,11 +19,12 @@
         />
       </div>
       <q-btn
-        label="Продолжить"
+        label="Далее"
         color="primary"
         class="q-ma-md"
         @click="onNext"
       />
+      <div class="text-grey-14">Если Вы не помните или не знаете ответа - просто нажмите кнопку <q>Далее</q></div>
     </div>
   </div>
 </template>
