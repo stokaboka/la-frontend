@@ -26,8 +26,9 @@ module.exports = function (ctx) {
       // all: true, // --- includes everything; for dev only!
 
       components: [
-        'QBanner',
         'QAvatar',
+        'QBanner',
+        'QCircularProgress',
         'QLayout',
         'QHeader',
         'QDrawer',

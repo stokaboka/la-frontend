@@ -6,4 +6,5 @@ export const result = s => {
   return s.results.filter(e => e > 0).length
 }
 
+export const time = s => s.time
 export const timer = s => s.timer

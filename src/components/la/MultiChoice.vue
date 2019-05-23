@@ -11,12 +11,18 @@
       </span>
       </div>
       <div class="q-pa-md">
-        <q-option-group
-          :options="answerOptions"
-          label="Notifications"
-          type="radio"
-          v-model="answer"
-        />
+
+        <q-list>
+          <q-item v-for="a in answerOptions" :key="a.label" tag="label" v-ripple>
+            <q-item-section avatar>
+              <q-radio v-model="answer" :val="a.value" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-h6">{{a.label}}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+
       </div>
       <q-btn
         label="Далее"
@@ -80,8 +86,4 @@ export default {
 }
 </script>
 
-<style>
-  .q-radio__label {
-    font-size: 1.2rem;
-  }
-</style>
+<style></style>

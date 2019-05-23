@@ -1,7 +1,7 @@
 <template>
-  <div class="column q-py-lg justify-start items-center shadow-4">
-    <q-avatar  size="5rem" color="green" text-color="white">{{result}}</q-avatar>
-    <div>из {{phaseQuestionsTotal}}</div>
+  <div class="column justify-start items-center q-pa-md">
+    <q-avatar  size="6rem" color="green" text-color="white">{{result}}</q-avatar>
+    <div class="q-mt-lg">из {{phaseQuestionsTotal}}</div>
     <div>({{category}}: {{current+1}}/{{questionsCount}})</div>
   </div>
 </template>

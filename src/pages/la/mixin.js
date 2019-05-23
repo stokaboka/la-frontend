@@ -74,6 +74,7 @@ export default {
       this.RESET_CATEGORY()
       this.initQuestionsTotalCount()
       this.initQuestions()
+      this.startTimer()
     },
 
     initEndState () {
@@ -117,8 +118,10 @@ export default {
       }
     },
     onTimerFired (event) {
+      console.log(event.event)
       switch (event.event) {
         case 'START':
+          this.$store.commit(`${this.module.id}/RESET_TIMER`)
           break
         case 'PAUSE':
           if (audio) {

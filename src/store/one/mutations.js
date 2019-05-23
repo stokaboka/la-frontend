@@ -9,3 +9,7 @@ export const ADD_RESULT = (state, playload) => {
 export const ADD_SECOND_TO_TIMER = (state) => {
   state.timer++
 }
+
+export const RESET_TIMER = (state) => {
+  state.timer = 0
+}
