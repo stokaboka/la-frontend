@@ -6,7 +6,7 @@
       </q-banner>
       <div class="text-h6">
         это:
-        <span class="text-grey-14 text-body1">
+        <span class="text-grey-14 text-body2">
           (выберите один вариант ответа)
         </span>
       </div>
