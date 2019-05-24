@@ -30,7 +30,7 @@
     </section>
 
     <section v-if="state === 'test'" class="row">
-        <multi-choice :question="question" @on-answer="onAnswer"></multi-choice>
+        <multi-choice :data="question" @on-answer="onAnswer"></multi-choice>
     </section>
 
     <section v-if="state === 'end'">
@@ -71,6 +71,7 @@ export default {
 
   mounted () {
     this.SET_MODULE('one')
+    this.SET_MODULE_TEST('one')
   }
 
 }

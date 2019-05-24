@@ -86,13 +86,15 @@ export default {
     onAnswer (answer) {
       if (answer) {
         const { part, phase, category } = this
-        this.$store.commit(`${this.module.id}/ADD_ANSWER`, {
+        // this.$store.commit(`${this.module.id}/ADD_ANSWER`, {
+        this.ADD_ANSWER({
           ...answer,
           part,
           phase,
           category
         })
-        this.$store.commit(`${this.module.id}/ADD_RESULT`, answer.a)
+        // this.$store.commit(`${this.module.id}/ADD_RESULT`, answer.a)
+        this.ADD_RESULT(answer.a)
       }
       this.nextQuestion()
     },
@@ -121,7 +123,8 @@ export default {
       console.log(event.event)
       switch (event.event) {
         case 'START':
-          this.$store.commit(`${this.module.id}/RESET_TIMER`)
+          // this.$store.commit(`${this.module.id}/RESET_TIMER`)
+          this.RESET_TIMER()
           break
         case 'PAUSE':
           if (audio) {
@@ -134,7 +137,8 @@ export default {
           }
           break
         case 'PROGRESS':
-          this.$store.commit(`${this.module.id}/ADD_SECOND_TO_TIMER`)
+          // this.$store.commit(`${this.module.id}/ADD_SECOND_TO_TIMER`)
+          this.ADD_SECOND_TO_TIMER()
           break
         case 'COMPLETE':
           this.nextState()
@@ -154,6 +158,7 @@ export default {
       'SET_LEFT_DRAWER',
       'SET_RIGHT_DRAWER'
     ]),
+    ...mapMutations('test', ['SET_MODULE_TEST', 'ADD_ANSWER', 'ADD_RESULT', 'ADD_SECOND_TO_TIMER', 'RESET_TIMER']),
     ...mapMutations('questions', [
       'SET_TEST',
       'SET_PART',
@@ -168,6 +173,7 @@ export default {
   computed: {
     ...mapGetters('auth', ['isLogged', 'user']),
     ...mapGetters('app', ['api', 'module', 'modules']),
+    ...mapGetters('test', ['short', 'maxCategory', 'answers', 'results', 'result', 'time', 'timer']),
     ...mapGetters('questions', [
       'question',
       'questions',

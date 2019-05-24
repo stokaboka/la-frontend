@@ -1,6 +1,6 @@
 export default {
-  short: 'Часть I',
-  maxCategory: 10,
+  short: 'Часть II',
+  maxCategory: 4,
   answers: [],
   results: [],
   time: 20 * 60,

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import { secondsToTimeText, secondsToTimeTextLong } from '../lib/utils'
 
 const progressColors = [
@@ -42,23 +42,24 @@ export default {
     return {}
   },
   computed: {
+    ...mapGetters('test', ['time', 'timer']),
     timeText () {
-      const time = this.$store.getters[`${this.module.id}/time`]
-      return secondsToTimeTextLong(time)
+      // const time = this.$store.getters[`${this.module.id}/time`]
+      return secondsToTimeTextLong(this.time)
     },
     timerText () {
-      const timer = this.$store.getters[`${this.module.id}/timer`]
-      return secondsToTimeText(timer)
+      // const timer = this.$store.getters[`${this.module.id}/timer`]
+      return secondsToTimeText(this.timer)
     },
     colorTime () {
       const c = progressColors.find(e => this.value > e.value)
       return c ? c.color : 'green'
     },
     value () {
-      const time = this.$store.getters[`${this.module.id}/time`]
-      if (time !== 0) {
-        const timer = this.$store.getters[`${this.module.id}/timer`]
-        return Math.round(100 * timer / time)
+      // const time = this.$store.getters[`${this.module.id}/time`]
+      if (this.time !== 0) {
+        // const timer = this.$store.getters[`${this.module.id}/timer`]
+        return Math.round(100 * this.timer / this.time)
       }
       return 0
     }

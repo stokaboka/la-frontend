@@ -21,12 +21,13 @@ export default {
   },
   computed: {
     ...mapGetters('questions', ['category', 'current', 'questionsCount', 'phaseQuestionsTotal']),
-    short () {
-      return this.$store.getters[`${this.module.id}/short`]
-    },
-    result () {
-      return this.$store.getters[`${this.module.id}/result`]
-    }
+    ...mapGetters('test', ['short', 'result'])
+    // short () {
+    //   return this.$store.getters[`${this.module.id}/short`]
+    // },
+    // result () {
+    //   return this.$store.getters[`${this.module.id}/result`]
+    // }
   }
 
 }

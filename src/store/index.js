@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import app from './app'
 import auth from './auth'
 import one from './one'
+import test from './test'
 import questions from './questions'
 
 Vue.use(Vuex)
@@ -29,6 +30,7 @@ const store = new Vuex.Store({
     app,
     auth,
     one,
+    test,
     questions
   },
 
