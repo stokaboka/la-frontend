@@ -140,13 +140,18 @@ export default class TimerHelper {
     return this
   }
 
-  off (event, listener) {
-    this.listeners = this.listeners.filter((elem) => {
-      return !(
-        event === elem.event &&
-        listener === elem.listener
-      )
-    })
+  off (event = null, listener = null) {
+    if (event && listener) {
+      this.listeners = this.listeners.filter((elem) => {
+        return !(
+          event === elem.event &&
+          listener === elem.listener
+        )
+      })
+    } else {
+      this.listeners = null
+      this.listeners = []
+    }
     return this
   }
 

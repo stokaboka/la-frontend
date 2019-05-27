@@ -40,7 +40,7 @@
         <p>Сейчас, Вы можете:</p>
       </div>
 
-      <div class="row q-ma-md">
+      <div v-if="!lastModule" class="row q-ma-md">
         <q-btn
           label="Продолжить тестирование"
           color="primary"

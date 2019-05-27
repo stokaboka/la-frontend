@@ -33,7 +33,7 @@
     </section>
 
     <section v-if="state === 'test'" class="row">
-      <multi-choice :question="question" @on-answer="onAnswer"></multi-choice>
+      <cloze :data="question" @on-answer="onAnswer"></cloze>
     </section>
 
     <section v-if="state === 'end'">
@@ -43,7 +43,7 @@
         <p>Сейчас, Вы можете:</p>
       </div>
 
-      <div class="row q-ma-md">
+      <div v-if="!lastModule" class="row q-ma-md">
         <q-btn
           label="Продолжить тестирование"
           color="primary"
@@ -65,13 +65,16 @@
 <script>
 
 import mixin from './mixin'
+import Cloze from '../../components/la/Cloze'
 
 export default {
   name: 'LaTwo',
+  components: { Cloze },
   mixins: [mixin],
 
   mounted () {
     this.SET_MODULE('two')
+    this.SET_MODULE_TEST('two')
   }
 }
 </script>

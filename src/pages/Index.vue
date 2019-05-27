@@ -8,7 +8,8 @@
           <strong>Language Assessment ©</strong> - уникальная эффективная
           система оценки знаний английского языка и отслеживания прогресса
           студента, изучающего язык. Разработана методистами языкового
-          тренингового центра <q>Свобода слова</q> на базе международных стандартов.
+          тренингового центра <q>Свобода слова</q> на базе международных
+          стандартов.
         </p>
       </div>
 
@@ -18,7 +19,7 @@
           label="Продолжить"
           color="primary"
           class="q-ma-md"
-          @click="$router.push({ name: 'la-one' })"
+          @click="startLa()"
         />
       </div>
       <div v-else class="column q-mt-md">
@@ -59,6 +60,12 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'PageIndex',
+  methods: {
+    startLa () {
+      const name = 'la-tree'
+      this.$router.push({ name })
+    }
+  },
   computed: {
     ...mapGetters('auth', [
       'isLogged',

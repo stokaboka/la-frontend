@@ -48,6 +48,8 @@ module.exports = function (ctx) {
         'QRadio',
         'QOptionGroup',
         'QInput',
+        'QSelect',
+        'QSlider',
         'QTabs',
         'QTab',
         'QParallax',

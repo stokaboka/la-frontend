@@ -12,7 +12,9 @@ export default {
   modules: [
     { id: 'one', route: 'la-one', next: 'la-two' },
     { id: 'two', route: 'la-two', next: 'la-tree' },
-    { id: 'tree', route: 'la-tree', next: 'la-end' },
-    { id: 'end', route: 'la-end', next: 'home' }
-  ]
+    { id: 'tree', route: 'la-tree', next: 'home' }
+  ],
+
+  volume: 1,
+  showAudioControls: false
 }

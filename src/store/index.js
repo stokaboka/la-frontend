@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 import app from './app'
 import auth from './auth'
-import one from './one'
 import test from './test'
 import questions from './questions'
 
@@ -29,7 +28,6 @@ const store = new Vuex.Store({
   modules: {
     app,
     auth,
-    one,
     test,
     questions
   },

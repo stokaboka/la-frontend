@@ -1,5 +1,6 @@
 <template>
-  <div class="column justify-start items-center  q-pa-md">
+  <div class="column justify-start items-center q-pa-md">
+
     <q-circular-progress
       show-value
       font-size="16px"
@@ -13,15 +14,23 @@
       <q-icon name="access_time" size="2rem" class="q-mr-xs" :color="colorTime"/>
       {{ timerText }}
     </q-circular-progress>
-    <span class="text-grey-14">
-      Время выполнения теста: <strong>{{timeText}}</strong>
+
+    <span>{{timerHint}}</span>
+
+    <span v-if="time > 0" class="text-grey-14">
+      Всего времени: <strong>{{timeText}}</strong>
     </span>
+
+    <div v-if="showAudioControls" class="q-mt-lg">
+      <sound-level :volume="volume" @input="onSoundLevelInput"></sound-level>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { secondsToTimeText, secondsToTimeTextLong } from '../lib/utils'
+import SoundLevel from './ui/SoundLevel'
 
 const progressColors = [
   { value: 90, color: 'red' },
@@ -32,6 +41,7 @@ const progressColors = [
 
 export default {
   name: 'RightInfoPanel',
+  components: { SoundLevel },
   props: {
     module: {
       type: Object,
@@ -41,25 +51,28 @@ export default {
   data () {
     return {}
   },
+  methods: {
+    onSoundLevelInput (val) {
+      this.SET_SOUND_VOLUME(val)
+    },
+    ...mapMutations('app', ['SET_SOUND_VOLUME'])
+  },
   computed: {
-    ...mapGetters('test', ['time', 'timer']),
+    ...mapGetters('app', ['showAudioControls', 'volume']),
+    ...mapGetters('test', ['time', 'timer', 'timerHint']),
     timeText () {
-      // const time = this.$store.getters[`${this.module.id}/time`]
-      return secondsToTimeTextLong(this.time)
+      return secondsToTimeTextLong(this.timer.total)
     },
     timerText () {
-      // const timer = this.$store.getters[`${this.module.id}/timer`]
-      return secondsToTimeText(this.timer)
+      return secondsToTimeText(this.timer.time)
     },
     colorTime () {
       const c = progressColors.find(e => this.value > e.value)
       return c ? c.color : 'green'
     },
     value () {
-      // const time = this.$store.getters[`${this.module.id}/time`]
-      if (this.time !== 0) {
-        // const timer = this.$store.getters[`${this.module.id}/timer`]
-        return Math.round(100 * this.timer / this.time)
+      if (this.timer.total !== 0) {
+        return Math.round(100 * this.timer.time / this.timer.total)
       }
       return 0
     }

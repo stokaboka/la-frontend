@@ -20,13 +20,7 @@ export default {
   beforeDestroy () {
     if (timer) {
       timer.stop()
-      timer
-        .off('START', this.onTimerFired)
-        .off('PAUSE', this.onTimerFired)
-        .off('RESUME', this.onTimerFired)
-        .off('PROGRESS', this.onTimerFired)
-        .off('COMPLETE', this.onTimerFired)
-
+      timer.off()
       timer = null
     }
     if (audio) {
@@ -62,14 +56,12 @@ export default {
         .on('PROGRESS', this.onTimerFired)
         .on('COMPLETE', this.onTimerFired)
 
-      this.SET_MODULE('one')
-
       this.SET_LEFT_DRAWER(true)
       this.SET_RIGHT_DRAWER(true)
 
       this.SET_TEST(1)
-      this.SET_PART(1)
-      this.SET_PHASE(1)
+      this.SET_PART(this.part)
+      this.SET_PHASE(this.phase)
 
       this.RESET_CATEGORY()
       this.initQuestionsTotalCount()
@@ -83,17 +75,21 @@ export default {
       this.saveResults()
     },
 
+    saveResults () {
+      /**
+       * TODO saveResults
+       */
+    },
+
     onAnswer (answer) {
       if (answer) {
         const { part, phase, category } = this
-        // this.$store.commit(`${this.module.id}/ADD_ANSWER`, {
         this.ADD_ANSWER({
           ...answer,
           part,
           phase,
           category
         })
-        // this.$store.commit(`${this.module.id}/ADD_RESULT`, answer.a)
         this.ADD_RESULT(answer.a)
       }
       this.nextQuestion()
@@ -105,7 +101,9 @@ export default {
       await this.count()
     },
     nextCategory () {
-      if (this.category < this.$store.getters[`${this.module.id}/maxCategory`]) {
+      if (
+        this.category < this.maxCategory
+      ) {
         this.NEXT_CATEGORY()
         this.initQuestions()
       } else {
@@ -120,10 +118,8 @@ export default {
       }
     },
     onTimerFired (event) {
-      console.log(event.event)
       switch (event.event) {
         case 'START':
-          // this.$store.commit(`${this.module.id}/RESET_TIMER`)
           this.RESET_TIMER()
           break
         case 'PAUSE':
@@ -137,7 +133,6 @@ export default {
           }
           break
         case 'PROGRESS':
-          // this.$store.commit(`${this.module.id}/ADD_SECOND_TO_TIMER`)
           this.ADD_SECOND_TO_TIMER()
           break
         case 'COMPLETE':
@@ -147,8 +142,9 @@ export default {
     },
 
     startTimer () {
-      const seconds = this.$store.getters[`${this.module.id}/time`]
+      const seconds = this.time
       if (seconds && seconds > 0) {
+        this.SET_TIMER_TOTAL(seconds)
         timer.start(seconds)
       }
     },
@@ -158,7 +154,14 @@ export default {
       'SET_LEFT_DRAWER',
       'SET_RIGHT_DRAWER'
     ]),
-    ...mapMutations('test', ['SET_MODULE_TEST', 'ADD_ANSWER', 'ADD_RESULT', 'ADD_SECOND_TO_TIMER', 'RESET_TIMER']),
+    ...mapMutations('test', [
+      'SET_MODULE_TEST',
+      'ADD_ANSWER',
+      'ADD_RESULT',
+      'ADD_SECOND_TO_TIMER',
+      'RESET_TIMER',
+      'SET_TIMER_TOTAL'
+    ]),
     ...mapMutations('questions', [
       'SET_TEST',
       'SET_PART',
@@ -172,16 +175,24 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['isLogged', 'user']),
-    ...mapGetters('app', ['api', 'module', 'modules']),
-    ...mapGetters('test', ['short', 'maxCategory', 'answers', 'results', 'result', 'time', 'timer']),
+    ...mapGetters('app', ['api', 'module', 'modules', 'lastModule']),
+    ...mapGetters('test', [
+      'short',
+      'test',
+      'part',
+      'phase',
+      'maxCategory',
+      'answers',
+      'results',
+      'result',
+      'time',
+      'timer'
+    ]),
     ...mapGetters('questions', [
       'question',
       'questions',
       'questionsCount',
       'current',
-      'test',
-      'part',
-      'phase',
       'category'
     ])
   },

@@ -1,4 +1,3 @@
-
 export default class AudioHelper {
   constructor (context) {
     this.context = context
@@ -16,6 +15,8 @@ export default class AudioHelper {
     this.paused = false
 
     this._offset = 0
+    this._repeat = 1
+    this._playCount = 0
 
     this._volume = 1
 
@@ -52,28 +53,43 @@ export default class AudioHelper {
     return this
   }
 
-  once () {
+  once (numRepeat = 1) {
     this._mode = this.MODES.ONCE
+    this.repeat(numRepeat)
     return this
   }
 
-  cycle () {
+  cycle (numRepeat = 1) {
     this._mode = this.MODES.CYCLE
+    this.repeat(numRepeat)
     return this
   }
 
-  random () {
+  random (numRepeat = 1) {
     this._mode = this.MODES.RANDOM
+    this.repeat(numRepeat)
     return this
   }
 
-  randomCycle () {
+  randomCycle (numRepeat = 1) {
     this._mode = this.MODES.RANDOM_CYCLE
+    this.repeat(numRepeat)
+    return this
+  }
+
+  repeat (numRepeat = 1) {
+    this._repeat = numRepeat
+    this._playCount = 0
     return this
   }
 
   mode (mode) {
-    if (mode === this.MODES.ONCE || mode === this.MODES.CYCLE || mode === this.MODES.RANDOM || mode === this.MODES.RANDOM_CYCLE) {
+    if (
+      mode === this.MODES.ONCE ||
+      mode === this.MODES.CYCLE ||
+      mode === this.MODES.RANDOM ||
+      mode === this.MODES.RANDOM_CYCLE
+    ) {
       this._mode = mode
     } else {
       this._mode = this.MODES.ONCE
@@ -96,10 +112,9 @@ export default class AudioHelper {
   }
 
   sounds (soundsArr) {
-    this._sounds = soundsArr.filter(
-      snd => {
-        return snd && snd.length > 0
-      })
+    this._sounds = soundsArr.filter(snd => {
+      return snd && snd.length > 0
+    })
     this._soundsIndex = -1
     return this
   }
@@ -114,11 +129,11 @@ export default class AudioHelper {
     sound = sound.replace('{{SOUNDTHEME}}', this._theme)
 
     this.audio = new Audio(sound)
-    this.audio.addEventListener('ended', (e) => self.eventsHandler(e))
-    this.audio.addEventListener('play', (e) => self.eventsHandler(e))
-    this.audio.addEventListener('playing', (e) => self.eventsHandler(e))
-    this.audio.addEventListener('pause', (e) => self.eventsHandler(e))
-    this.audio.addEventListener('timeupdate', (e) => self.eventsHandler(e))
+    this.audio.addEventListener('ended', e => self.eventsHandler(e))
+    this.audio.addEventListener('play', e => self.eventsHandler(e))
+    this.audio.addEventListener('playing', e => self.eventsHandler(e))
+    this.audio.addEventListener('pause', e => self.eventsHandler(e))
+    this.audio.addEventListener('timeupdate', e => self.eventsHandler(e))
 
     this.audio.volume = this._volume
     // console.log('this.audio.volume', this.audio.volume)
@@ -184,17 +199,19 @@ export default class AudioHelper {
 
   stop () {
     if (this.audio) {
-      this.audio.removeEventListener('ended', (e) => self.eventsHandler(e))
-      this.audio.removeEventListener('play', (e) => self.eventsHandler(e))
-      this.audio.removeEventListener('playing', (e) => self.eventsHandler(e))
-      this.audio.removeEventListener('pause', (e) => self.eventsHandler(e))
-      this.audio.removeEventListener('timeupdate', (e) => self.eventsHandler(e))
+      this.audio.removeEventListener('ended', e => self.eventsHandler(e))
+      this.audio.removeEventListener('play', e => self.eventsHandler(e))
+      this.audio.removeEventListener('playing', e => self.eventsHandler(e))
+      this.audio.removeEventListener('pause', e => self.eventsHandler(e))
+      this.audio.removeEventListener('timeupdate', e => self.eventsHandler(e))
       this.audio.pause()
       this.playing = false
       this.paused = false
       this.once()
     }
     this._offset = 0
+    this._playCount = 0
+    this._repeat = 1
   }
 
   isPlaying () {
@@ -207,32 +224,39 @@ export default class AudioHelper {
 
   nextSound () {
     let snd = ''
+    if (this._soundsIndex > -1 && this._playCount < this._repeat) {
+      snd = this._sounds[this._soundsIndex]
+      return snd
+    }
     switch (this._mode) {
-      case this.MODES.RANDOM :
+      case this.MODES.RANDOM:
       case this.MODES.RANDOM_CYCLE:
         const n = Math.ceil(Math.random() * this._sounds.length) - 1
-        snd = this._sounds[n || 0]
+        this._soundsIndex = n || 0
+        // snd = this._sounds[this._soundsIndex]
         break
-      case this.MODES.CYCLE :
+      case this.MODES.CYCLE:
         this._soundsIndex = ++this._soundsIndex % this._sounds.length
-        snd = this._sounds[this._soundsIndex]
+        // snd = this._sounds[this._soundsIndex]
         break
-      case this.MODES.ONCE :
-      default :
-        snd = this._sounds[0]
+      case this.MODES.ONCE:
+      default:
+        this._soundsIndex = 0
+        // snd = this._sounds[0]
     }
+    snd = this._sounds[this._soundsIndex]
     return snd
   }
 
   nextPlay () {
     switch (this._mode) {
-      case this.MODES.CYCLE :
+      case this.MODES.CYCLE:
       case this.MODES.RANDOM_CYCLE:
         this.play()
         break
-      case this.MODES.ONCE :
-      case this.MODES.RANDOM :
-      default :
+      case this.MODES.ONCE:
+      case this.MODES.RANDOM:
+      default:
         this.playing = false
         this.paused = false
     }
@@ -249,8 +273,10 @@ export default class AudioHelper {
   fire (event) {
     const data = this.info(event)
     this.listeners
-      .filter((l) => { return l.event === event })
-      .map((l) => {
+      .filter(l => {
+        return l.event === event
+      })
+      .map(l => {
         if (l.listener) {
           l.listener.call(this.context, data)
         }
@@ -258,17 +284,29 @@ export default class AudioHelper {
   }
 
   on (event, listener) {
-    this.listeners.push({event, listener})
+    this.listeners.push({ event, listener })
     return this
   }
 
-  off (event, listener) {
-    this.listeners = this.listeners.filter((elem) => {
-      return !(
-        event === elem.event &&
-        listener === elem.listener
-      )
-    })
+  // off (event, listener) {
+  //   this.listeners = this.listeners.filter(elem => {
+  //     return !(event === elem.event && listener === elem.listener)
+  //   })
+  //   return this
+  // }
+
+  off (event = null, listener = null) {
+    if (event && listener) {
+      this.listeners = this.listeners.filter((elem) => {
+        return !(
+          event === elem.event &&
+          listener === elem.listener
+        )
+      })
+    } else {
+      this.listeners = null
+      this.listeners = []
+    }
     return this
   }
 
@@ -276,25 +314,26 @@ export default class AudioHelper {
     const self = this
     // console.log(event)
     switch (event.type) {
-      case 'ended' :
+      case 'ended':
         this.playing = false
         this.paused = false
+        this._playCount++
         self.nextPlay()
         this.fire(this.EVENTS.COMPLETE)
         break
-      case 'timeupdate' :
+      case 'timeupdate':
         // console.log(event.target.currentTime)
         this.fire(this.EVENTS.PROGRESS)
         break
-      case 'play' :
+      case 'play':
         // this.playing = true
         // this.paused = false
         break
-      case 'playing' :
+      case 'playing':
         // this.playing = true
         // this.paused = false
         break
-      case 'pause' :
+      case 'pause':
         // this.playing = false
         // this.paused = true
         break

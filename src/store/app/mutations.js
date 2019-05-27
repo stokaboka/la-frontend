@@ -13,6 +13,14 @@ export function SET_MODULE (state, playload) {
   }
 }
 
+export const SET_SOUND_VOLUME = (state, playload) => {
+  state.volume = playload
+}
+
+export const SHOW_AUDIO_CONTROLS = (state, playload) => {
+  state.showAudioControls = playload
+}
+
 // *******************
 export function SET_ALLOW_RESUME (state, playload) {
   state.allowResume = playload
