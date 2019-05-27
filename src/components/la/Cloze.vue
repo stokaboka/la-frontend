@@ -3,7 +3,6 @@
     <span
       v-for="(str, index) in questionStrings"
       :key="index"
-      class="text-body1"
     >
       <q-select
         v-if="str.type === 'array'"

@@ -4,14 +4,14 @@
       <q-banner class="bg-secondary text-white" rounded>
         <span class="text-h4">{{ data.question }}</span>
       </q-banner>
-      <div class="text-h6">
+      <div v-if="hint" class="text-h6">
         это:
         <span class="text-grey-14 text-body2">
           (выберите один вариант ответа)
         </span>
       </div>
       <div class="q-pa-md">
-        <q-list>
+        <div :class="[ { column: orientation === 'V' }, { row: orientation === 'H' } ]">
           <q-item
             v-for="a in answerOptions"
             :key="a.label"
@@ -19,16 +19,16 @@
             v-ripple
           >
             <q-item-section avatar>
-              <q-radio v-model="answer" :val="a.value" />
+              <q-radio v-model="answer" :val="a.value" @input="onInput"/>
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-h6">{{ a.label }}</q-item-label>
             </q-item-section>
           </q-item>
-        </q-list>
+        </div>
       </div>
-      <q-btn label="Далее" color="primary" class="q-ma-md" @click="onNext" />
-      <div class="text-grey-14">
+      <q-btn v-if="next" label="Далее" color="primary" class="q-ma-md" @click="onNext" />
+      <div v-if="next" class="text-grey-14">
         Если Вы не помните или не знаете ответа - просто нажмите кнопку
         <q>Далее</q>
       </div>
@@ -43,6 +43,34 @@ export default {
     data: {
       type: Object,
       required: false
+    },
+    orientation: {
+      type: String,
+      required: false,
+      default () {
+        return 'V'
+      }
+    },
+    next: {
+      type: Boolean,
+      required: false,
+      default () {
+        return true
+      }
+    },
+    hint: {
+      type: Boolean,
+      required: false,
+      default () {
+        return true
+      }
+    },
+    shuffle: {
+      type: Boolean,
+      required: false,
+      default () {
+        return true
+      }
     }
   },
   data () {
@@ -51,29 +79,46 @@ export default {
     }
   },
   methods: {
-    onNext () {
-      if (this.answer) {
+    getAnswer (val) {
+      if (val) {
+        const a = this.data.answer.split('#')
         const w = this.data.weigths.split('#')
         const out = {
           q: this.data.question,
-          a: w[this.answer - 1]
+          a: w[val - 1],
+          aa: a[val - 1]
         }
-        this.$emit('on-answer', out)
+        return out
       } else {
-        this.$emit('on-answer', null)
+        return null
       }
+    },
+    onInput (val) {
+      this.$emit('input', this.getAnswer(val))
+    },
+    onNext () {
+      this.$emit('on-answer', this.getAnswer(this.answer))
+      // if (this.answer) {
+      //   const w = this.data.weigths.split('#')
+      //   const out = {
+      //     q: this.data.question,
+      //     a: w[this.answer - 1]
+      //   }
+      //   this.$emit('on-answer', out)
+      // } else {
+      //   this.$emit('on-answer', null)
+      // }
     }
   },
   computed: {
     answerOptions () {
-      if (this.data) {
-        const q = this.data.answer.split('#')
-        const out = q
+      if (this.data && this.data.answer) {
+        const out = this.data.answer
+          .split('#')
           .map((e, i) => {
             return { label: e, value: i + 1 }
           })
-          .sort(() => Math.random() - 0.5)
-        return out
+        return this.shuffle ? out.sort(() => Math.random() - 0.5) : out
       } else {
         return []
       }
