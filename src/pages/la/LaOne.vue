@@ -8,7 +8,9 @@
         <p>Первая часть теста займет у Вас около 20 минут.</p>
         <p>
           Ваша задача выбрать один из четырех вариантов перевода для одного
-          слова. Если Вы не помните или не знаете значение слова — нажмите <strong><q>Далее</q></strong></p>
+          слова. Если Вы не помните или не знаете значение слова — нажмите
+          <strong><q>Далее</q></strong>
+        </p>
         <br />
         <p>
           При ответах, пожалуйста, не пользуйтесь переводчиком, помощью зала или
@@ -30,7 +32,11 @@
     </section>
 
     <section v-if="state === 'test'" class="row">
-        <multi-choice :data="question" @on-answer="onAnswer"></multi-choice>
+      <multi-choice
+        :data="question"
+        @on-answer="onAnswer"
+        @on-ready="onReady"
+      ></multi-choice>
     </section>
 
     <section v-if="state === 'end'">
@@ -60,7 +66,6 @@
 </template>
 
 <script>
-
 import mixin from './mixin'
 import MultiChoice from '../../components/la/MultiChoice'
 
@@ -73,7 +78,6 @@ export default {
     this.SET_MODULE('one')
     this.SET_MODULE_TEST('one')
   }
-
 }
 </script>
 

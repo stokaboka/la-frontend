@@ -16,10 +16,10 @@
       />
       <span v-else v-html="str.data"></span>
     </span>
+
     <q-btn label="Далее" color="primary" class="q-ma-md" @click="onNext" />
     <div class="text-grey-14">
-      Если Вы не помните или не знаете ответа - просто нажмите кнопку
-      <q>Далее</q>
+      Если Вы не помните или не знаете ответа - просто нажмите кнопку <q>Далее</q>
     </div>
   </div>
 </template>
@@ -49,7 +49,9 @@ export default {
           if (e.startsWith('{')) {
             const a = e.split(multichoiseRegExp)
             if (a && a.length === 3) {
-              let ans = a[1].split('~').find(x => x.startsWith('='))
+              let ans = a[1]
+                .split('~')
+                .find(x => x.startsWith('='))
               ans = ans ? ans.replace('=', '') : ''
               return {
                 data: a[1].replace('=', '').split('~'),

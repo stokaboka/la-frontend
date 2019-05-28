@@ -10,7 +10,9 @@ export default {
       maxCategory: 10,
       answers: [],
       results: [],
-      time: 20 * 60
+      level: 0,
+      time: 20 * 60,
+      waitReady: false
     },
     {
       id: 'two',
@@ -21,7 +23,9 @@ export default {
       maxCategory: 4,
       answers: [],
       results: [],
-      time: 20 * 60
+      level: 0,
+      time: 20 * 60,
+      waitReady: false
     },
     {
       id: 'tree',
@@ -32,11 +36,13 @@ export default {
       maxCategory: 4,
       answers: [],
       results: [],
-      time: 0
+      level: 0,
+      time: 0,
+      waitReady: true
     }
   ],
 
-  current: null,
+  test: null,
   index: -1,
 
   timer: {

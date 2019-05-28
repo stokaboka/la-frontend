@@ -1,23 +1,36 @@
 export const SET_MODULE_TEST = (state, playload) => {
   const test = state.tests.find(e => e.id === playload)
   if (test) {
-    state.current = test
+    state.test = test
   }
 }
 
-export const ADD_ANSWER = (state, playload) => {
-  if (state.current) {
-    state.current.answers.push(playload)
+export const SET_ANSWER = (state, playload) => {
+  if (state.test) {
+    const idx = state.test.answers.findIndex(e => {
+      return (
+        e.part === playload.part &&
+        e.phase === playload.phase &&
+        e.category === playload.category &&
+        e.q === playload.q
+      )
+    })
+
+    if (idx > -1) {
+      state.test.answers.splice(idx, 1)
+    }
+
+    state.test.answers.push(playload)
   }
 }
 
-export const ADD_RESULT = (state, playload) => {
-  if (state.current) {
-    state.current.results.push(playload)
+export const SET_LEVEL = (state, playload) => {
+  if (state.test) {
+    state.test.level = playload
   }
 }
 
-export const ADD_SECOND_TO_TIMER = (state) => {
+export const ADD_SECOND_TO_TIMER = state => {
   state.timer.time++
 }
 
@@ -25,7 +38,7 @@ export const SET_TIMER_TIME = (state, playload) => {
   state.timer.time = playload
 }
 
-export const RESET_TIMER = (state) => {
+export const RESET_TIMER = state => {
   state.timer.time = 0
 }
 

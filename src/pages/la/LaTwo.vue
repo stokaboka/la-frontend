@@ -33,7 +33,7 @@
     </section>
 
     <section v-if="state === 'test'" class="row">
-      <cloze :data="question" @on-answer="onAnswer"></cloze>
+      <cloze :data="question" @on-answer="onAnswer" @on-ready="onReady"></cloze>
     </section>
 
     <section v-if="state === 'end'">
@@ -63,7 +63,6 @@
 </template>
 
 <script>
-
 import mixin from './mixin'
 import Cloze from '../../components/la/Cloze'
 

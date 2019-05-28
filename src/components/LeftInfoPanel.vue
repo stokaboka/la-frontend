@@ -1,8 +1,7 @@
 <template>
-  <div class="column justify-start items-center q-pa-md">
-    <q-avatar  size="6rem" color="green" text-color="white">{{result}}</q-avatar>
-    <div class="q-mt-lg">из {{phaseQuestionsTotal}}</div>
-    <div>({{category}}: {{current+1}}/{{questionsCount}})</div>
+  <div class="column justify-start items-center q-gutter-md q-pa-md">
+    <q-avatar size="6rem" color="green" text-color="white">{{result}}</q-avatar>
+    <div>из {{phaseQuestionsTotal}} ({{category}}: {{questionIndex+1}}/{{questionsCount}})</div>
   </div>
 </template>
 
@@ -20,7 +19,7 @@ export default {
     return {}
   },
   computed: {
-    ...mapGetters('questions', ['category', 'current', 'questionsCount', 'phaseQuestionsTotal']),
+    ...mapGetters('questions', ['category', 'questionIndex', 'questionsCount', 'phaseQuestionsTotal']),
     ...mapGetters('test', ['short', 'result'])
   }
 

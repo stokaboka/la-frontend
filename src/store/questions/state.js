@@ -6,5 +6,5 @@ export default {
   questions: [],
   total: 0,
   phaseQuestionsTotal: 0,
-  current: 0
+  questionIndex: 0
 }

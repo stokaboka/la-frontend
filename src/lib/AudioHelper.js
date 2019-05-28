@@ -326,6 +326,7 @@ export default class AudioHelper {
         this.fire(this.EVENTS.PROGRESS)
         break
       case 'play':
+        this.fire(this.EVENTS.START)
         // this.playing = true
         // this.paused = false
         break

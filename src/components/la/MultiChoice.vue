@@ -27,10 +27,10 @@
           </q-item>
         </div>
       </div>
+
       <q-btn v-if="next" label="Далее" color="primary" class="q-ma-md" @click="onNext" />
       <div v-if="next" class="text-grey-14">
-        Если Вы не помните или не знаете ответа - просто нажмите кнопку
-        <q>Далее</q>
+        Если Вы не помните или не знаете ответа - просто нажмите кнопку <q>Далее</q>
       </div>
     </div>
   </div>
@@ -98,16 +98,6 @@ export default {
     },
     onNext () {
       this.$emit('on-answer', this.getAnswer(this.answer))
-      // if (this.answer) {
-      //   const w = this.data.weigths.split('#')
-      //   const out = {
-      //     q: this.data.question,
-      //     a: w[this.answer - 1]
-      //   }
-      //   this.$emit('on-answer', out)
-      // } else {
-      //   this.$emit('on-answer', null)
-      // }
     }
   },
   computed: {

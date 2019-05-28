@@ -7,8 +7,8 @@ export const SET_PHASE_QUESTIONS_COUNT = (state, playload) => {
 }
 
 export const NEXT_QUESTION = (state, playload) => {
-  if (state.current < state.questions.length - 1) {
-    state.current++
+  if (state.questionIndex < state.questions.length - 1) {
+    state.questionIndex++
   }
 }
 
@@ -37,5 +37,5 @@ export const RESET_CATEGORY = (state, playload) => {
 }
 
 export const SET_QUESTION_INDEX = (state, playload) => {
-  state.current = playload
+  state.questionIndex = playload
 }

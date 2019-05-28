@@ -1,10 +1,10 @@
 <template>
-  <div class="column justify-start items-center q-pa-md">
+  <div class="column justify-start items-center q-gutter-md q-pa-md">
 
     <q-circular-progress
       show-value
       font-size="16px"
-      class="text-grey-14 q-ma-md"
+      class="text-grey-14"
       :value="value"
       size="7rem"
       :thickness="0.25"
@@ -15,15 +15,16 @@
       {{ timerText }}
     </q-circular-progress>
 
-    <span>{{timerHint}}</span>
+    <div class="text-center">{{timerHint}}</div>
 
-    <span v-if="time > 0" class="text-grey-14">
+    <div v-if="time > 0" class="text-grey-14">
       Всего времени: <strong>{{timeText}}</strong>
-    </span>
+    </div>
 
     <div v-if="showAudioControls" class="q-mt-lg">
       <sound-level :volume="volume" @input="onSoundLevelInput"></sound-level>
     </div>
+
   </div>
 </template>
 
@@ -33,10 +34,10 @@ import { secondsToTimeText, secondsToTimeTextLong } from '../lib/utils'
 import SoundLevel from './ui/SoundLevel'
 
 const progressColors = [
-  { value: 90, color: 'red' },
-  { value: 75, color: 'orange' },
+  { value: 10, color: 'red' },
+  { value: 25, color: 'orange' },
   { value: 50, color: 'blue' },
-  { value: 0, color: 'green' }
+  { value: 100, color: 'green' }
 ]
 
 export default {
@@ -64,15 +65,15 @@ export default {
       return secondsToTimeTextLong(this.timer.total)
     },
     timerText () {
-      return secondsToTimeText(this.timer.time)
+      return secondsToTimeText(this.timer.total - this.timer.time)
     },
     colorTime () {
-      const c = progressColors.find(e => this.value > e.value)
+      const c = progressColors.find(e => this.value < e.value)
       return c ? c.color : 'green'
     },
     value () {
       if (this.timer.total !== 0) {
-        return Math.round(100 * this.timer.time / this.timer.total)
+        return Math.round(100 * (this.timer.total - this.timer.time) / this.timer.total)
       }
       return 0
     }

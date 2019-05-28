@@ -42,6 +42,7 @@
       <group-multi-choice
         :data="questions"
         @on-answer="onAnswer"
+        @on-ready="onReady"
       ></group-multi-choice>
     </section>
 

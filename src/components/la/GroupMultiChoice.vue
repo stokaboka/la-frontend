@@ -2,11 +2,14 @@
   <div>
     <div>
       <div v-if="state === 1">
-        <p>У вас есть 2 минуты до начала прослушивания, чтобы ознакомиться с вопросами</p>
+        <p>У вас есть <strong>2 минуты</strong> до начала прослушивания, чтобы ознакомиться с вопросами</p>
         <p>Вы можете <q-btn @click="initState(2)">начать воспроизведение</q-btn> раньше.</p>
       </div>
       <div v-if="state === 2">
         <p>Просшлушайте трэк и выберите верные варианты ответов. Трэк повторяется два раза.</p>
+      </div>
+      <div v-if="state === 3">
+        <p>Выберите верные варианты ответов и нажмите кнопку <q>Далее</q> внизу</p>
       </div>
     </div>
     <div v-for="question in data" :key="question.question">
@@ -20,10 +23,9 @@
       ></multi-choice>
     </div>
 
-    <q-btn label="Далее" color="primary" class="q-ma-md" @click="onNext" />
-    <div class="text-grey-14">
-      Если Вы не помните или не знаете ответа - просто нажмите кнопку
-      <q>Далее</q>
+    <q-btn v-if="showNext" label="Далее" color="primary" class="q-ma-md" @click="onNext" />
+    <div v-if="showNext" class="text-grey-14">
+      Если Вы не помните или не знаете ответа - просто нажмите кнопку <q>Далее</q>
     </div>
 
   </div>
@@ -49,7 +51,8 @@ export default {
   data () {
     return {
       answer: null,
-      state: 1
+      state: 1,
+      showNext: false
     }
   },
   mounted () {
@@ -67,7 +70,7 @@ export default {
       .on('PROGRESS', this.onAudioFired)
       .on('COMPLETE', this.onAudioFired)
 
-    this.initState(1)
+    // this.initState(1)
   },
   beforeDestroy () {
     if (timer) {
@@ -88,15 +91,20 @@ export default {
   methods: {
     onInput (val) {
       console.dir(val)
+      this.$emit('on-answer', val)
     },
 
     onNext () {
+      this.$emit('on-ready')
     },
 
     initState (val) {
       this.state = val
+      this.showNext = false
       timer.stop()
       audio.stop()
+      this.RESET_TIMER()
+      this.SHOW_AUDIO_CONTROLS(false)
       switch (this.state) {
         case 1 :
           timer.start(2 * 60)
@@ -109,11 +117,11 @@ export default {
             audio.volume(this.volume).once().play(q.audio)
             this.SET_TIMER_HINT('Осталось времени до окончания аудио записи')
             this.SHOW_AUDIO_CONTROLS(true)
-            this.RESET_TIMER()
             this.SET_TIMER_TOTAL(0)
           }
           break
         case 3 :
+          this.showNext = true
           timer.start(2 * 60)
           this.SET_TIMER_TOTAL(2 * 60)
           this.SET_TIMER_HINT('Осталось времени на ответ')
@@ -122,14 +130,16 @@ export default {
     },
 
     onAudioFired (event) {
+      console.log(event)
       switch (event.event) {
         case 'START' :
           break
         case 'PROGRESS' :
           if (this.timer.total === 0) {
-            this.SET_TIMER_TOTAL(event.duration)
+            this.SET_TIMER_TOTAL(Math.round(event.duration))
           }
           this.SET_TIMER_TIME(Math.round(event.currentTime))
+          this.showNext = event.currentTime > event.duration / 2
           break
         case 'COMPLETE' :
           this.SHOW_AUDIO_CONTROLS(false)
@@ -159,6 +169,9 @@ export default {
           if (this.state === 1) {
             this.initState(2)
           }
+          if (this.state === 3) {
+            this.onNext()
+          }
           break
       }
     },
@@ -167,8 +180,8 @@ export default {
       'SHOW_AUDIO_CONTROLS'
     ]),
     ...mapMutations('test', [
-      'ADD_ANSWER',
-      'ADD_RESULT',
+      'SET_ANSWER',
+      // 'ADD_RESULT',
       'ADD_SECOND_TO_TIMER',
       'RESET_TIMER',
       'SET_TIMER_TOTAL',
@@ -181,6 +194,9 @@ export default {
   watch: {
     volume (vol) {
       audio.volume(vol)
+    },
+    data (val) {
+      this.initState(1)
     }
   }
 }
