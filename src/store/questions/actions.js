@@ -11,8 +11,11 @@ const errorNotify = function (error) {
   })
 }
 
-export const count = ({ commit, getters, rootGetters }, parameters) => {
-  return axios.get(`${rootGetters['app/api']}/questions/count/${getters['paramsCount']}`)
+export const count = ({ state, commit, getters, rootGetters }, parameters) => {
+  const api = rootGetters['app/api']
+  const paramsCount = `test/${state.test}/part/${state.part}/phase/${state.phase}`
+
+  return axios.get(`${api}/questions/count/${paramsCount}`)
     .then(response => {
       commit('SET_PHASE_QUESTIONS_COUNT', response.data)
     })
@@ -22,8 +25,11 @@ export const count = ({ commit, getters, rootGetters }, parameters) => {
     })
 }
 
-export const load = ({ commit, getters, rootGetters }, parameters) => {
-  return axios.get(`${rootGetters['app/api']}/questions/list/${getters['paramsList']}`)
+export const load = ({ state, commit, getters, rootGetters }, parameters) => {
+  const api = rootGetters['app/api']
+  const paramsList = `test/${state.test}/part/${state.part}/phase/${state.phase}/category/${state.category}`
+
+  return axios.get(`${api}/questions/list/${paramsList}`)
     .then(response => {
       commit('SET_QUESTIONS', response.data)
       commit('SET_QUESTION_INDEX', 0)
