@@ -83,7 +83,9 @@ export default {
       const result = await this.calculateResults()
       console.log(result)
       if (result) {
-        this.SET_LEVEL(result.level)
+        if (result.level > 0) {
+          this.SET_LEVEL(result.level)
+        }
 
         if (result.next.question) {
           this.nextQuestion()

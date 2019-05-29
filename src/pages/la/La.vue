@@ -14,12 +14,13 @@
     </transition>
 
     <div class="la-main shadow-3">
+      <logo class="q-mt-md q-ml-md"/>
       <router-view />
       <div class="q-pa-md text-grey-14 text-body1">
         <p>
           Вы можете
           <router-link :to="{ path: 'home' }">прервать</router-link> тест в
-          любой момент. Текущий тест будет прерван, но Вы сможете продолжить
+          любой момент.<br>Текущий тест будет прерван, но Вы сможете продолжить
           тестирование в следующий раз.
         </p>
       </div>
@@ -44,9 +45,11 @@
 import { mapGetters } from 'vuex'
 import LeftInfoPanel from '../../components/LeftInfoPanel'
 import RightInfoPanel from '../../components/RightInfoPanel'
+import Logo from '../../components/ui/Logo'
+
 export default {
   name: 'La',
-  components: { RightInfoPanel, LeftInfoPanel },
+  components: { Logo, RightInfoPanel, LeftInfoPanel },
   computed: {
     ...mapGetters('app', ['title', 'leftDrawer', 'rightDrawer', 'module'])
   }

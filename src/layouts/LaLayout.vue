@@ -4,7 +4,7 @@
     <q-toolbar>
 
       <q-toolbar-title>
-        <span>Свобода слова - <strong>Language Assessment©</strong></span>
+        <span>Свобода слова - Language Assessment©</span>
       </q-toolbar-title>
 
       <span v-if="user">{{user.firstName}} {{user.secondName}} {{user.lastName}}</span>
