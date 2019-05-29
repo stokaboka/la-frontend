@@ -80,18 +80,23 @@ export default {
   },
   methods: {
     getAnswer (val) {
+      let out = null
       if (val) {
         const a = this.data.answer.split('#')
         const w = this.data.weigths.split('#')
-        const out = {
+        out = {
           q: this.data.question,
           a: w[val - 1],
           aa: a[val - 1]
         }
-        return out
       } else {
-        return null
+        out = {
+          q: this.data.question,
+          a: 0,
+          aa: ''
+        }
       }
+      return out
     },
     onInput (val) {
       this.$emit('input', this.getAnswer(val))

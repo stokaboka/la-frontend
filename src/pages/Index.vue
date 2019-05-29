@@ -62,9 +62,9 @@ export default {
   name: 'PageIndex',
   methods: {
     startLa () {
-      // const name = 'la-one'
+      const name = 'la-one'
       // const name = 'la-two'
-      const name = 'la-tree'
+      // const name = 'la-tree'
       this.$router.push({ name })
     }
   },

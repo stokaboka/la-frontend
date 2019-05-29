@@ -10,124 +10,6 @@ const nextState = {
   end: 'end'
 }
 
-const calculate = {
-  one: (phase, category, answers, questionsCount = 0) => {
-    let percent = 0
-    const score = answers
-      .filter(e => e.phase === phase && e.category === category)
-      .filter(e => e.a > 0).length
-    if (questionsCount > 0) {
-      percent = Math.round(100 * score / questionsCount)
-    }
-
-    return { limit: 60, level: category, next: percent >= 60 }
-  },
-
-  two: (phase, category, answers, questionsCount = 0) => {
-    let percent = 0
-    const answer = answers.find(e => e.phase === phase && e.category === category)
-    if (answer) {
-      let score = answer.a
-      if (answer.q > 0) {
-        percent = Math.round(100 * score / answer.q)
-      }
-
-      const rules = [
-        // category 1
-        [
-          { limit: 0, level: 0, next: false },
-          { limit: 40, level: 1, next: false },
-          { limit: 80, level: 2, next: false },
-          { limit: 100, level: 2, next: true }
-        ],
-
-        // category 2
-        [
-          { limit: 0, level: 2, next: false },
-          { limit: 40, level: 3, next: false },
-          { limit: 80, level: 4, next: false },
-          { limit: 100, level: 4, next: true }
-        ],
-
-        // category 3
-        [
-          { limit: 0, level: 4, next: false },
-          { limit: 40, level: 5, next: false },
-          { limit: 80, level: 6, next: false },
-          { limit: 100, level: 6, next: true }
-        ],
-
-        // category 4
-        [
-          { limit: 0, level: 6, next: false },
-          { limit: 40, level: 7, next: false },
-          { limit: 80, level: 8, next: false },
-          { limit: 100, level: 9, next: false }
-        ]
-      ]
-
-      const rule = rules[category - 1]
-      const out = rule.find(e => percent <= e.limit)
-      return out
-    }
-    return { limit: 0, level: category, next: false }
-  },
-
-  tree: (phase, category, answers, questionsCount = 0) => {
-    let percent = 0
-    const score = answers
-      .filter(e => e.phase === phase && e.category === category)
-      .filter(e => e.a > 0).length
-    if (questionsCount > 0) {
-      percent = Math.round(100 * score / questionsCount)
-    }
-    const rules = [
-      // category 1
-      [
-        { limit1: null, limit2: 20, level: 0, next: false },
-        { limit1: 20, limit2: 60, level: 1, next: false },
-        { limit1: 60, limit2: null, level: 2, next: true }
-      ],
-
-      // category 2
-      [
-        { limit1: null, limit2: 50, level: 2, next: false },
-        { limit1: 50, limit2: 50, level: 3, next: false },
-        { limit1: 50, limit2: null, level: 4, next: true }
-      ],
-
-      // category 3
-      [
-        { limit1: null, limit2: 50, level: 4, next: false },
-        { limit1: 50, limit2: 50, level: 5, next: false },
-        { limit1: 50, limit2: null, level: 6, next: true }
-      ],
-
-      // category 4
-      [
-        { limit1: null, limit2: 50, level: 6, next: false },
-        { limit1: 50, limit2: 50, level: 7, next: false },
-        { limit1: 50, limit2: null, level: 8, next: true }
-      ]
-    ]
-
-    const rule = rules[category - 1]
-    const out = rule.find(e => {
-      if (e.limit1 === null) {
-        return percent < e.limit2
-      }
-      if (e.limit2 === null) {
-        return e.limit1 <= percent
-      }
-      if (e.limit1 === e.limit2) {
-        return e.limit1 === percent
-      }
-      return e.limit1 <= percent && percent < e.limit2
-    })
-    return out
-  }
-}
-
 export default {
   data () {
     return {
@@ -193,33 +75,22 @@ export default {
       this.saveResults()
     },
 
-    saveResults () {
-      /**
-       * TODO saveResults
-       */
+    async saveResults () {
+      await this.save({})
     },
 
-    calculateResults () {
-      const { phase, category } = this
-      let result = null
-      const func = calculate[this.module.id]
-      if (func) {
-        result = func(phase, category, this.answers, this.questionsCount)
-        return result
-      } else {
-        return null
-      }
-    },
-
-    onReady () {
-      const result = this.calculateResults()
+    async onReady () {
+      const result = await this.calculateResults()
+      console.log(result)
       if (result) {
         this.SET_LEVEL(result.level)
 
-        if (result.next) {
-          this.nextCategory()
+        if (result.next.question) {
           this.nextQuestion()
-        } else {
+        } else if (result.next.category) {
+          this.nextCategory()
+          // this.nextQuestion()
+        } else if (result.next.state) {
           this.nextState()
         }
       } else {
@@ -253,6 +124,7 @@ export default {
       if (this.category < this.maxCategory) {
         this.NEXT_CATEGORY()
         this.initQuestions()
+        this.nextQuestion()
       } else {
         this.nextState()
       }
@@ -319,7 +191,8 @@ export default {
       'RESET_CATEGORY',
       'NEXT_QUESTION'
     ]),
-    ...mapActions('questions', ['load', 'count'])
+    ...mapActions('questions', ['load', 'count']),
+    ...mapActions('results', ['calculateResults', 'save'])
   },
   computed: {
     ...mapGetters('auth', ['isLogged', 'user']),
