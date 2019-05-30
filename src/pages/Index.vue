@@ -1,7 +1,7 @@
 <template>
   <q-page class="">
     <div class="wrapper row">
-      <img src="~assets/svs_logo.png" />
+<!--      <img src="~assets/svs_logo.png" />-->
 
       <div class="text-h5 text-grey-14">
         <p>
@@ -57,16 +57,26 @@
 </style>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'PageIndex',
   methods: {
-    startLa () {
-      const name = 'la-one'
+    async startLa () {
+      let name = 'la-one'
+      if (this.isLogged) {
+        await this.load()
+        if (this.savedResults.length > 0) {
+          const lastResult = this.savedResults[this.savedResults.length - 1]
+          name = this.modules[lastResult.phase - 1].next
+        }
+      }
+
+      // const name = 'la-one'
       // const name = 'la-two'
       // const name = 'la-tree'
       this.$router.push({ name })
-    }
+    },
+    ...mapActions('results', ['load'])
   },
   computed: {
     ...mapGetters('auth', [
@@ -76,7 +86,8 @@ export default {
       'isUser',
       'user'
     ]),
-    ...mapGetters('app', ['title', 'leftDrawer', 'rightDrawer'])
+    ...mapGetters('app', ['title', 'modules', 'leftDrawer', 'rightDrawer']),
+    ...mapGetters('results', ['savedResults'])
   }
 }
 </script>

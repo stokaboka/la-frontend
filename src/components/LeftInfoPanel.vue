@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     ...mapGetters('questions', ['category', 'questionIndex', 'questionsCount', 'phaseQuestionsTotal']),
-    ...mapGetters('test', ['short', 'result'])
+    ...mapGetters('test', ['description', 'result'])
   }
 
 }

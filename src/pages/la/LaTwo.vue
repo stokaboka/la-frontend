@@ -1,9 +1,9 @@
 <template>
-  <div class="q-pa-lg">
+  <div>
     <section v-if="state === 'start'">
-      <div class="q-my-lg text-h4 text-weight-medium">
-        Часть № 2 - Грамматика
-      </div>
+<!--      <div class="q-my-lg text-h4 text-weight-medium">-->
+<!--        Часть № 2 - Грамматика-->
+<!--      </div>-->
       <div class="q-pl-lg text-body1">
         <p>Вторая часть теста займет у Вас около 20 минут.</p>
         <p>

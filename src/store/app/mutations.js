@@ -13,6 +13,10 @@ export function SET_MODULE (state, playload) {
   }
 }
 
+export const SET_MODE = (state, playload) => {
+  state.mode = playload
+}
+
 export const SET_SOUND_VOLUME = (state, playload) => {
   state.volume = playload
 }

@@ -1,9 +1,9 @@
 <template>
-  <div class="q-pa-lg">
+  <div>
     <section v-if="state === 'start'">
-      <div class="q-my-lg text-h4 text-weight-medium">
-        Часть № 3 - Восприятие на слух
-      </div>
+<!--      <div class="q-my-lg text-h4 text-weight-medium">-->
+<!--        Часть № 3 - Восприятие на слух-->
+<!--      </div>-->
       <div class="q-pl-lg text-body1">
         <p>Третья часть теста займет у Вас около 30 минут.</p>
         <p>

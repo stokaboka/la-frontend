@@ -5,12 +5,21 @@ const routes = [
     path: '/',
     component: () => import('layouts/LaLayout.vue'),
     children: [
-      { path: '', name: 'home', component: () => import('pages/Index.vue') },
+      { path: '',
+        name: 'home',
+        component: () => import('pages/Index.vue'),
+        beforeEnter (to, from, next) {
+          store.commit('app/SET_MODE', 'about')
+          next()
+        }
+      },
       {
         path: 'auth',
         name: 'auth',
         component: () => import('pages/auth/Auth.vue'),
         async beforeEnter (to, from, next) {
+          store.commit('app/SET_MODE', 'about')
+
           if (to.name === 'auth-signout') {
             await store.dispatch('auth/signout')
             next({ name: 'home' })
@@ -37,6 +46,7 @@ const routes = [
         name: 'la',
         component: () => import('pages/la/La.vue'),
         beforeEnter (to, from, next) {
+          store.commit('app/SET_MODE', 'test')
           const isLogged = store.getters['auth/isLogged']
           if (isLogged) {
             next()

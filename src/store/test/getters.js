@@ -1,4 +1,5 @@
-export const short = s => s.test ? s.test.short : ''
+export const title = s => s.test ? s.test.title : ''
+export const description = s => s.test ? s.test.description : ''
 export const test = s => s.test ? s.test.test : 0
 export const part = s => s.test ? s.test.part : 0
 export const phase = s => s.test ? s.test.phase : 0

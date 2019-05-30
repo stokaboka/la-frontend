@@ -13,9 +13,14 @@
       ></left-info-panel>
     </transition>
 
-    <div class="la-main shadow-3">
-      <logo class="q-mt-md q-ml-md"/>
+    <div class="column la-main q-pa-lg shadow-3">
+<!--      <logo class="q-mt-md q-ml-md"/>-->
+        <div class="q-my-lg text-h4 text-grey-10 text-weight-medium part-title__border">
+          {{title}} {{description}}
+        </div>
+
       <router-view />
+
       <div class="q-pa-md text-grey-14 text-body1">
         <p>
           Вы можете
@@ -45,13 +50,14 @@
 import { mapGetters } from 'vuex'
 import LeftInfoPanel from '../../components/LeftInfoPanel'
 import RightInfoPanel from '../../components/RightInfoPanel'
-import Logo from '../../components/ui/Logo'
+// import Logo from '../../components/ui/Logo'
 
 export default {
   name: 'La',
-  components: { Logo, RightInfoPanel, LeftInfoPanel },
+  components: { RightInfoPanel, LeftInfoPanel },
   computed: {
-    ...mapGetters('app', ['title', 'leftDrawer', 'rightDrawer', 'module'])
+    ...mapGetters('app', ['leftDrawer', 'rightDrawer', 'module']),
+    ...mapGetters('test', ['title', 'description'])
   }
 }
 </script>
@@ -62,6 +68,10 @@ export default {
   grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: auto;
   grid-template-areas: "counter main timer";
+}
+
+.part-title__border {
+  border-bottom: 2px solid #027BE3;
 }
 
 @media (max-width: 762px) {

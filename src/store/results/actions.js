@@ -235,104 +235,6 @@ const calculate = {
         percent = Math.round((100 * score) / answer.q)
       }
 
-      // const rules = [
-      //   // category 1
-      //   [
-      //     {
-      //       limit: 0,
-      //       level: 0,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 40,
-      //       level: 1,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 80,
-      //       level: 2,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 100,
-      //       level: 2,
-      //       next: { state: false, category: true, question: false }
-      //     }
-      //   ],
-      //
-      //   // category 2
-      //   [
-      //     {
-      //       limit: 0,
-      //       level: 2,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 40,
-      //       level: 3,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 80,
-      //       level: 4,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 100,
-      //       level: 4,
-      //       next: { state: false, category: true, question: false }
-      //     }
-      //   ],
-      //
-      //   // category 3
-      //   [
-      //     {
-      //       limit: 0,
-      //       level: 4,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 40,
-      //       level: 5,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 80,
-      //       level: 6,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 100,
-      //       level: 6,
-      //       next: { state: false, category: true, question: false }
-      //     }
-      //   ],
-      //
-      //   // category 4
-      //   [
-      //     {
-      //       limit: 0,
-      //       level: 6,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 40,
-      //       level: 7,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 80,
-      //       level: 8,
-      //       next: { state: true, category: false, question: false }
-      //     },
-      //     {
-      //       limit: 100,
-      //       level: 9,
-      //       next: { state: true, category: false, question: false }
-      //     }
-      //   ]
-      // ]
-
       const rule = rules.two[category - 1]
       const out = rule.find(e => percent <= e.limit)
       return out
@@ -348,95 +250,6 @@ const calculate = {
     if (questionsCount > 0) {
       percent = Math.round((100 * score) / questionsCount)
     }
-    // const rules = [
-    //   // category 1
-    //   [
-    //     {
-    //       limit1: null,
-    //       limit2: 20,
-    //       level: 0,
-    //       next: { state: true, category: false, question: false }
-    //     },
-    //     {
-    //       limit1: 20,
-    //       limit2: 60,
-    //       level: 1,
-    //       next: { state: true, category: false, question: false }
-    //     },
-    //     {
-    //       limit1: 60,
-    //       limit2: null,
-    //       level: 2,
-    //       next: { state: false, category: true, question: false }
-    //     }
-    //   ],
-    //
-    //   // category 2
-    //   [
-    //     {
-    //       limit1: null,
-    //       limit2: 50,
-    //       level: 2,
-    //       next: { state: true, category: false, question: false }
-    //     },
-    //     {
-    //       limit1: 50,
-    //       limit2: 50,
-    //       level: 3,
-    //       next: { state: true, category: false, question: false }
-    //     },
-    //     {
-    //       limit1: 50,
-    //       limit2: null,
-    //       level: 4,
-    //       next: { state: false, category: true, question: false }
-    //     }
-    //   ],
-    //
-    //   // category 3
-    //   [
-    //     {
-    //       limit1: null,
-    //       limit2: 50,
-    //       level: 4,
-    //       next: { state: true, category: false, question: false }
-    //     },
-    //     {
-    //       limit1: 50,
-    //       limit2: 50,
-    //       level: 5,
-    //       next: { state: true, category: false, question: false }
-    //     },
-    //     {
-    //       limit1: 50,
-    //       limit2: null,
-    //       level: 6,
-    //       next: { state: false, category: true, question: false }
-    //     }
-    //   ],
-    //
-    //   // category 4
-    //   [
-    //     {
-    //       limit1: null,
-    //       limit2: 50,
-    //       level: 6,
-    //       next: { state: true, category: false, question: false }
-    //     },
-    //     {
-    //       limit1: 50,
-    //       limit2: 50,
-    //       level: 7,
-    //       next: { state: true, category: false, question: false }
-    //     },
-    //     {
-    //       limit1: 50,
-    //       limit2: null,
-    //       level: 8,
-    //       next: { state: true, category: false, question: false }
-    //     }
-    //   ]
-    // ]
 
     const rule = rules.tree[category - 1]
     const out = rule.find(e => {
@@ -493,7 +306,7 @@ export const load = ({ commit, getters, rootGetters }) => {
   return axios
     .get(`${api}/results/list/user/${id}/attempt/${attempt}`)
     .then(response => {
-      commit('SET_RESULTS', response.data)
+      commit('SET_SAVED_RESULTS', response.data)
     })
     .catch(error => {
       errorNotify(error.message)
@@ -503,10 +316,19 @@ export const load = ({ commit, getters, rootGetters }) => {
 export const save = ({ commit, getters, rootGetters }, data) => {
   const { id, attempt } = rootGetters['auth/user']
   const api = rootGetters['app/api']
+
+  const test = rootGetters['test/test']
+  const part = rootGetters['test/part']
+  const phase = rootGetters['test/phase']
+  const level = rootGetters['test/level']
+
   const postData = {
-    ...data,
     idUser: id,
-    attempt
+    attempt,
+    test,
+    part,
+    phase,
+    level
   }
 
   return axios

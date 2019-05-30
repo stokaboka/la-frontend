@@ -76,7 +76,7 @@ export default {
     },
 
     async saveResults () {
-      await this.save({})
+      await this.save()
     },
 
     async onReady () {
@@ -200,7 +200,7 @@ export default {
     ...mapGetters('auth', ['isLogged', 'user']),
     ...mapGetters('app', ['api', 'module', 'modules', 'lastModule']),
     ...mapGetters('test', [
-      'short',
+      'description',
       'test',
       'part',
       'phase',

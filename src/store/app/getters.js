@@ -46,5 +46,7 @@ export function lockResume (state) {
   return state.lockResume
 }
 
+export const mode = s => s.mode
+
 export const volume = s => s.volume
 export const showAudioControls = s => s.showAudioControls
