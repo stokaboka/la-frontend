@@ -14,14 +14,18 @@
     </transition>
 
     <div class="column la-main q-pa-lg shadow-3">
-<!--      <logo class="q-mt-md q-ml-md"/>-->
-        <div class="q-my-lg text-h4 text-grey-10 text-weight-medium part-title__border">
+        <div v-if="showTitle" class="q-mb-lg text-h5 text-grey-10 text-weight-medium part-title__border">
           {{title}} {{description}}
         </div>
 
       <router-view />
 
-      <div class="q-pa-md text-grey-14 text-body1">
+      <div v-if="showNext" class="q-mt-md text-grey-14">
+        Если Вы не помните или не знаете ответа - просто нажмите кнопку
+        <q>Далее</q>
+      </div>
+
+      <div v-if="showBreak" class="q-my-md text-grey-14 text-body1">
         <p>
           Вы можете
           <router-link :to="{ path: 'home' }">прервать</router-link> тест в
@@ -50,14 +54,19 @@
 import { mapGetters } from 'vuex'
 import LeftInfoPanel from '../../components/LeftInfoPanel'
 import RightInfoPanel from '../../components/RightInfoPanel'
-// import Logo from '../../components/ui/Logo'
 
 export default {
   name: 'La',
   components: { RightInfoPanel, LeftInfoPanel },
   computed: {
+    showBreak () {
+      return this.$route.meta.break
+    },
+    showTitle () {
+      return this.$route.meta.title
+    },
     ...mapGetters('app', ['leftDrawer', 'rightDrawer', 'module']),
-    ...mapGetters('test', ['title', 'description'])
+    ...mapGetters('test', ['title', 'description', 'showNext'])
   }
 }
 </script>
@@ -77,8 +86,9 @@ export default {
 @media (max-width: 762px) {
   .container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr auto;
+    grid-auto-rows: min-content;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
     grid-template-areas:
       "counter timer"
       "main main";

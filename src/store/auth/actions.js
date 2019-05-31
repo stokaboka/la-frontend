@@ -58,12 +58,16 @@ const showUserNotify = function (user, action) {
     }
   }
 
-  const result = (user && user.login) ? 'positive' : 'negative'
+  const result = user && user.login ? 'positive' : 'negative'
   Notify.create(notify[action][result])
 }
 
-export const signin = ({ commit, getters, rootGetters }, playload = { login: '-', password: '-' }) => {
-  return axios.post(`${rootGetters['app/api']}/auth/signin`, playload)
+export const signin = (
+  { commit, getters, rootGetters },
+  playload = { login: '-', password: '-' }
+) => {
+  return axios
+    .post(`${rootGetters['app/api']}/auth/signin`, playload)
     .then(response => {
       commit('SET_TOKEN', response.data.token)
       commit('SET_USER', response.data.user)
@@ -71,7 +75,10 @@ export const signin = ({ commit, getters, rootGetters }, playload = { login: '-'
     })
     .catch(error => {
       commit('SET_USER', null)
-      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
       } else {
         errorNotify(error.message)
       }
@@ -81,7 +88,8 @@ export const signin = ({ commit, getters, rootGetters }, playload = { login: '-'
 export const signout = ({ commit, getters, rootGetters }) => {
   sessionStorage.setItem('token', '')
   axios.defaults.headers.common['Authorization'] = ''
-  return axios.post(`${rootGetters['app/api']}/auth/signout`, getters['user'])
+  return axios
+    .post(`${rootGetters['app/api']}/auth/signout`, getters['user'])
     .then(response => {
       commit('SET_USER', null)
       showUserNotify(null, 'signout')
@@ -96,11 +104,20 @@ export const signout = ({ commit, getters, rootGetters }) => {
 }
 
 export const register = ({ commit, getters, rootGetters }, playload) => {
-  const data = Object.assign({
-    login: '-', password: '-', firstName: '-', secondName: '-', lastName: '-', birthday: new Date()
-  }, playload)
+  const data = Object.assign(
+    {
+      login: '-',
+      password: '-',
+      firstName: '-',
+      secondName: '-',
+      lastName: '-',
+      birthday: new Date()
+    },
+    playload
+  )
 
-  return axios.post(`${rootGetters['app/api']}/auth/register`, data)
+  return axios
+    .post(`${rootGetters['app/api']}/auth/register`, data)
     .then(response => {
       if (response.data.error) {
         commit('SET_TOKEN', '')
@@ -118,5 +135,19 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
     .catch(error => {
       commit('SET_USER', null)
       errorNotify(error)
+    })
+}
+
+export const fixAttempt = ({ commit, rootGetters }) => {
+  const { id, attempt } = rootGetters['auth/user']
+  const api = rootGetters['app/api']
+
+  return axios
+    .post(`${api}/users/fix`, { id, attempt })
+    .then(response => {
+      commit('SET_CLOSED')
+    })
+    .catch(error => {
+      errorNotify(error.message)
     })
 }

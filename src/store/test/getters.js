@@ -20,3 +20,7 @@ export const timer = s => s.timer
 export const timerHint = s => s.timerHint
 
 export const waitReady = s => s.test ? s.test.waitReady : false
+
+export const showNext = s => s.showNext
+
+export const lastPhase = s => s.lastPhase

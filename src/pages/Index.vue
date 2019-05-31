@@ -1,7 +1,7 @@
 <template>
   <q-page class="">
     <div class="wrapper row">
-<!--      <img src="~assets/svs_logo.png" />-->
+      <!--      <img src="~assets/svs_logo.png" />-->
 
       <div class="text-h5 text-grey-14">
         <p>
@@ -14,13 +14,23 @@
       </div>
 
       <div v-if="isLogged" class="column q-mt-md">
-        Вы можете начать тест
-        <q-btn
-          label="Продолжить"
-          color="primary"
-          class="q-ma-md"
-          @click="startLa()"
-        />
+        <div v-if="isClosed">
+          <q-banner rounded class="bg-primary text-white shadow-3">
+            <span class="text-h6">
+              К сожалению, Вы использовали все попытки.
+              <p>Обратитесь к своему менеджеру.</p>
+            </span>
+          </q-banner>
+        </div>
+        <div v-else>
+          Вы можете начать тест
+          <q-btn
+            label="Продолжить"
+            color="primary"
+            class="q-ma-md"
+            @click="startLa()"
+          />
+        </div>
       </div>
       <div v-else class="column q-mt-md">
         <div>
@@ -71,9 +81,9 @@ export default {
         }
       }
 
-      // const name = 'la-one'
-      // const name = 'la-two'
-      // const name = 'la-tree'
+      name = 'la-one'
+      // name = 'la-two'
+      // name = 'la-tree'
       this.$router.push({ name })
     },
     ...mapActions('results', ['load'])
@@ -81,6 +91,7 @@ export default {
   computed: {
     ...mapGetters('auth', [
       'isLogged',
+      'isClosed',
       'isAdmin',
       'isOperator',
       'isUser',

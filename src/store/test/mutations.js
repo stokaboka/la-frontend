@@ -49,3 +49,7 @@ export const SET_TIMER_TOTAL = (state, playload) => {
 export const SET_TIMER_HINT = (state, playload) => {
   state.timerHint = playload
 }
+
+export const SET_SHOW_NEXT = (state, playload) => {
+  state.showNext = playload
+}

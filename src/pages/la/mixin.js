@@ -25,6 +25,7 @@ export default {
     }
     if (audio) {
       audio.stop()
+      audio.off()
       audio = null
     }
   },
@@ -73,10 +74,20 @@ export default {
       this.SET_LEFT_DRAWER(false)
       this.SET_RIGHT_DRAWER(false)
       this.saveResults()
+
+      if (this.phase === this.lastPhase) {
+        this.fixUserAttempt()
+        this.$router.push({ name: 'la-end' })
+      }
     },
 
     async saveResults () {
       await this.save()
+    },
+
+    async fixUserAttempt () {
+      console.log('fixUserAttempt')
+      await this.fixAttempt()
     },
 
     async onReady () {
@@ -91,7 +102,6 @@ export default {
           this.nextQuestion()
         } else if (result.next.category) {
           this.nextCategory()
-          // this.nextQuestion()
         } else if (result.next.state) {
           this.nextState()
         }
@@ -126,7 +136,6 @@ export default {
       if (this.category < this.maxCategory) {
         this.NEXT_CATEGORY()
         this.initQuestions()
-        this.nextQuestion()
       } else {
         this.nextState()
       }
@@ -182,7 +191,8 @@ export default {
       'SET_LEVEL',
       'ADD_SECOND_TO_TIMER',
       'RESET_TIMER',
-      'SET_TIMER_TOTAL'
+      'SET_TIMER_TOTAL',
+      'SET_SHOW_NEXT'
     ]),
     ...mapMutations('questions', [
       'SET_TEST',
@@ -191,8 +201,10 @@ export default {
       'SET_CATEGORY',
       'NEXT_CATEGORY',
       'RESET_CATEGORY',
-      'NEXT_QUESTION'
+      'NEXT_QUESTION',
+      'CLEAR_QUESTIONS'
     ]),
+    ...mapActions('auth', ['fixAttempt']),
     ...mapActions('questions', ['load', 'count']),
     ...mapActions('results', ['calculateResults', 'save'])
   },
@@ -204,6 +216,7 @@ export default {
       'test',
       'part',
       'phase',
+      'lastPhase',
       'maxCategory',
       'answers',
       'result',

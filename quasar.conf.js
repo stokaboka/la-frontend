@@ -28,6 +28,9 @@ module.exports = function (ctx) {
       components: [
         'QAvatar',
         'QBanner',
+        'QCard',
+        'QCardSection',
+        'QCardActions',
         'QCircularProgress',
         'QLayout',
         'QHeader',
@@ -49,6 +52,7 @@ module.exports = function (ctx) {
         'QOptionGroup',
         'QInput',
         'QSelect',
+        'QSeparator',
         'QSlider',
         'QTabs',
         'QTab',

@@ -1,26 +1,28 @@
 <template>
   <div>
-    <span
-      v-for="(str, index) in questionStrings"
-      :key="index"
-    >
-      <q-select
-        v-if="str.type === 'array'"
-        class="multichoice"
-        dense
-        options-dense
-        filled
-        square
-        v-model="str.model"
-        :options="str.data"
-      />
-      <span v-else v-html="str.data"></span>
-    </span>
-
-    <q-btn label="Далее" color="primary" class="q-ma-md" @click="onNext" />
-    <div class="text-grey-14">
-      Если Вы не помните или не знаете ответа - просто нажмите кнопку <q>Далее</q>
+    <div>
+      Ваша задача - выбрать подходящие варианты из выпадающих списков
     </div>
+    <q-card>
+      <q-card-section>
+        <span v-for="(str, index) in questionStrings" :key="index">
+          <q-select
+            v-if="str.type === 'array'"
+            class="multichoice"
+            dense
+            options-dense
+            filled
+            square
+            v-model="str.model"
+            :options="str.data"
+          />
+          <span v-else v-html="str.data"></span>
+        </span>
+      </q-card-section>
+    </q-card>
+
+    <q-btn label="Далее" color="primary" class="q-mt-md" @click="onNext" />
+
   </div>
 </template>
 
@@ -49,14 +51,13 @@ export default {
           if (e.startsWith('{')) {
             const a = e.split(multichoiseRegExp)
             if (a && a.length === 3) {
-              let ans = a[1]
-                .split('~')
-                .find(x => x.startsWith('='))
+              let ans = a[1].split('~').find(x => x.startsWith('='))
               ans = ans ? ans.replace('=', '') : ''
               return {
                 data: a[1].replace('=', '').split('~'),
                 type: 'array',
-                model: '\u200C',
+                // model: '\u200C',
+                model: ans,
                 answer: ans
               }
             }
@@ -71,13 +72,11 @@ export default {
       }
     },
     onNext () {
-      const questions = this.questionStrings
-        .filter(e => e.type === 'array')
+      const questions = this.questionStrings.filter(e => e.type === 'array')
         .length
       const answers = this.questionStrings
         .filter(e => e.type === 'array')
-        .filter(e => e.model === e.answer)
-        .length
+        .filter(e => e.model === e.answer).length
       const out = {
         q: questions,
         a: answers

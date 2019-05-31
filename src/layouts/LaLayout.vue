@@ -93,6 +93,6 @@ export default {
   height: auto;
 }
 .img-logo__anim {
-  transition: height, width ease 0.5s;
+  transition: height, width ease 300ms;
 }
 </style>

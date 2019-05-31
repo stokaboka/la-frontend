@@ -14,6 +14,7 @@
     </div>
     <div v-for="question in data" :key="question.question">
       <multi-choice
+        class="q-mt-md"
         :data="question"
         orientation="H"
         :next="false"
@@ -23,10 +24,7 @@
       ></multi-choice>
     </div>
 
-    <q-btn v-if="showNext" label="Далее" color="primary" class="q-ma-md" @click="onNext" />
-    <div v-if="showNext" class="text-grey-14">
-      Если Вы не помните или не знаете ответа - просто нажмите кнопку <q>Далее</q>
-    </div>
+    <q-btn v-if="showNext" label="Далее" color="primary" class="q-mt-md" @click="onNext" />
 
   </div>
 </template>
@@ -50,9 +48,8 @@ export default {
   },
   data () {
     return {
-      answer: null,
-      state: 1,
-      showNext: false
+      answers: [],
+      state: 1
     }
   },
   mounted () {
@@ -69,8 +66,6 @@ export default {
     audio.on('START', this.onAudioFired)
       .on('PROGRESS', this.onAudioFired)
       .on('COMPLETE', this.onAudioFired)
-
-    // this.initState(1)
   },
   beforeDestroy () {
     if (timer) {
@@ -86,21 +81,30 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['api', 'volume']),
-    ...mapGetters('test', ['time', 'timer'])
+    ...mapGetters('test', ['time', 'timer', 'showNext'])
   },
   methods: {
-    onInput (val) {
-      console.dir(val)
-      this.$emit('on-answer', val)
+    onInput (answer) {
+      console.dir(answer)
+      const idx = this.answers.findIndex(e => e.q === answer.q)
+      if (idx > -1) {
+        this.answers.splice(idx, 1)
+      }
+      this.answers.push(answer)
     },
 
     onNext () {
+      timer.stop()
+      audio.stop()
+      this.answers.forEach(e => {
+        this.$emit('on-answer', e)
+      }, this)
       this.$emit('on-ready')
     },
 
     initState (val) {
       this.state = val
-      this.showNext = false
+      this.SET_SHOW_NEXT(false)
       timer.stop()
       audio.stop()
       this.RESET_TIMER()
@@ -114,6 +118,7 @@ export default {
         case 2 :
           const q = this.data.find(e => e.audio)
           if (q && q.audio) {
+            this.SET_SOUND_VOLUME(1)
             audio.volume(this.volume).once().play(q.audio)
             this.SET_TIMER_HINT('Осталось времени до окончания аудио записи')
             this.SHOW_AUDIO_CONTROLS(true)
@@ -121,7 +126,7 @@ export default {
           }
           break
         case 3 :
-          this.showNext = true
+          this.SET_SHOW_NEXT(true)
           timer.start(2 * 60)
           this.SET_TIMER_TOTAL(2 * 60)
           this.SET_TIMER_HINT('Осталось времени на ответ')
@@ -130,16 +135,19 @@ export default {
     },
 
     onAudioFired (event) {
-      console.log(event)
+      // console.log(event)
       switch (event.event) {
         case 'START' :
           break
         case 'PROGRESS' :
-          if (this.timer.total === 0) {
-            this.SET_TIMER_TOTAL(Math.round(event.duration))
+          if (this.state === 2) {
+            if (this.timer.total === 0) {
+              this.SET_TIMER_TOTAL(Math.round(event.duration))
+            }
+            this.SET_TIMER_TIME(Math.round(event.currentTime))
+            this.SET_SHOW_NEXT(event.currentTime > event.duration / 2)
+            this.SET_SHOW_NEXT(true)
           }
-          this.SET_TIMER_TIME(Math.round(event.currentTime))
-          this.showNext = event.currentTime > event.duration / 2
           break
         case 'COMPLETE' :
           this.SHOW_AUDIO_CONTROLS(false)
@@ -148,6 +156,7 @@ export default {
     },
 
     onTimerFired (event) {
+      // console.log(event)
       switch (event.event) {
         case 'START':
           this.RESET_TIMER()
@@ -187,7 +196,8 @@ export default {
       'SET_TIMER_TOTAL',
       'SET_TIMER_TIME',
       'SET_MODULE_TEST',
-      'SET_TIMER_HINT'
+      'SET_TIMER_HINT',
+      'SET_SHOW_NEXT'
     ])
   },
 

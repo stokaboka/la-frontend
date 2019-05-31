@@ -1,37 +1,54 @@
 <template>
   <div style="width: 100%;">
     <div v-if="data">
-      <q-banner class="bg-secondary text-white" rounded>
-        <span class="text-h4">{{ data.question }}</span>
-      </q-banner>
-      <div v-if="hint" class="text-h6">
-        это:
-        <span class="text-grey-14 text-body2">
-          (выберите один вариант ответа)
-        </span>
-      </div>
-      <div class="q-pa-md">
-        <div :class="[ { column: orientation === 'V' }, { row: orientation === 'H' } ]">
-          <q-item
-            v-for="a in answerOptions"
-            :key="a.label"
-            tag="label"
-            v-ripple
-          >
-            <q-item-section avatar>
-              <q-radio v-model="answer" :val="a.value" @input="onInput"/>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-h6">{{ a.label }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </div>
-      </div>
+      <q-card>
+        <q-card-section class="bg-secondary text-white">
+          <div class="text-h4">{{ data.question }}</div>
+        </q-card-section>
 
-      <q-btn v-if="next" label="Далее" color="primary" class="q-ma-md" @click="onNext" />
-      <div v-if="next" class="text-grey-14">
-        Если Вы не помните или не знаете ответа - просто нажмите кнопку <q>Далее</q>
-      </div>
+        <q-separator/>
+
+        <q-card-section v-if="hint">
+          <div  class="text-h6">
+            это:
+            <span class="text-grey-14 text-body2">
+              (выберите один вариант ответа)
+            </span>
+          </div>
+        </q-card-section>
+
+        <q-card-actions>
+          <div
+            :class="[
+              { column: orientation === 'V' },
+              { row: orientation === 'H' }
+            ]"
+          >
+            <q-item
+              v-for="a in answerOptions"
+              :key="a.label"
+              tag="label"
+              v-ripple
+            >
+              <q-item-section avatar>
+                <q-radio v-model="answer" :val="a.value" @input="onInput" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-h6">{{ a.label }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </div>
+        </q-card-actions>
+      </q-card>
+
+      <q-btn
+        v-if="next"
+        label="Далее"
+        color="primary"
+        class="q-mt-md"
+        @click="onNext"
+      />
+
     </div>
   </div>
 </template>
@@ -108,11 +125,9 @@ export default {
   computed: {
     answerOptions () {
       if (this.data && this.data.answer) {
-        const out = this.data.answer
-          .split('#')
-          .map((e, i) => {
-            return { label: e, value: i + 1 }
-          })
+        const out = this.data.answer.split('#').map((e, i) => {
+          return { label: e, value: i + 1 }
+        })
         return this.shuffle ? out.sort(() => Math.random() - 0.5) : out
       } else {
         return []

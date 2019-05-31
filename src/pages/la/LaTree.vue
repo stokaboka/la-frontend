@@ -83,6 +83,8 @@ export default {
   mounted () {
     this.SET_MODULE('tree')
     this.SET_MODULE_TEST('tree')
+    this.SET_SHOW_NEXT(false)
+    this.CLEAR_QUESTIONS()
   }
 }
 </script>

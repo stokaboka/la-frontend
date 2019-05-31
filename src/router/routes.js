@@ -49,7 +49,12 @@ const routes = [
           store.commit('app/SET_MODE', 'test')
           const isLogged = store.getters['auth/isLogged']
           if (isLogged) {
-            next()
+            const isClosed = store.getters['auth/isClosed']
+            if (isClosed) {
+              next({ name: 'la-end' })
+            } else {
+              next()
+            }
           } else {
             next({ name: 'home' })
           }
@@ -58,24 +63,28 @@ const routes = [
           {
             path: 'one',
             name: 'la-one',
-            component: () => import('pages/la/LaOne.vue')
+            component: () => import('pages/la/LaOne.vue'),
+            meta: { break: true, title: true }
           },
           {
             path: 'two',
             name: 'la-two',
-            component: () => import('pages/la/LaTwo.vue')
+            component: () => import('pages/la/LaTwo.vue'),
+            meta: { break: true, title: true }
           },
           {
             path: 'tree',
             name: 'la-tree',
-            component: () => import('pages/la/LaTree.vue')
-          },
-          {
-            path: 'end',
-            name: 'la-end',
-            component: () => import('pages/la/LaEnd.vue')
+            component: () => import('pages/la/LaTree.vue'),
+            meta: { break: true, title: true }
           }
         ]
+      },
+      {
+        path: 'end',
+        name: 'la-end',
+        component: () => import('pages/la/LaEnd.vue'),
+        meta: { break: false, title: false }
       }
     ]
   }

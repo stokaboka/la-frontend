@@ -46,11 +46,14 @@ export default {
   ],
 
   test: null,
-  index: -1,
 
   timer: {
     time: 0,
     total: 0
   },
-  timerHint: ''
+  timerHint: '',
+
+  showNext: true,
+
+  lastPhase: 3
 }
