@@ -81,7 +81,7 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['api', 'volume']),
-    ...mapGetters('test', ['time', 'timer', 'showNext'])
+    ...mapGetters('app', ['time', 'timer', 'showNext'])
   },
   methods: {
     onInput (answer) {
@@ -186,16 +186,13 @@ export default {
     },
     ...mapMutations('app', [
       'SET_SOUND_VOLUME',
-      'SHOW_AUDIO_CONTROLS'
-    ]),
-    ...mapMutations('test', [
+      'SHOW_AUDIO_CONTROLS',
       'SET_ANSWER',
       // 'ADD_RESULT',
       'ADD_SECOND_TO_TIMER',
       'RESET_TIMER',
       'SET_TIMER_TOTAL',
       'SET_TIMER_TIME',
-      'SET_MODULE_TEST',
       'SET_TIMER_HINT',
       'SET_SHOW_NEXT'
     ])

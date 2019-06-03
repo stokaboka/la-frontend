@@ -73,7 +73,6 @@ export default {
 
   mounted () {
     this.SET_MODULE('two')
-    this.SET_MODULE_TEST('two')
     this.SET_SHOW_NEXT(true)
     this.CLEAR_QUESTIONS()
   }

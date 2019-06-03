@@ -50,3 +50,29 @@ export const mode = s => s.mode
 
 export const volume = s => s.volume
 export const showAudioControls = s => s.showAudioControls
+
+export const testTitle = s => s.module ? s.module.title : ''
+export const description = s => s.module ? s.module.description : ''
+export const part = s => s.module ? s.module.part : 0
+export const phase = s => s.module ? s.module.phase : 0
+export const maxCategory = s => s.module ? s.module.maxCategory : 0
+export const answers = s => s.module ? s.module.answers : []
+export const result = s =>
+  s.module
+    ? s.module.answers
+      .filter(e => e.phase === s.module.phase)
+      .filter(e => e.a > 0)
+      .length
+    : 0
+
+export const level = s => s.module ? s.module.level : 0
+
+export const time = s => s.module ? s.module.time : 0
+export const timer = s => s.timer
+export const timerHint = s => s.timerHint
+
+export const waitReady = s => s.module ? s.module.waitReady : false
+
+export const showNext = s => s.showNext
+
+export const lastPhase = s => s.lastPhase

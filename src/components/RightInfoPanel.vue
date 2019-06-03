@@ -59,8 +59,7 @@ export default {
     ...mapMutations('app', ['SET_SOUND_VOLUME'])
   },
   computed: {
-    ...mapGetters('app', ['showAudioControls', 'volume']),
-    ...mapGetters('test', ['time', 'timer', 'timerHint']),
+    ...mapGetters('app', ['showAudioControls', 'volume', 'time', 'timer', 'timerHint']),
     timeText () {
       return secondsToTimeTextLong(this.timer.total)
     },

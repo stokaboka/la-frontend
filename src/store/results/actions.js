@@ -204,30 +204,34 @@ const rules = {
 }
 
 const calculate = {
-  one: (phase, category, answers, questionsCount = 0) => {
-    const percentLimit = rules.one.limit
+  one: (_phase, _category, _answers, _count = 0) => {
+    const limit = rules.one.limit
     let percent = 0
-    // const count = answers.filter(e => e.phase === phase && e.category === category).length
-    const score = answers
-      .filter(e => e.phase === phase && e.category === category)
-      .filter(e => e.a > 0).length
-    if (questionsCount > 0) {
-      percent = Math.round((100 * score) / questionsCount)
+    const answers = _answers.filter(
+      e => e.phase === _phase && e.category === _category
+    )
+    const count = answers.length
+    const score = answers.filter(e => e.a > 0).length
+    if (_count > 0) {
+      percent = Math.round((100 * score) / _count)
     }
 
-    const level = category > 1 ? (percent >= percentLimit ? category : 0) : 1
+    const level = _category > 1 ? (percent >= limit ? _category : 0) : 1
+    const category = percent >= limit
+    const state = percent < limit && count >= _count
+    const question = state ? false : percent < limit
 
     return {
-      limit: percentLimit,
+      limit,
       level,
-      next: { state: false, category: percent >= percentLimit, question: percent < percentLimit }
+      next: { state, category, question }
     }
   },
 
-  two: (phase, category, answers, questionsCount = 0) => {
+  two: (_phase, _category, _answers, _count = 0) => {
     let percent = 0
-    const answer = answers.find(
-      e => e.phase === phase && e.category === category
+    const answer = _answers.find(
+      e => e.phase === _phase && e.category === _category
     )
     if (answer) {
       let score = answer.a
@@ -235,43 +239,37 @@ const calculate = {
         percent = Math.round((100 * score) / answer.q)
       }
 
-      const rule = rules.two[category - 1]
+      const rule = rules.two[_category - 1]
       const out = rule.find(e => percent <= e.limit)
       return out
     }
-    return { limit: 0, level: category, next: false }
+    return { limit: 0, level: _category, next: false }
   },
 
-  tree: (phase, category, answers, questionsCount = 0) => {
+  tree: (_phase, _category, _answers, _count = 0) => {
     let percent = 0
-    const score = answers
-      .filter(e => e.phase === phase && e.category === category)
+    const score = _answers
+      .filter(e => e.phase === _phase && e.category === _category)
       .filter(e => e.a > 0).length
-    if (questionsCount > 0) {
-      percent = Math.round((100 * score) / questionsCount)
+    if (_count > 0) {
+      percent = Math.round((100 * score) / _count)
     }
 
-    const rule = rules.tree[category - 1]
+    const rule = rules.tree[_category - 1]
     const out = rule.find(e => {
-      if (e.limit1 === null) {
-        return percent < e.limit2
-      }
-      if (e.limit2 === null) {
-        return e.limit1 <= percent
-      }
-      if (e.limit1 === e.limit2) {
-        return e.limit1 === percent
-      }
+      if (e.limit1 === null) return percent < e.limit2
+      if (e.limit2 === null) return e.limit1 <= percent
+      if (e.limit1 === e.limit2) return e.limit1 === percent
       return e.limit1 <= percent && percent < e.limit2
     })
     return out
   }
 }
 
-export const calculateResults = ({ commit, getters, rootGetters }) => {
+export const calculateResults = ({ rootGetters }) => {
   const module = rootGetters['app/module']
-  const phase = rootGetters['test/phase']
-  const answers = rootGetters['test/answers']
+  const phase = rootGetters['app/phase']
+  const answers = rootGetters['app/answers']
   const category = rootGetters['questions/category']
   const questionsCount = rootGetters['questions/questionsCount']
 
@@ -314,10 +312,10 @@ export const load = ({ commit, rootGetters }) => {
 export const save = ({ commit, getters, rootGetters }, data) => {
   const { id, attempt } = rootGetters['auth/user']
 
-  const test = rootGetters['test/test']
-  const part = rootGetters['test/part']
-  const phase = rootGetters['test/phase']
-  const level = rootGetters['test/level']
+  const test = rootGetters['app/test']
+  const part = rootGetters['app/part']
+  const phase = rootGetters['app/phase']
+  const level = rootGetters['app/level']
 
   const postData = {
     idUser: id,

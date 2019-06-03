@@ -7,9 +7,9 @@ export function SET_RIGHT_DRAWER (state, playload) {
 }
 
 export function SET_MODULE (state, playload) {
-  const nextModule = state.modules.find(e => e.id === playload)
-  if (nextModule) {
-    state.module = nextModule
+  const module = state.modules.find(e => e.id === playload)
+  if (module) {
+    state.module = module
   }
 }
 
@@ -23,6 +23,55 @@ export const SET_SOUND_VOLUME = (state, playload) => {
 
 export const SHOW_AUDIO_CONTROLS = (state, playload) => {
   state.showAudioControls = playload
+}
+
+export const SET_ANSWER = (state, playload) => {
+  if (state.module) {
+    const idx = state.module.answers.findIndex(e => {
+      return (
+        e.part === playload.part &&
+        e.phase === playload.phase &&
+        e.category === playload.category &&
+        e.q === playload.q
+      )
+    })
+
+    if (idx > -1) {
+      state.module.answers.splice(idx, 1)
+    }
+
+    state.module.answers.push(playload)
+  }
+}
+
+export const SET_LEVEL = (state, playload) => {
+  if (state.module) {
+    state.module.level = playload
+  }
+}
+
+export const ADD_SECOND_TO_TIMER = state => {
+  state.timer.time++
+}
+
+export const SET_TIMER_TIME = (state, playload) => {
+  state.timer.time = playload
+}
+
+export const RESET_TIMER = state => {
+  state.timer.time = 0
+}
+
+export const SET_TIMER_TOTAL = (state, playload) => {
+  state.timer.total = playload
+}
+
+export const SET_TIMER_HINT = (state, playload) => {
+  state.timerHint = playload
+}
+
+export const SET_SHOW_NEXT = (state, playload) => {
+  state.showNext = playload
 }
 
 // *******************

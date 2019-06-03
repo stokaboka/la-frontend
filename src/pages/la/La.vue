@@ -15,7 +15,7 @@
 
     <div class="column la-main q-pa-lg shadow-3">
         <div v-if="showTitle" class="q-mb-lg text-h5 text-grey-10 text-weight-medium part-title__border">
-          {{title}} {{description}}
+          {{testTitle}} {{description}}
         </div>
 
       <router-view />
@@ -65,8 +65,7 @@ export default {
     showTitle () {
       return this.$route.meta.title
     },
-    ...mapGetters('app', ['leftDrawer', 'rightDrawer', 'module']),
-    ...mapGetters('test', ['title', 'description', 'showNext'])
+    ...mapGetters('app', ['leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description', 'showNext'])
   }
 }
 </script>

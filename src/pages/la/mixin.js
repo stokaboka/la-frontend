@@ -182,10 +182,7 @@ export default {
     ...mapMutations('app', [
       'SET_MODULE',
       'SET_LEFT_DRAWER',
-      'SET_RIGHT_DRAWER'
-    ]),
-    ...mapMutations('test', [
-      'SET_MODULE_TEST',
+      'SET_RIGHT_DRAWER',
       'SET_ANSWER',
       // 'ADD_RESULT',
       'SET_LEVEL',
@@ -210,10 +207,9 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['isLogged', 'user']),
-    ...mapGetters('app', ['api', 'module', 'modules', 'lastModule']),
-    ...mapGetters('test', [
+    ...mapGetters('app', [
+      'api', 'module', 'modules', 'lastModule',
       'description',
-      'test',
       'part',
       'phase',
       'lastPhase',
