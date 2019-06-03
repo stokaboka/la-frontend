@@ -1,6 +1,9 @@
 import axios from 'axios'
 
 export default ({ app, router, store, Vue }) => {
+  const api = store.getters['app/api']
+  axios.defaults.baseURL = api
+
   const token = sessionStorage.getItem('token')
   if (token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`

@@ -67,7 +67,7 @@ export const signin = (
   playload = { login: '-', password: '-' }
 ) => {
   return axios
-    .post(`${rootGetters['app/api']}/auth/signin`, playload)
+    .post('/auth/signin', playload)
     .then(response => {
       commit('SET_TOKEN', response.data.token)
       commit('SET_USER', response.data.user)
@@ -89,7 +89,7 @@ export const signout = ({ commit, getters, rootGetters }) => {
   sessionStorage.setItem('token', '')
   axios.defaults.headers.common['Authorization'] = ''
   return axios
-    .post(`${rootGetters['app/api']}/auth/signout`, getters['user'])
+    .post('/auth/signout', getters['user'])
     .then(response => {
       commit('SET_USER', null)
       showUserNotify(null, 'signout')
@@ -117,7 +117,7 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
   )
 
   return axios
-    .post(`${rootGetters['app/api']}/auth/register`, data)
+    .post('/auth/register', data)
     .then(response => {
       if (response.data.error) {
         commit('SET_TOKEN', '')
@@ -140,10 +140,9 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
 
 export const fixAttempt = ({ commit, rootGetters }) => {
   const { id, attempt } = rootGetters['auth/user']
-  const api = rootGetters['app/api']
 
   return axios
-    .post(`${api}/users/fix`, { id, attempt })
+    .post('/users/fix', { id, attempt })
     .then(response => {
       commit('SET_CLOSED')
     })

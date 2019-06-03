@@ -285,12 +285,11 @@ export const calculateResults = ({ commit, getters, rootGetters }) => {
   }
 }
 
-export const count = ({ commit, getters, rootGetters }) => {
+export const count = ({ commit, rootGetters }) => {
   const { id, attempt } = rootGetters['auth/user']
-  const api = rootGetters['app/api']
 
   return axios
-    .get(`${api}/results/count/user/${id}/attempt/${attempt}`)
+    .get(`/results/count/user/${id}/attempt/${attempt}`)
     .then(response => {
       commit('SET_COUNT', response.data)
     })
@@ -299,12 +298,11 @@ export const count = ({ commit, getters, rootGetters }) => {
     })
 }
 
-export const load = ({ commit, getters, rootGetters }) => {
+export const load = ({ commit, rootGetters }) => {
   const { id, attempt } = rootGetters['auth/user']
-  const api = rootGetters['app/api']
 
   return axios
-    .get(`${api}/results/list/user/${id}/attempt/${attempt}`)
+    .get(`/results/list/user/${id}/attempt/${attempt}`)
     .then(response => {
       commit('SET_SAVED_RESULTS', response.data)
     })
@@ -315,7 +313,6 @@ export const load = ({ commit, getters, rootGetters }) => {
 
 export const save = ({ commit, getters, rootGetters }, data) => {
   const { id, attempt } = rootGetters['auth/user']
-  const api = rootGetters['app/api']
 
   const test = rootGetters['test/test']
   const part = rootGetters['test/part']
@@ -332,7 +329,7 @@ export const save = ({ commit, getters, rootGetters }, data) => {
   }
 
   return axios
-    .post(`${api}/results/save`, postData)
+    .post('/results/save', postData)
     .then(response => {
       Notify.create({
         message: 'Результат сохранен, Вы можете продолжить позднее.',
