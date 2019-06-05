@@ -1,28 +1,29 @@
 <template>
-  <div>
+  <q-page>
+    <div class="wrapper row justify-center items-center">
+      <la-about />
 
-    <la-about/>
-
-    <div v-if="isLogged" class="column q-mt-md">
-      <div v-if="isClosed">
-        <q-banner rounded class="bg-primary text-white shadow-3">
+      <div v-if="isLogged" class="column q-mt-md">
+        <div v-if="isClosed">
+          <q-banner rounded class="bg-primary text-white shadow-3">
             <span class="text-h6">
               К сожалению, Вы использовали все попытки.
               <p>Обратитесь к своему менеджеру.</p>
             </span>
-        </q-banner>
-      </div>
-      <div v-else>
-        Вы можете начать тест
-        <q-btn
-          label="Продолжить"
-          color="primary"
-          class="q-ma-md"
-          @click="startLa()"
-        />
+          </q-banner>
+        </div>
+        <div v-else>
+          Вы можете начать тест
+          <q-btn
+            label="Продолжить"
+            color="primary"
+            class="q-ma-md"
+            @click="startLa()"
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -33,7 +34,7 @@ export default {
   components: { LaAbout },
   methods: {
     async startLa () {
-      let name = 'la-one'
+      let name = 'part-one-phase-one'
       if (this.isLogged) {
         await this.load()
         if (this.savedResults.length > 0) {
@@ -42,9 +43,9 @@ export default {
         }
       }
 
-      name = 'la-one'
-      // name = 'la-two'
-      // name = 'la-tree'
+      name = 'part-one-phase-one'
+      // name = 'part-one-phase-two'
+      // name = 'part-one-phase-tree'
       this.$router.push({ name })
     },
     ...mapActions('results', ['load'])
@@ -64,5 +65,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.wrapper {
+  max-width: 50vw;
+}
 </style>

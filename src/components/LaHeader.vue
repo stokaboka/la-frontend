@@ -72,5 +72,20 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  .img-logo__normal {
+    width: 176px;
+    height: auto;
+  }
+  .img-logo__small {
+    width: 88px;
+    height: auto;
+  }
+  .img-logo__anim {
+    transition: height, width ease 300ms;
+  }
+
+  .part-title__border {
+    border-bottom: 2px solid #027BE3;
+  }
 </style>

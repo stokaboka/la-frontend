@@ -77,7 +77,7 @@ export default {
 
       if (this.phase === this.lastPhase) {
         this.fixUserAttempt()
-        this.$router.push({ name: 'la-end' })
+        this.$router.push({ name: 'part-one-end' })
       }
     },
 

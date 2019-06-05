@@ -3,6 +3,8 @@
 
     <la-header/>
 
+    <la-part-two-drawer/>
+
     <q-page-container>
       <transition
         appear
@@ -22,10 +24,11 @@
 
 import LaHeader from '../components/LaHeader'
 import LaFooter from '../components/LaFooter'
+import LaPartTwoDrawer from '../components/LaPartTwoDrawer'
 
 export default {
-  name: 'LaLayout',
-  components: { LaFooter, LaHeader }
+  name: 'LaPartTwoLayout',
+  components: { LaPartTwoDrawer, LaFooter, LaHeader }
 }
 </script>
 

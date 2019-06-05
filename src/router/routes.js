@@ -15,23 +15,13 @@ const routes = [
             const isAdmin = store.getters['auth/isAdmin']
             const isOperator = store.getters['auth/isOperator']
             if (isLogged) {
-              const name = (isAdmin || isOperator) ? 'phase-two' : 'phase-one'
+              const name = (isAdmin || isOperator) ? 'part-one-home' : 'part-one-home'
               next({ name })
             } else {
               next()
             }
           }
         }
-      },
-      {
-        path: 'phase-one',
-        name: 'phase-one',
-        component: () => import('pages/PhaseOne')
-      },
-      {
-        path: 'phase-two',
-        name: 'phase-two',
-        component: () => import('pages/PhaseTwo')
       },
       {
         path: 'auth',
@@ -60,51 +50,75 @@ const routes = [
           },
           { path: 'signout', name: 'auth-signout' }
         ]
+      }
+    ]
+  },
+  {
+    path: '/part-one',
+    name: 'part-one',
+    component: () => import('layouts/LaPartOneLayout.vue'),
+    beforeEnter (to, from, next) {
+      store.commit('app/SET_MODE', 'test')
+      const isLogged = store.getters['auth/isLogged']
+      if (isLogged) {
+        const isClosed = store.getters['auth/isClosed']
+        if (isClosed) {
+          next({ name: 'part-one-end' })
+        } else {
+          next()
+        }
+      } else {
+        next({ name: 'home' })
+      }
+    },
+    children: [
+      {
+        path: 'home',
+        name: 'part-one-home',
+        component: () => import('pages/PartOne')
       },
       {
-        path: 'la',
-        name: 'la',
+        path: 'test',
+        name: 'part-one-test',
         component: () => import('pages/la/La.vue'),
-        beforeEnter (to, from, next) {
-          store.commit('app/SET_MODE', 'test')
-          const isLogged = store.getters['auth/isLogged']
-          if (isLogged) {
-            const isClosed = store.getters['auth/isClosed']
-            if (isClosed) {
-              next({ name: 'la-end' })
-            } else {
-              next()
-            }
-          } else {
-            next({ name: 'home' })
-          }
-        },
         children: [
           {
-            path: 'one',
-            name: 'la-one',
+            path: 'phase-one',
+            name: 'part-one-phase-one',
             component: () => import('pages/la/LaOne.vue'),
             meta: { break: true, title: true }
           },
           {
-            path: 'two',
-            name: 'la-two',
+            path: 'phase-two',
+            name: 'part-one-phase-two',
             component: () => import('pages/la/LaTwo.vue'),
             meta: { break: true, title: true }
           },
           {
-            path: 'tree',
-            name: 'la-tree',
+            path: 'phase-tree',
+            name: 'part-one-phase-tree',
             component: () => import('pages/la/LaTree.vue'),
             meta: { break: true, title: true }
+          },
+          {
+            path: 'end',
+            name: 'part-one-end',
+            component: () => import('pages/la/LaEnd.vue'),
+            meta: { break: false, title: false }
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    path: '/part-two',
+    name: 'part-two',
+    component: () => import('layouts/LaPartTwoLayout.vue'),
+    children: [
       {
-        path: 'end',
-        name: 'la-end',
-        component: () => import('pages/la/LaEnd.vue'),
-        meta: { break: false, title: false }
+        path: 'home',
+        name: 'part-two-home',
+        component: () => import('pages/PartTwo')
       }
     ]
   }

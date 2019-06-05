@@ -13,8 +13,8 @@ export default {
   modules: [
     {
       id: 'one',
-      route: 'la-one',
-      next: 'la-two',
+      route: 'part-one-phase-one',
+      next: 'part-one-phase-two',
       title: 'Часть 1.1.',
       description: 'Оценка словарного запаса',
       test: 1,
@@ -29,8 +29,8 @@ export default {
     },
     {
       id: 'two',
-      route: 'la-two',
-      next: 'la-tree',
+      route: 'part-one-phase-two',
+      next: 'part-one-phase-tree',
       title: 'Часть 1.2.',
       description: 'Оценка грамматических знаний',
       test: 1,
@@ -45,8 +45,9 @@ export default {
     },
     {
       id: 'tree',
-      route: 'la-tree',
-      next: 'home',
+      route: 'part-one-phase-tree',
+      // home ?
+      next: 'part-one-end',
       title: 'Часть 1.3.',
       description: 'Оценка восприятия на слух',
       test: 1,

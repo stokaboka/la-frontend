@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpR fff">
 
     <la-header/>
 
@@ -24,7 +24,7 @@ import LaHeader from '../components/LaHeader'
 import LaFooter from '../components/LaFooter'
 
 export default {
-  name: 'LaLayout',
+  name: 'LaPartOneLayout',
   components: { LaFooter, LaHeader }
 }
 </script>
