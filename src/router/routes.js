@@ -14,32 +14,24 @@ const routes = [
             const isLogged = store.getters['auth/isLogged']
             const isAdmin = store.getters['auth/isAdmin']
             const isOperator = store.getters['auth/isOperator']
-            console.log('***********')
             if (isLogged) {
-              if (isAdmin || isOperator) {
-                next({ name: 'phase-two' })
-              } else {
-                next({ name: 'phase-one' })
-              }
+              const name = (isAdmin || isOperator) ? 'phase-two' : 'phase-one'
+              next({ name })
             } else {
               next()
             }
-          } else {
-            next()
           }
-        },
-        children: [
-          {
-            path: 'phase-one',
-            name: 'phase-one',
-            component: () => import('pages/PhaseOne')
-          },
-          {
-            path: 'phase-two',
-            name: 'phase-two',
-            component: () => import('pages/PhaseTwo')
-          }
-        ]
+        }
+      },
+      {
+        path: 'phase-one',
+        name: 'phase-one',
+        component: () => import('pages/PhaseOne')
+      },
+      {
+        path: 'phase-two',
+        name: 'phase-two',
+        component: () => import('pages/PhaseTwo')
       },
       {
         path: 'auth',

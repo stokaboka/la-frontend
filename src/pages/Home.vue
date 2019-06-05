@@ -1,17 +1,8 @@
 <template>
-  <q-page class="">
-    <div class="wrapper row justify-center items-center">
-      <!--      <img src="~assets/svs_logo.png" />-->
+  <q-page>
+    <div class="wrapper column justify-center items-center">
 
-      <div class="q-mt-lg text-h5 text-grey-14">
-        <p>
-          <strong>Language Assessment ©</strong> - уникальная эффективная
-          система оценки знаний английского языка и отслеживания прогресса
-          студента, изучающего язык. Разработана методистами языкового
-          тренингового центра <q>Свобода слова</q> на базе международных
-          стандартов.
-        </p>
-      </div>
+      <la-about/>
 
       <router-view />
 
@@ -51,8 +42,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import LaAbout from '../components/LaAbout'
 export default {
   name: 'Home',
+  components: { LaAbout },
   computed: {
     ...mapGetters('auth', [
       'isLogged',

@@ -1,5 +1,8 @@
 <template>
-  <div padding>
+  <div>
+
+    <la-about/>
+
     <div v-if="isLogged" class="column q-mt-md">
       <div v-if="isClosed">
         <q-banner rounded class="bg-primary text-white shadow-3">
@@ -24,8 +27,10 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import LaAbout from '../components/LaAbout'
 export default {
   name: 'PhaseOne',
+  components: { LaAbout },
   methods: {
     async startLa () {
       let name = 'la-one'
