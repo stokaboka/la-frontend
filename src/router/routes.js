@@ -7,11 +7,39 @@ const routes = [
     children: [
       { path: '',
         name: 'home',
-        component: () => import('pages/Index.vue'),
+        component: () => import('pages/Home.vue'),
         beforeEnter (to, from, next) {
           store.commit('app/SET_MODE', 'about')
-          next()
-        }
+          if (to.name === 'home') {
+            const isLogged = store.getters['auth/isLogged']
+            const isAdmin = store.getters['auth/isAdmin']
+            const isOperator = store.getters['auth/isOperator']
+            console.log('***********')
+            if (isLogged) {
+              if (isAdmin || isOperator) {
+                next({ name: 'phase-two' })
+              } else {
+                next({ name: 'phase-one' })
+              }
+            } else {
+              next()
+            }
+          } else {
+            next()
+          }
+        },
+        children: [
+          {
+            path: 'phase-one',
+            name: 'phase-one',
+            component: () => import('pages/PhaseOne')
+          },
+          {
+            path: 'phase-two',
+            name: 'phase-two',
+            component: () => import('pages/PhaseTwo')
+          }
+        ]
       },
       {
         path: 'auth',
