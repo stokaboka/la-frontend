@@ -14,9 +14,6 @@
     </transition>
 
     <div class="column la-main q-pa-lg shadow-3">
-        <div v-if="showTitle" class="q-mb-lg text-h5 text-grey-10 text-weight-medium part-title__border">
-          {{testTitle}} {{description}}
-        </div>
 
       <router-view />
 

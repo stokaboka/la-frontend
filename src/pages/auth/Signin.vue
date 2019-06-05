@@ -11,7 +11,7 @@
 
     <div class="row q-mt-md">
       <q-btn @click="onRegistration" color="primary" class="q-mx-md">Регистрация</q-btn>
-      <q-btn @click="submit" color="primary" class="q-mx-md" :disabled="false">Логин</q-btn>
+      <q-btn @click="submit" color="primary" class="q-mx-md" :disabled="false">Войти</q-btn>
       <q-btn @click="onCancel" class="q-mx-md">Отмена</q-btn>
     </div>
 

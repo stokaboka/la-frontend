@@ -133,12 +133,12 @@ module.exports = function (ctx) {
     },
 
     pwa: {
-      // workboxPluginMode: 'InjectManifest',
-      // workboxOptions: {}, // only for NON InjectManifest
+      workboxPluginMode: 'InjectManifest',
+      workboxOptions: {}, // only for NON InjectManifest
       manifest: {
-        // name: 'Quasar App',
-        // short_name: 'Quasar-PWA',
-        // description: 'Best PWA App in town!',
+        name: 'Свобода слова - Language Assessment©',
+        short_name: 'Language Assessment©',
+        description: 'Language Assessment© - система оценки знаний английского языка и отслеживания прогресса студента, изучающего язык.',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

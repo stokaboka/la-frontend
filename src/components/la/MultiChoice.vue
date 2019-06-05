@@ -2,13 +2,13 @@
   <div style="width: 100%;">
     <div v-if="data">
       <q-card>
-        <q-card-section class="bg-secondary text-white">
-          <div class="text-h4">{{ data.question }}</div>
+        <q-card-section class="q-py-sm bg-secondary text-white">
+          <div class="text-h5">{{ data.question }}</div>
         </q-card-section>
 
         <q-separator/>
 
-        <q-card-section v-if="hint">
+        <q-card-section v-if="hint" class="q-py-none">
           <div  class="text-h6">
             это:
             <span class="text-grey-14 text-body2">
@@ -17,7 +17,7 @@
           </div>
         </q-card-section>
 
-        <q-card-actions>
+        <q-card-actions class="q-pa-none q-pl-md">
           <div
             :class="[
               { column: orientation === 'V' },
@@ -29,12 +29,13 @@
               :key="a.label"
               tag="label"
               v-ripple
+              class="q-pa-none q-ml-md"
             >
-              <q-item-section avatar>
+              <q-item-section avatar class="q-pr-none">
                 <q-radio v-model="answer" :val="a.value" @input="onInput" />
               </q-item-section>
               <q-item-section>
-                <q-item-label class="text-h6">{{ a.label }}</q-item-label>
+                <q-item-label class="text-body1">{{ a.label }}</q-item-label>
               </q-item-section>
             </q-item>
           </div>

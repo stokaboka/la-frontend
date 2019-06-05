@@ -13,6 +13,9 @@
 
         <q-toolbar-title>
           <strong>Language Assessment©</strong>
+          <div v-if="showTestTitle" class="text-h6 text-blue-grey-14 text-weight-medium">
+            {{testTitle}} <strong>{{description}}</strong>
+          </div>
         </q-toolbar-title>
 
         <span v-if="user"
@@ -71,6 +74,12 @@ export default {
   },
   methods: {},
   computed: {
+    showTitle () {
+      return this.$route.meta.title
+    },
+    showTestTitle () {
+      return this.showTitle && this.mode === 'test'
+    },
     ...mapGetters('auth', [
       'isLogged',
       'isAdmin',
@@ -78,7 +87,7 @@ export default {
       'isUser',
       'user'
     ]),
-    ...mapGetters('app', ['title', 'mode', 'leftDrawer', 'rightDrawer', 'module'])
+    ...mapGetters('app', ['title', 'mode', 'leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description'])
   }
 }
 </script>
@@ -94,5 +103,9 @@ export default {
 }
 .img-logo__anim {
   transition: height, width ease 300ms;
+}
+
+.part-title__border {
+  border-bottom: 2px solid #027BE3;
 }
 </style>
