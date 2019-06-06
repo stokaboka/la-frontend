@@ -1,19 +1,23 @@
 <template>
-  <q-page>
-    <div class="wrapper row justify-center items-center">
+  <q-page class="q-pt-lg row justify-center items-start">
+    <div class="wrapper">
       <la-about />
 
-      <div v-if="isLogged" class="column q-mt-md">
+      <div v-if="isLogged" class="column">
         <div v-if="isClosed">
-          <q-banner rounded class="bg-primary text-white shadow-3">
+          <q-banner rounded class="bg-secondary text-white shadow-3">
             <span class="text-h6">
               К сожалению, Вы использовали все попытки.
               <p>Обратитесь к своему менеджеру.</p>
             </span>
           </q-banner>
         </div>
-        <div v-else>
-          Вы можете начать тест
+        <div v-else class="q=mt-lg row justify-start items-center">
+
+            <div class="text-h6 text-grey-14">
+              Чтобы начать тест нажмите:
+            </div>
+
           <q-btn
             label="Продолжить"
             color="primary"

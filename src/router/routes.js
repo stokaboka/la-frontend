@@ -3,9 +3,11 @@ import store from '../store'
 const routes = [
   {
     path: '/',
+    name: 'root',
     component: () => import('layouts/LaLayout.vue'),
     children: [
-      { path: '',
+      {
+        path: '',
         name: 'home',
         component: () => import('pages/Home.vue'),
         beforeEnter (to, from, next) {
@@ -15,7 +17,7 @@ const routes = [
             const isAdmin = store.getters['auth/isAdmin']
             const isOperator = store.getters['auth/isOperator']
             if (isLogged) {
-              const name = (isAdmin || isOperator) ? 'part-one-home' : 'part-one-home'
+              const name = isAdmin || isOperator ? 'part-two-home' : 'part-one-home'
               next({ name })
             } else {
               next()
@@ -114,6 +116,17 @@ const routes = [
     path: '/part-two',
     name: 'part-two',
     component: () => import('layouts/LaPartTwoLayout.vue'),
+    beforeEnter (to, from, next) {
+      store.commit('app/SET_MODE', 'admin')
+      const isLogged = store.getters['auth/isLogged']
+      const isAdmin = store.getters['auth/isAdmin']
+      const isOperator = store.getters['auth/isOperator']
+      if (isLogged && (isAdmin || isOperator)) {
+        next()
+      } else {
+        next({ name: 'home' })
+      }
+    },
     children: [
       {
         path: 'home',

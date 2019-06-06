@@ -1,57 +1,41 @@
 <template>
   <q-drawer
     v-model="drawer"
-
     :mini="!drawer || miniState"
     @click.capture="drawerClick"
-
-    :width="200"
-    :breakpoint="500"
+    :width="250"
+    :breakpoint="1024"
     show-if-above
     bordered
+    elevated
     content-class="bg-grey-3"
   >
     <q-scroll-area class="fit">
       <q-list padding>
-        <q-item clickable v-ripple>
+        <q-item
+          v-for="item in items"
+          :key="item.id"
+          :active="item.active"
+          clickable
+          v-ripple
+          @click="onItemClick(item)"
+        >
           <q-item-section avatar>
-            <q-icon name="inbox" />
+            <q-icon
+              :name="item.icon"
+              :color="item.active ? 'primary' : 'secondary'"
+            />
           </q-item-section>
 
-          <q-item-section>
-            Inbox
+          <q-item-section :color="item.active ? 'primary' : 'secondary'">
+            {{ item.label }}
+          </q-item-section>
+
+          <q-item-section side top v-if="item.badge.label">
+            <q-badge :color="item.badge.color" :label="item.badge.label" />
           </q-item-section>
         </q-item>
-
-        <q-item active clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="star" />
-          </q-item-section>
-
-          <q-item-section>
-            Star
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="send" />
-          </q-item-section>
-
-          <q-item-section>
-            Send
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="drafts" />
-          </q-item-section>
-
-          <q-item-section>
-            Drafts
-          </q-item-section>
-        </q-item>
+        <q-separator spaced inset />
       </q-list>
     </q-scroll-area>
 
@@ -65,7 +49,7 @@
         dense
         round
         unelevated
-        color="accent"
+        color="primary"
         icon="chevron_left"
         @click="miniState = true"
       />
@@ -79,11 +63,52 @@ export default {
   data () {
     return {
       drawer: true,
-      miniState: true
+      miniState: false,
+      items: [
+        {
+          id: 'users',
+          icon: 'person',
+          label: 'Пользователи',
+          active: true,
+          badge: {
+            floating: true,
+            color: 'red',
+            label: '4k'
+          }
+        },
+        {
+          id: 'attempts',
+          icon: 'offline_pin',
+          label: 'Тесты',
+          active: false,
+          badge: {
+            floating: true,
+            color: 'red',
+            label: ''
+          }
+        },
+        {
+          id: 'results',
+          icon: 'ballot',
+          label: 'Результат',
+          active: false,
+          badge: {
+            floating: true,
+            color: 'red',
+            label: ''
+          }
+        }
+      ]
     }
   },
 
   methods: {
+    onItemClick (item) {
+      this.items = this.items.map(e => {
+        e.active = e.id === item.id
+        return e
+      })
+    },
     drawerClick (e) {
       if (this.miniState) {
         this.miniState = false
@@ -94,5 +119,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

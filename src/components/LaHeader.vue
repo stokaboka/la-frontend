@@ -6,7 +6,7 @@
         class="img-logo__anim"
         :class="[
             { 'img-logo__normal': mode === 'about' },
-            { 'img-logo__small': mode === 'test' }
+            { 'img-logo__small': mode !== 'about' },
           ]"
       />
 
