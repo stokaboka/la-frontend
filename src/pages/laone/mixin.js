@@ -201,7 +201,7 @@ export default {
       'NEXT_QUESTION',
       'CLEAR_QUESTIONS'
     ]),
-    ...mapActions('auth', ['fixAttempt']),
+    ...mapActions('users', ['fixAttempt']),
     ...mapActions('questions', ['load', 'count']),
     ...mapActions('results', ['calculateResults', 'save'])
   },

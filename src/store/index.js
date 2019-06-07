@@ -6,6 +6,7 @@ import auth from './auth'
 import test from './test'
 import questions from './questions'
 import results from './results'
+import users from './users'
 
 Vue.use(Vuex)
 
@@ -31,7 +32,8 @@ const store = new Vuex.Store({
     auth,
     test,
     questions,
-    results
+    results,
+    users
   },
 
   strict: process.env.NODE_ENV !== 'production'

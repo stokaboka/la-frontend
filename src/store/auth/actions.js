@@ -137,16 +137,3 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
       errorNotify(error)
     })
 }
-
-export const fixAttempt = ({ commit, rootGetters }) => {
-  const { id, attempt } = rootGetters['auth/user']
-
-  return axios
-    .post('/users/fix', { id, attempt })
-    .then(response => {
-      commit('SET_CLOSED')
-    })
-    .catch(error => {
-      errorNotify(error.message)
-    })
-}
