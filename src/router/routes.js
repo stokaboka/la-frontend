@@ -81,30 +81,30 @@ const routes = [
       {
         path: 'test',
         name: 'part-one-test',
-        component: () => import('pages/la/La.vue'),
+        component: () => import('pages/laone/LaOneContainer.vue'),
         children: [
           {
             path: 'phase-one',
             name: 'part-one-phase-one',
-            component: () => import('pages/la/LaOne.vue'),
+            component: () => import('pages/laone/LaOne.vue'),
             meta: { break: true, title: true }
           },
           {
             path: 'phase-two',
             name: 'part-one-phase-two',
-            component: () => import('pages/la/LaTwo.vue'),
+            component: () => import('pages/laone/LaTwo.vue'),
             meta: { break: true, title: true }
           },
           {
             path: 'phase-tree',
             name: 'part-one-phase-tree',
-            component: () => import('pages/la/LaTree.vue'),
+            component: () => import('pages/laone/LaTree.vue'),
             meta: { break: true, title: true }
           },
           {
             path: 'end',
             name: 'part-one-end',
-            component: () => import('pages/la/LaEnd.vue'),
+            component: () => import('pages/laone/LaEnd.vue'),
             meta: { break: false, title: false }
           }
         ]
@@ -130,6 +130,11 @@ const routes = [
       {
         path: 'home',
         name: 'part-two-home',
+        component: () => import('pages/PartTwo')
+      },
+      {
+        path: 'users',
+        name: 'part-two-users',
         component: () => import('pages/PartTwo')
       }
     ]
