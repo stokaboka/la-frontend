@@ -6,7 +6,7 @@ export default {
 
   // editor
   title: 'Пользователи',
-  suffix: 'users',
+  suffix: 'users/find',
   key: 'id',
   edit: {
     insert: false,

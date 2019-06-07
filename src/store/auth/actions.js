@@ -74,7 +74,7 @@ export const signin = (
       showUserNotify(rootGetters['users/authUser'], 'signin')
     })
     .catch(error => {
-      commit('users/CLEAR_USER', null, { root: true })
+      commit('users/CLEAR_AUTH_USER', null, { root: true })
       if (
         error.response &&
         (error.response.status === 401 || error.response.status === 403)
@@ -91,11 +91,11 @@ export const signout = ({ commit, getters, rootGetters }) => {
   return axios
     .post('/auth/signout', rootGetters['users/authUser'])
     .then(response => {
-      commit('users/CLEAR_USER', null, { root: true })
+      commit('users/CLEAR_AUTH_USER', null, { root: true })
       showUserNotify(null, 'signout')
     })
     .catch(error => {
-      commit('users/CLEAR_USER', null, { root: true })
+      commit('users/CLEAR_AUTH_USER', null, { root: true })
       if (error.response.status === 401 || error.response.status === 403) {
       } else {
         errorNotify(error)
@@ -121,7 +121,7 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
     .then(response => {
       if (response.data.error) {
         commit('SET_TOKEN', '')
-        commit('users/CLEAR_USER', null, { root: true })
+        commit('users/CLEAR_AUTH_USER', null, { root: true })
         Notify.create({
           message: response.data.error,
           type: 'negative'
@@ -133,7 +133,7 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
       }
     })
     .catch(error => {
-      commit('users/CLEAR_USER', null, { root: true })
+      commit('users/CLEAR_AUTH_USER', null, { root: true })
       errorNotify(error)
     })
 }

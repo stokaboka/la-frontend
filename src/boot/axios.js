@@ -12,14 +12,14 @@ export default ({ app, router, store, Vue }) => {
   axios.interceptors.response.use((response) => {
     if (response.status === 401 || response.status === 403) {
       store.commit('auth/SET_TOKEN', '')
-      store.commit('users/CLEAR_USER')
+      store.commit('users/CLEAR_AUTH_USER')
       router.push({ name: 'home' })
     }
     return response
   }, (error) => {
     if (error.response.status === 401 || error.response.status === 403) {
       store.commit('auth/SET_TOKEN', '')
-      store.commit('users/CLEAR_USER')
+      store.commit('users/CLEAR_AUTH_USER')
       router.push({ name: 'home' })
     }
     return Promise.reject(error)

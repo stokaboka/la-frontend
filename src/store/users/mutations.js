@@ -10,7 +10,7 @@ export const SET_AUTH_USER = (state, playload = null) => {
   }
 }
 
-export const CLEAR_USER = (state) => {
+export const CLEAR_AUTH_USER = (state) => {
   state.authUser = null
 }
 

@@ -1,22 +1,26 @@
 <template>
   <q-page class="column justify-start items-center">
-    <div class="row">
-      <span>{{model.title}}</span>
-    </div>
-    <component
-      v-if="filterComponent"
-      :is="filterComponent"
-      @filter-params-changed="onFilterParamsChanged">
-    </component>
-    <editable-data-table
-      title="Словари"
-      :model="model"
-      :params="params"
-      :selection="selection"
-      :selected-row="selectedRow"
-      @table-row-click="onTableRowClick"
-    >
-    </editable-data-table>
+    <q-card>
+      <q-card-section class="text-h6 bg-secondary text-white">
+        <span>{{model.title}}</span>
+      </q-card-section>
+      <q-card-section v-if="filterComponent">
+        <component
+          :is="filterComponent"
+          @filter-params-changed="onFilterParamsChanged">
+        </component>
+      </q-card-section>
+      <q-card-section v-if="model" class="q-pt-md">
+        <editable-data-table
+          :model="model"
+          :params="params"
+          :selection="selection"
+          :selected-row="selectedRow"
+          @table-row-click="onTableRowClick"
+        >
+        </editable-data-table>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 

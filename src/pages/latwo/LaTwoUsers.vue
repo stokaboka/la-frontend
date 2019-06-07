@@ -10,27 +10,27 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Editor from '../../components/ui/table/Editor'
 export default {
   name: 'LaTwoUsers',
   components: { Editor },
   data () {
     return {
-      selection: 'single',
-      user: null
+      selection: 'single'
     }
   },
   async mounted () {
     await this.usersList(null)
   },
   computed: {
-    ...mapGetters('users', ['users'])
+    ...mapGetters('users', ['users', 'user'])
   },
   methods: {
     onTableRowClick (row) {
-      this.user = row
+      this.SET_USER(row)
     },
+    ...mapMutations('users', ['SET_USER']),
     ...mapActions('users', ['usersList'])
   }
 }

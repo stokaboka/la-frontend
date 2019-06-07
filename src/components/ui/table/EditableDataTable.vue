@@ -32,31 +32,47 @@
       </q-td>
     </q-tr>
 
-    <template slot="top-left">
-      <q-search
-        hide-underline
-        color="secondary"
-        v-model="filter"
-        class="col-6"></q-search>
-    </template>
-    <template slot="top-right">
-      <q-table-columns
-        :columns="columns"
-        class="q-mr-sm"
-        color="secondary"
-        v-model="tableVisibleColumns">
-      </q-table-columns>
+    <template v-slot:top="props">
+
+      <q-input borderless dense debounce="300" v-model="filter" placeholder="Поиск">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+
+      <q-space/>
+
+      <q-select
+        class="q-mr-md"
+        v-model="tableVisibleColumns"
+        multiple
+        borderless
+        dense
+        options-dense
+        display-value="Столбцы"
+        emit-value
+        map-options
+        :options="columns"
+        option-value="name"
+        style="min-width: 150px"
+      />
+
       <q-select
         :options="[
-          { label: 'Horizontal', value: 'horizontal' },
-          { label: 'Vertical', value: 'vertical' },
-          { label: 'Cell', value: 'cell' },
-          { label: 'None', value: 'none' }
+          { label: 'Горизонтальные линии', value: 'horizontal' },
+          { label: 'Вертикальные линии', value: 'vertical' },
+          { label: 'Сетка', value: 'cell' },
+          { label: 'Без линий', value: 'none' }
         ]"
         color="secondary"
+        emit-value
+        map-options
+        :option-value="opt => opt.value"
+        :option-label="opt => opt.label"
         hide-underline
         v-model="separator"></q-select>
     </template>
+
   </q-table>
 </template>
 
