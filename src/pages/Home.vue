@@ -41,7 +41,7 @@ export default {
   name: 'Home',
   components: { LaAbout },
   computed: {
-    ...mapGetters('auth', [
+    ...mapGetters('users', [
       'isLogged',
       'user'
     ])

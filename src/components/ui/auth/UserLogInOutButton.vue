@@ -44,7 +44,7 @@ export default {
       return { name }
     },
 
-    ...mapGetters('auth', ['isLogged', 'user'])
+    ...mapGetters('users', ['isLogged', 'user'])
   }
 }
 </script>

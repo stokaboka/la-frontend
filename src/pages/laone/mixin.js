@@ -206,7 +206,7 @@ export default {
     ...mapActions('results', ['calculateResults', 'save'])
   },
   computed: {
-    ...mapGetters('auth', ['isLogged', 'user']),
+    ...mapGetters('users', ['isLogged', 'user']),
     ...mapGetters('app', [
       'api', 'module', 'modules', 'lastModule',
       'description',

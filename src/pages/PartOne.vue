@@ -55,7 +55,7 @@ export default {
     ...mapActions('results', ['load'])
   },
   computed: {
-    ...mapGetters('auth', [
+    ...mapGetters('users', [
       'isLogged',
       'isClosed',
       'isAdmin',

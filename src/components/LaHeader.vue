@@ -60,7 +60,7 @@ export default {
     showTestTitle () {
       return this.showTitle && this.mode === 'test'
     },
-    ...mapGetters('auth', [
+    ...mapGetters('users', [
       'isLogged',
       'isAdmin',
       'isOperator',

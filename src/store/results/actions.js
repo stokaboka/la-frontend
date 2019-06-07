@@ -284,7 +284,7 @@ export const calculateResults = ({ rootGetters }) => {
 }
 
 export const count = ({ commit, rootGetters }) => {
-  const { id, attempt } = rootGetters['auth/user']
+  const { id, attempt } = rootGetters['users/user']
 
   return axios
     .get(`/results/count/user/${id}/attempt/${attempt}`)
@@ -297,7 +297,7 @@ export const count = ({ commit, rootGetters }) => {
 }
 
 export const load = ({ commit, rootGetters }) => {
-  const { id, attempt } = rootGetters['auth/user']
+  const { id, attempt } = rootGetters['users/user']
 
   return axios
     .get(`/results/list/user/${id}/attempt/${attempt}`)
@@ -310,7 +310,7 @@ export const load = ({ commit, rootGetters }) => {
 }
 
 export const save = ({ commit, getters, rootGetters }, data) => {
-  const { id, attempt } = rootGetters['auth/user']
+  const { id, attempt } = rootGetters['users/user']
 
   const test = rootGetters['app/test']
   const part = rootGetters['app/part']

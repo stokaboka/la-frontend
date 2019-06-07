@@ -6,7 +6,7 @@
 
 <script>
 
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -18,8 +18,11 @@ export default {
     }
     this.$router.push({ name })
   },
+  computed: {
+    ...mapGetters('users', ['isLogged', 'isAdmin', 'isOperator'])
+  },
   methods: {
-    ...mapActions('auth', ['signin', 'isLogged', 'isAdmin', 'isOperator'])
+    ...mapActions('auth', ['signin'])
   }
 }
 </script>

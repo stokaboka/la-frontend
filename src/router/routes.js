@@ -12,9 +12,9 @@ const routes = [
         beforeEnter (to, from, next) {
           store.commit('app/SET_MODE', 'about')
           if (to.name === 'home') {
-            const isLogged = store.getters['auth/isLogged']
-            const isAdmin = store.getters['auth/isAdmin']
-            const isOperator = store.getters['auth/isOperator']
+            const isLogged = store.getters['users/isLogged']
+            const isAdmin = store.getters['users/isAdmin']
+            const isOperator = store.getters['users/isOperator']
             if (isLogged) {
               const name = isAdmin || isOperator ? 'part-two-home' : 'part-one-home'
               next({ name })
@@ -60,9 +60,9 @@ const routes = [
     component: () => import('layouts/LaPartOneLayout.vue'),
     beforeEnter (to, from, next) {
       store.commit('app/SET_MODE', 'test')
-      const isLogged = store.getters['auth/isLogged']
+      const isLogged = store.getters['users/isLogged']
       if (isLogged) {
-        const isClosed = store.getters['auth/isClosed']
+        const isClosed = store.getters['users/isClosed']
         if (isClosed) {
           next({ name: 'part-one-end' })
         } else {
@@ -117,9 +117,9 @@ const routes = [
     component: () => import('layouts/LaPartTwoLayout.vue'),
     beforeEnter (to, from, next) {
       store.commit('app/SET_MODE', 'admin')
-      const isLogged = store.getters['auth/isLogged']
-      const isAdmin = store.getters['auth/isAdmin']
-      const isOperator = store.getters['auth/isOperator']
+      const isLogged = store.getters['users/isLogged']
+      const isAdmin = store.getters['users/isAdmin']
+      const isOperator = store.getters['users/isOperator']
       if (isLogged && (isAdmin || isOperator)) {
         next()
       } else {
