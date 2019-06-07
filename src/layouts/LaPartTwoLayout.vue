@@ -5,14 +5,14 @@
 
     <la-part-two-drawer/>
 
-    <q-page-container>
+    <q-page-container class="bg-white">
       <transition
         appear
         enter-active-class="animated slideInDown"
         leave-active-class="animated slideOutDown"
         mode="out-in"
       >
-        <router-view />
+        <router-view/>
       </transition>
     </q-page-container>
 
