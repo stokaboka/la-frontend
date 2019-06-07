@@ -55,6 +55,10 @@ export default {
     background: rgba(0,0,0,0.6);
   }
 
+  .wrapper {
+    max-width: 60vw;
+  }
+
   q {
     quotes: "\00ab" "\00bb";
   }

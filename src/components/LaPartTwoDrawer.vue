@@ -44,7 +44,7 @@
       so that user can switch back
       to mini-mode
     -->
-    <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -17px">
+    <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -18px">
       <q-btn
         dense
         round

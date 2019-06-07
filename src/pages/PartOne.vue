@@ -69,8 +69,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.wrapper {
-  max-width: 50vw;
-}
-</style>
+<style></style>

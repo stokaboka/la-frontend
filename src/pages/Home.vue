@@ -1,6 +1,6 @@
 <template>
-  <q-page>
-    <div class="wrapper column justify-center items-center">
+  <q-page class="q-pt-lg row justify-center items-start">
+    <div class="wrapper">
 
       <la-about/>
 
@@ -34,12 +34,6 @@
   </q-page>
 </template>
 
-<style scoped>
-.wrapper {
-  padding: 1rem 20%;
-}
-</style>
-
 <script>
 import { mapGetters } from 'vuex'
 import LaAbout from '../components/LaAbout'
@@ -54,3 +48,5 @@ export default {
   }
 }
 </script>
+
+<style></style>
