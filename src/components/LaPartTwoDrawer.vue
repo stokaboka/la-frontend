@@ -70,6 +70,7 @@ export default {
           id: 'users',
           icon: 'person',
           label: 'Пользователи',
+          route: 'part-two-users',
           active: true,
           badge: {
             floating: true,
@@ -81,6 +82,7 @@ export default {
           id: 'attempts',
           icon: 'offline_pin',
           label: 'Тесты',
+          route: '',
           active: false,
           badge: {
             floating: true,
@@ -92,6 +94,7 @@ export default {
           id: 'results',
           icon: 'ballot',
           label: 'Результат',
+          route: '',
           active: false,
           badge: {
             floating: true,
@@ -114,6 +117,9 @@ export default {
         e.active = e.id === item.id
         return e
       })
+      if (item.route) {
+        this.$router.push({ name: item.route })
+      }
     },
     drawerClick (e) {
       if (this.miniState) {

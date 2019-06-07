@@ -70,8 +70,8 @@ export const signin = (
     .post('/auth/signin', playload)
     .then(response => {
       commit('SET_TOKEN', response.data.token)
-      commit('users/SET_USER', response.data.user, { root: true })
-      showUserNotify(rootGetters['users/user'], 'signin')
+      commit('users/SET_AUTH_USER', response.data.user, { root: true })
+      showUserNotify(rootGetters['users/authUser'], 'signin')
     })
     .catch(error => {
       commit('users/CLEAR_USER', null, { root: true })
@@ -89,7 +89,7 @@ export const signout = ({ commit, getters, rootGetters }) => {
   sessionStorage.setItem('token', '')
   axios.defaults.headers.common['Authorization'] = ''
   return axios
-    .post('/auth/signout', getters['user'])
+    .post('/auth/signout', rootGetters['users/authUser'])
     .then(response => {
       commit('users/CLEAR_USER', null, { root: true })
       showUserNotify(null, 'signout')
@@ -128,8 +128,8 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
         })
       } else {
         commit('SET_TOKEN', response.data.token)
-        commit('users/SET_USER', response.data.user, { root: true })
-        showUserNotify(rootGetters['users/user'], 'register')
+        commit('users/SET_AUTH_USER', response.data.user, { root: true })
+        showUserNotify(rootGetters['users/authUser'], 'register')
       }
     })
     .catch(error => {

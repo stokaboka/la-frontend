@@ -1,10 +1,20 @@
-export const isLogged = s => s.user && !!s.user.login
-export const isClosed = s => s.user && s.user.closed !== 0
-export const isAdmin = s => s.user && s.user.role.toUpperCase() === 'ADMIN'
-export const isOperator = s => s.user && s.user.role.toUpperCase() === 'OPERATOR'
-export const isUser = s => s.user && s.user.role.toUpperCase() === 'USER'
+export const isLogged = s => s.authUser && !!s.authUser.login
+export const isClosed = s => s.authUser && s.authUser.closed !== 0
+export const isAdmin = s => s.authUser && s.authUser.role.toUpperCase() === 'ADMIN'
+export const isOperator = s => s.authUser && s.authUser.role.toUpperCase() === 'OPERATOR'
+export const isUser = s => s.authUser && s.authUser.role.toUpperCase() === 'USER'
+export const authUser = s => s.authUser
+
 export const user = s => s.user
 
 export const users = s => s.users
 
 export const usersTotalCount = s => s.totalCount
+
+// editor
+export const model = (s) => {
+  const { title, suffix, key, edit, columns, filter, query } = s
+  return { title, suffix, key, edit, columns, filter, query }
+}
+
+export const filter = (s) => s.filter

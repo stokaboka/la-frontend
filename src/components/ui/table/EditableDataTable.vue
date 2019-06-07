@@ -32,14 +32,14 @@
       </q-td>
     </q-tr>
 
-    <template slot="top-left" slot-scope="props">
+    <template slot="top-left">
       <q-search
         hide-underline
         color="secondary"
         v-model="filter"
         class="col-6"></q-search>
     </template>
-    <template slot="top-right" slot-scope="props">
+    <template slot="top-right">
       <q-table-columns
         :columns="columns"
         class="q-mr-sm"
@@ -63,8 +63,8 @@
 <script>
 //  <!--    :selected.sync="selectedSecond"-->
 // <span class="table-title">{{title}}</span>
-import {mapGetters, mapMutations, mapActions} from 'vuex'
-import {toDDMMYYYY} from '../../../lib/utils'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { toDDMMYYYY } from '../../../lib/utils'
 
 export default {
   name: 'EditableDataTable',
@@ -75,7 +75,7 @@ export default {
         return 'single'
       }
     },
-    srow: {
+    selectedRow: {
       type: Object,
       default () {
         return null
@@ -118,8 +118,8 @@ export default {
     }
   },
   mounted () {
-    if (this.srow) {
-      this.selected = [this.srow]
+    if (this.selectedRow) {
+      this.selected = [this.selectedRow]
     }
 
     this.init(this.model)
@@ -207,7 +207,7 @@ export default {
 
       this.paginationControl = pagination
     },
-    ...mapMutations('editor', {setModel: 'SET_MODEL'}),
+    ...mapMutations('editor', { setModel: 'SET_MODEL' }),
     ...mapActions('editor', ['load', 'insert', 'update', 'delete'])
   },
   watch: {

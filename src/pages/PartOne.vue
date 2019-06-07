@@ -61,7 +61,7 @@ export default {
       'isAdmin',
       'isOperator',
       'isUser',
-      'user'
+      'authUser'
     ]),
     ...mapGetters('app', ['title', 'modules', 'leftDrawer', 'rightDrawer']),
     ...mapGetters('results', ['savedResults'])

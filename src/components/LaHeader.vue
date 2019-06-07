@@ -17,8 +17,8 @@
         </div>
       </q-toolbar-title>
 
-      <span v-if="user"
-      >{{ user.firstName }} {{ user.secondName }} {{ user.lastName }}</span
+      <span v-if="authUser"
+      >{{ authUser.firstName }} {{ authUser.secondName }} {{ authUser.lastName }}</span
       >
 
       <q-tabs v-model="selectedTab" active-color="primary">
@@ -65,7 +65,7 @@ export default {
       'isAdmin',
       'isOperator',
       'isUser',
-      'user'
+      'authUser'
     ]),
     ...mapGetters('app', ['title', 'mode', 'leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description'])
   }

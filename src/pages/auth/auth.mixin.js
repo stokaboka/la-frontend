@@ -8,7 +8,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('users', ['isLogged', 'user']),
+    ...mapGetters('users', ['isLogged', 'authUser']),
     ...mapGetters('app', ['api'])
   },
 

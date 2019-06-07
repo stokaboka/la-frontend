@@ -135,7 +135,7 @@ const routes = [
       {
         path: 'users',
         name: 'part-two-users',
-        component: () => import('pages/PartTwo')
+        component: () => import('pages/latwo/LaTwoUsers')
       }
     ]
   }

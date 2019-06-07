@@ -63,7 +63,7 @@ const errorNotify = function (error) {
 // }
 
 export const fixAttempt = ({ commit, getters }) => {
-  const { id, attempt } = getters['user']
+  const { id, attempt } = getters['authUser']
 
   return axios
     .post('/users/fix', { id, attempt })
