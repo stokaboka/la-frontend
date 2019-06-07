@@ -3,7 +3,6 @@ import store from '../store'
 const routes = [
   {
     path: '/',
-    name: 'root',
     component: () => import('layouts/LaLayout.vue'),
     children: [
       {

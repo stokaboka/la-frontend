@@ -10,11 +10,16 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
-  mounted () {
-    this.signin()
+  async mounted () {
+    await this.signin()
+    let name = 'home'
+    if (this.isLogged) {
+      name = this.isAdmin || this.isOperator ? 'part-two-home' : 'part-one-home'
+    }
+    this.$router.push({ name })
   },
   methods: {
-    ...mapActions('auth', ['signin'])
+    ...mapActions('auth', ['signin', 'isLogged', 'isAdmin', 'isOperator'])
   }
 }
 </script>
