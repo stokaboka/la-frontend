@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'LaPartTwoDrawer',
   data () {
@@ -72,7 +73,7 @@ export default {
           active: true,
           badge: {
             floating: true,
-            color: 'red',
+            color: 'green',
             label: '4k'
           }
         },
@@ -101,7 +102,12 @@ export default {
       ]
     }
   },
-
+  async mounted () {
+    await this.usersCount()
+  },
+  computed: {
+    ...mapGetters('users', ['usersTotalCount'])
+  },
   methods: {
     onItemClick (item) {
       this.items = this.items.map(e => {
@@ -114,6 +120,19 @@ export default {
         this.miniState = false
         e.stopPropagation()
       }
+    },
+    ...mapActions('users', ['usersCount'])
+  },
+
+  watch: {
+    usersTotalCount (val, oldVal) {
+      const item = { ...this.items[0],
+        badge: {
+          floating: true,
+          color: val !== oldVal ? 'red' : 'green',
+          label: `${val}`
+        } }
+      this.items.splice(0, 1, item)
     }
   }
 }
