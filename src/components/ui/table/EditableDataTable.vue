@@ -13,36 +13,86 @@
     :pagination.sync="paginationControl"
     @request="request"
   >
-    <q-tr slot="body" slot-scope="props" :props="props" @click.native="rowClick(props.row)">
-      <q-td auto-width>
-        <q-checkbox dense v-model="props.selected" @input="rowMark()"></q-checkbox>
-      </q-td>
-      <q-td v-for="column in columns" :key="column.field" :props="props">
-        {{format(props.row[column.field], column)}}
-        <q-popup-edit v-if="edit.update && column.update" v-model="props.row[column.field]" buttons :title="props.row[column.label]" @save="onEditRow(props.row)">
-          <q-field count>
-            <q-input v-model="props.row[column.field]"></q-input>
-          </q-field>
-        </q-popup-edit>
-        <q-popup-edit v-if="edit.insert && column.insert" v-model="props.row[column.field]" buttons :title="props.row[column.label]" @save="onInsertRow(props.row)">
-          <q-field count>
-            <q-input v-model="props.row[column.field]"></q-input>
-          </q-field>
-        </q-popup-edit>
-      </q-td>
-    </q-tr>
+    <template v-slot:body="props">
+      <q-tr :props="props" @click.native="rowClick(props.row)">
+        <q-td auto-width key="selected">
+          <q-checkbox
+            dense
+            v-model="props.selected"
+            @input="rowMark()"
+          ></q-checkbox>
+        </q-td>
+        <q-td key="desc" :props="props">
+          {{ props.row.name }}
+          <q-btn
+            dense
+            round
+            flat
+            :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'"
+            @click="props.expand = !props.expand"
+          />
+        </q-td>
+        <q-td v-for="column in columns" :key="column.field" :props="props">
+          <div v-if="column.gadget">
+            <q-chip
+              v-if="column.gadget.type === 'chip'"
+              v-bind="column.gadget.options[props.row[column.field]]"
+            ></q-chip>
+            <q-toggle
+              v-if="column.gadget.type === 'toggle'"
+              v-model="props.row[column.field]"
+              v-bind="column.gadget.options"
+              @input="onEditRow(props.row)"
+            ></q-toggle>
+          </div>
+          <span v-else>{{ format(props.row[column.field], column) }}</span>
+          <q-popup-edit
+            v-if="edit.update && column.update"
+            v-model="props.row[column.field]"
+            buttons
+            :title="props.row[column.label]"
+            @save="onEditRow(props.row)"
+          >
+            <q-input
+              v-model="props.row[column.field]"
+              dense
+              autofocus
+            ></q-input>
+          </q-popup-edit>
+          <q-popup-edit
+            v-if="edit.insert && column.insert"
+            v-model="props.row[column.field]"
+            buttons
+            :title="props.row[column.label]"
+            @save="onInsertRow(props.row)"
+          >
+            <q-input
+              v-model="props.row[column.field]"
+              dense
+              autofocus
+            ></q-input>
+          </q-popup-edit>
+        </q-td>
+      </q-tr>
+    </template>
 
     <template v-slot:top="props">
-
-      <q-input borderless dense debounce="300" v-model="filter" placeholder="Поиск">
+      <q-input
+        borderless
+        dense
+        debounce="300"
+        v-model="filter"
+        placeholder="Поиск"
+      >
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
 
-      <q-space/>
+      <q-space />
 
       <q-select
+        v-if="!hideColumnsSelector"
         class="q-mr-md"
         v-model="tableVisibleColumns"
         multiple
@@ -58,21 +108,17 @@
       />
 
       <q-select
-        :options="[
-          { label: 'Горизонтальные линии', value: 'horizontal' },
-          { label: 'Вертикальные линии', value: 'vertical' },
-          { label: 'Сетка', value: 'cell' },
-          { label: 'Без линий', value: 'none' }
-        ]"
+        v-if="!hideGridSelector"
+        :options="gridOptions"
         color="secondary"
         emit-value
         map-options
         :option-value="opt => opt.value"
         :option-label="opt => opt.label"
         hide-underline
-        v-model="separator"></q-select>
+        v-model="separator"
+      ></q-select>
     </template>
-
   </q-table>
 </template>
 
@@ -114,6 +160,20 @@ export default {
         return ''
       },
       required: false
+    },
+    hideColumnsSelector: {
+      type: Boolean,
+      default () {
+        return false
+      },
+      required: false
+    },
+    hideGridSelector: {
+      type: Boolean,
+      default () {
+        return false
+      },
+      required: false
     }
   },
   data () {
@@ -130,7 +190,13 @@ export default {
         rowsNumber: 0
       },
       selected: [],
-      loadedParams: '*'
+      loadedParams: '*',
+      gridOptions: [
+        { label: 'Горизонтальные линии', value: 'horizontal' },
+        { label: 'Вертикальные линии', value: 'vertical' },
+        { label: 'Сетка', value: 'cell' },
+        { label: 'Без линий', value: 'none' }
+      ]
     }
   },
   mounted () {
@@ -147,7 +213,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('editor', ['title', 'columns', 'visibleColumns', 'data', 'query', 'result', 'error', 'loading', 'edit', 'key', 'pagination', 'rowsNumber', 'filterComponent'])
+    ...mapGetters('editor', [
+      'title',
+      'columns',
+      'visibleColumns',
+      'data',
+      'query',
+      'result',
+      'error',
+      'loading',
+      'edit',
+      'key',
+      'pagination',
+      'rowsNumber',
+      'filterComponent'
+    ])
   },
   methods: {
     init (model) {
@@ -158,8 +238,7 @@ export default {
       this.$emit('table-row-click', row)
       this.selected = [row]
     },
-    onInsertRow (row) {
-    },
+    onInsertRow (row) {},
     rowMark () {
       if (this.selected.length > 0) {
         this.$emit('table-row-click', this.selected[0])
@@ -169,7 +248,7 @@ export default {
     },
     async onEditRow (row) {
       const data = Object.assign({}, row)
-      // console.log('data', data)
+      console.log('data', data)
       const result = await this.update(data)
       console.log('result', result)
     },
@@ -250,17 +329,17 @@ export default {
 </script>
 
 <style scoped>
-  .table-title {
-    margin-right: 1rem;
-  }
+.table-title {
+  margin-right: 1rem;
+}
 
-  .q-table th {
-    padding: 6px 12px;
-  }
-  .q-table tbody td {
-    height: auto;
-  }
-  .q-table td {
-    padding: 6px 12px;
-  }
+.q-table th {
+  padding: 6px 12px;
+}
+.q-table tbody td {
+  height: auto;
+}
+.q-table td {
+  padding: 6px 12px;
+}
 </style>

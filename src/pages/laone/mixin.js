@@ -87,7 +87,7 @@ export default {
 
     async fixUserAttempt () {
       console.log('fixUserAttempt')
-      await this.fixAttempt()
+      await this.fixAttempt(this.authUser)
     },
 
     async onReady () {

@@ -11,12 +11,18 @@ export const load = ({ commit, getters, rootGetters }, params = '') => {
       const data = response.data
       commit('SET_DATA', data)
       commit('SET_RESULT', 'OK')
+      commit('SET_PARAMS', params)
       return data
     })
     .catch(error => {
       commit('SET_ERROR', error)
       return false
     })
+}
+
+export const reload = ({ getters, dispatch }, module) => {
+  const params = getters['params'][module] ? getters['params'][module] : ''
+  return dispatch('load', params)
 }
 
 export const insert = ({ commit, getters, rootGetters }, playload) => {
@@ -42,6 +48,7 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
   const api = rootGetters['app/api']
   const suffix = getters['suffix']
   const url = `${api}/${suffix}`
+  delete playload.__index
   commit('SET_LOADING', true)
   return axios.put(url, playload)
     .then(response => {

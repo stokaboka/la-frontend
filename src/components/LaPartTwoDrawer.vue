@@ -106,7 +106,7 @@ export default {
     }
   },
   async mounted () {
-    await this.usersCount()
+    await this.usersList()
   },
   computed: {
     ...mapGetters('users', ['usersTotalCount'])
@@ -127,7 +127,7 @@ export default {
         e.stopPropagation()
       }
     },
-    ...mapActions('users', ['usersCount'])
+    ...mapActions('users', ['usersList'])
   },
 
   watch: {

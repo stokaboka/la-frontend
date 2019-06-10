@@ -1,5 +1,6 @@
 export const SET_MODEL = (state, model) => {
   state.title = model.title
+  state.module = model.module
   state.suffix = model.suffix
   state.columns = model.columns
   state.edit = model.edit
@@ -59,4 +60,8 @@ export const SET_ERROR = (state, error) => {
   state.result = 'error'
   state.error = error
   state.loading = false
+}
+
+export const SET_PARAMS = (state, playload) => {
+  state.params[state.module] = playload
 }

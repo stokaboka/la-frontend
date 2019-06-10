@@ -16,6 +16,8 @@
           :params="params"
           :selection="selection"
           :selected-row="selectedRow"
+          :hide-columns-selector="hideColumnsSelector"
+          :hide-grid-selector="hideGridSelector"
           @table-row-click="onTableRowClick"
         >
         </editable-data-table>
@@ -37,6 +39,20 @@ export default {
     FilterUsers
   },
   props: {
+    hideColumnsSelector: {
+      type: Boolean,
+      default () {
+        return false
+      },
+      required: false
+    },
+    hideGridSelector: {
+      type: Boolean,
+      default () {
+        return false
+      },
+      required: false
+    },
     selectedRow: {
       type: Object,
       default () {

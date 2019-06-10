@@ -16,6 +16,17 @@ export const CLEAR_AUTH_USER = (state) => {
 
 export const SET_USER = (state, playload) => {
   state.user = playload
+  if (state.users && Array.isArray(state.users)) {
+    state.users = state.users.map(e => e.id === playload.id ? playload : e)
+  }
+}
+
+export const SET_USER_IN_USERS = (state, playload) => {
+  if (state.users && Array.isArray(state.users) && state.users.length > 0) {
+    state.users = state.users.map(e => e.id === playload.id ? playload : e)
+  } else {
+    state.users = [playload]
+  }
 }
 
 export const SET_USERS = (state, playload) => {

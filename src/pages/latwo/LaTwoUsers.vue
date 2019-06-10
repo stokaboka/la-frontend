@@ -4,6 +4,8 @@
       module="users"
       :selection="selection"
       :selected-row="user"
+      hide-columns-selector
+      hide-grid-selector
       @table-row-click="onTableRowClick"
     ></editor>
   </q-page>
@@ -21,7 +23,7 @@ export default {
     }
   },
   async mounted () {
-    await this.usersList(null)
+    // await this.usersList(null)
   },
   computed: {
     ...mapGetters('users', ['users', 'user'])

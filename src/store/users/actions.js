@@ -62,24 +62,27 @@ const errorNotify = function (error) {
 //   Notify.create(notify[action][result])
 // }
 
-export const fixAttempt = ({ commit, getters }) => {
-  const { id, attempt } = getters['authUser']
+export const fixAttempt = ({ commit, getters }, user) => {
+  const { id, attempt } = user
 
   return axios
-    .post('/users/fix', { id, attempt })
+    .put('/users/fix', { id, attempt })
     .then(response => {
       commit('SET_CLOSED')
+      commit('users/SET_USER', response.data, { root: true })
     })
     .catch(error => {
       errorNotify(error.message)
     })
 }
 
-export const usersCount = ({ commit, getters }) => {
+export const newAttempt = ({ commit, getters }, user) => {
+  const { id, attempt } = user
+
   return axios
-    .get('/users/count')
+    .put('/users/unfix', { id, attempt })
     .then(response => {
-      commit('SET_USERS_TOTAL_COUNT', response.data)
+      commit('users/SET_USER', response.data, { root: true })
     })
     .catch(error => {
       errorNotify(error.message)
@@ -88,9 +91,11 @@ export const usersCount = ({ commit, getters }) => {
 
 export const usersList = ({ commit }, params) => {
   return axios
-    .get('/users/find', params)
+    .get('/users', params)
     .then(response => {
+      // console.log(response.data)
       commit('SET_USERS', response.data)
+      commit('SET_USERS_TOTAL_COUNT', response.data.rowsNumber)
     })
     .catch(error => {
       errorNotify(error.message)

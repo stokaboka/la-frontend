@@ -1,4 +1,5 @@
 export default {
+  module: '',
   suffix: '',
   result: '',
   error: '',
@@ -14,5 +15,6 @@ export default {
   loading: false,
   rowsNumber: 0,
   filter: '',
-  query: false
+  query: false,
+  params: {}
 }

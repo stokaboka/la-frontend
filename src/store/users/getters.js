@@ -13,8 +13,8 @@ export const usersTotalCount = s => s.totalCount
 
 // editor
 export const model = (s) => {
-  const { title, suffix, key, edit, columns, filter, query } = s
-  return { title, suffix, key, edit, columns, filter, query }
+  const { title, suffix, module, key, edit, columns, filter, query } = s
+  return { title, suffix, module, key, edit, columns, filter, query }
 }
 
 export const filter = (s) => s.filter
