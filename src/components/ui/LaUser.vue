@@ -1,21 +1,36 @@
 <template>
   <div class="q-ma-lg">
-    <q-card v-if="user">
-      <q-card-section class="text-h6 bg-secondary text-white">
+    <div v-if="user">
+      <div class="q-pa-md text-h6 bg-secondary text-white">
         Пользователь
-      </q-card-section>
-      <q-card-section class="row">
-        <div v-for="col in columns" :key="col.field">
-          <div v-if="user[col.field]" class="row q-pa-sm text-grey-14">
-            <span class="q-mr-md">{{ col.label }}</span>
-            <span class="text-weight-medium">{{ user[col.field] }}</span>
+      </div>
+      <div class="row justify-start items-center">
+          <div v-for="column in columns" :key="column.field">
+            <div
+              v-if="user[column.field]"
+              class="column items-start q-pa-sm text-grey-14"
+            >
+              <span class="q-mr-md text-body2 text-blue">{{ column.label }}</span>
+              <div v-if="column.gadget">
+                <q-chip
+                  v-if="column.gadget.type === 'chip'"
+                  v-bind="column.gadget.options[user[column.field]]"
+                  class="shadow-2"
+                ></q-chip>
+                <q-toggle
+                  v-if="column.gadget.type === 'toggle'"
+                  v-model="user[column.field]"
+                  v-bind="column.gadget.options"
+                ></q-toggle>
+              </div>
+              <div v-else class="text-weight-medium">
+                {{ user[column.field] }}
+              </div>
+            </div>
           </div>
-        </div>
-      </q-card-section>
+      </div>
 
-      <q-separator />
-
-      <q-card-actions>
+      <div class="q-mb-md row q-gutter-md">
         <q-btn
           :disable="user.closed === 0"
           color="primary"
@@ -39,17 +54,24 @@
         </q-btn>
 
         <q-btn>Action 2</q-btn>
-      </q-card-actions>
-    </q-card>
+      </div>
+
+      <q-separator />
+
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'LaUser',
   data () {
-    return {}
+    return {
+      attempt: null,
+      resultsFilter: ''
+    }
   },
   computed: {
     columns () {
@@ -58,6 +80,7 @@ export default {
     ...mapGetters('users', ['user', 'model'])
   },
   methods: {
+    onTableRowClick (row) {},
     async addNewAttempt () {
       await this.newAttempt(this.user)
       await this.reload('users')
@@ -67,7 +90,12 @@ export default {
       await this.reload('users')
     },
     ...mapActions('users', ['newAttempt', 'fixAttempt']),
-    ...mapActions('editor', ['reload'])
+    ...mapActions('users/model', ['load', 'reload'])
+  },
+  watch: {
+    user (val) {
+      this.resultsFilter = `/user/${val.id}`
+    }
   }
 }
 </script>

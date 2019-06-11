@@ -9,3 +9,7 @@ export const SET_SAVED_RESULTS = (state, playload) => {
 export const SET_COUNT = (state, playload) => {
   state.count = playload
 }
+
+export const SET_MODEL_PARAMS = (state, playload) => {
+  state.model.params = playload
+}

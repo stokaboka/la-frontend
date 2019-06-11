@@ -16,5 +16,4 @@ export const data = state => state.data
 export const result = state => state.result
 export const error = state => state.error
 
-export const params = state => state.params
-export const modules = state => state.modules
+export const lastQuery = state => state.lastQuery

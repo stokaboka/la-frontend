@@ -37,6 +37,7 @@
             <q-chip
               v-if="column.gadget.type === 'chip'"
               v-bind="column.gadget.options[props.row[column.field]]"
+              class="shadow-2"
             ></q-chip>
             <q-toggle
               v-if="column.gadget.type === 'toggle'"
@@ -125,7 +126,7 @@
 <script>
 //  <!--    :selected.sync="selectedSecond"-->
 // <span class="table-title">{{title}}</span>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+// import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { toDDMMYYYY } from '../../../lib/utils'
 
 export default {
@@ -142,6 +143,10 @@ export default {
       default () {
         return null
       }
+    },
+    module: {
+      type: String,
+      required: true
     },
     model: {
       type: Object,
@@ -204,7 +209,9 @@ export default {
       this.selected = [this.selectedRow]
     }
 
-    this.init(this.model)
+    this.tableVisibleColumns = this.visibleColumns
+
+    // this.init(this.model)
     if (!this.filterComponent) {
       this.request({
         pagination: this.paginationControl,
@@ -213,25 +220,64 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('editor', [
-      'title',
-      'columns',
-      'visibleColumns',
-      'data',
-      'query',
-      'result',
-      'error',
-      'loading',
-      'edit',
-      'key',
-      'pagination',
-      'rowsNumber',
-      'filterComponent'
-    ])
+    title () {
+      return this.$store.getters[`${this.module}/model/title`]
+    },
+    columns () {
+      return this.$store.getters[`${this.module}/model/columns`]
+    },
+    visibleColumns () {
+      return this.$store.getters[`${this.module}/model/visibleColumns`]
+    },
+    data () {
+      return this.$store.getters[`${this.module}/model/data`]
+    },
+    query () {
+      return this.$store.getters[`${this.module}/model/query`]
+    },
+    result () {
+      return this.$store.getters[`${this.module}/model/result`]
+    },
+    error () {
+      return this.$store.getters[`${this.module}/model/error`]
+    },
+    loading () {
+      return this.$store.getters[`${this.module}/model/loading`]
+    },
+    edit () {
+      return this.$store.getters[`${this.module}/model/edit`]
+    },
+    key () {
+      return this.$store.getters[`${this.module}/model/key`]
+    },
+    pagination () {
+      return this.$store.getters[`${this.module}/model/pagination`]
+    },
+    rowsNumber () {
+      return this.$store.getters[`${this.module}/model/rowsNumber`]
+    },
+    filterComponent () {
+      return this.$store.getters[`${this.module}/model/filter`]
+    }
+    // ...mapGetters(`${this.module}/model`, [
+    //   'title',
+    //   'columns',
+    //   'visibleColumns',
+    //   'data',
+    //   'query',
+    //   'result',
+    //   'error',
+    //   'loading',
+    //   'edit',
+    //   'key',
+    //   'pagination',
+    //   'rowsNumber',
+    //   'filterComponent'
+    // ])
   },
   methods: {
     init (model) {
-      this.setModel(model)
+      // this.setModel(model)
       this.tableVisibleColumns = this.visibleColumns
     },
     rowClick (row) {
@@ -302,8 +348,20 @@ export default {
 
       this.paginationControl = pagination
     },
-    ...mapMutations('editor', { setModel: 'SET_MODEL' }),
-    ...mapActions('editor', ['load', 'insert', 'update', 'delete'])
+    load (data) {
+      this.$store.dispatch(`${this.module}/model/load`, data)
+    },
+    insert (data) {
+      this.$store.dispatch(`${this.module}/model/insert`, data)
+    },
+    update (data) {
+      this.$store.dispatch(`${this.module}/model/update`, data)
+    },
+    remove (data) {
+      this.$store.dispatch(`${this.module}/model/remove`, data)
+    }
+    // ...mapMutations('editor', { setModel: 'SET_MODEL' }),
+    // ...mapActions('editor', ['load', 'insert', 'update', 'delete'])
   },
   watch: {
     model (val) {

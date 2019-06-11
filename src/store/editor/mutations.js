@@ -1,6 +1,7 @@
 export const SET_MODEL = (state, model) => {
   state.title = model.title
   state.module = model.module
+  state.params = model.params ? model.params : {}
   state.suffix = model.suffix
   state.columns = model.columns
   state.edit = model.edit
@@ -32,7 +33,8 @@ export const SET_API_SUFFIX = (state, playload) => {
 export const SET_BY_ID = (state, playload) => {
   const idx = state.data.findIndex(e => e.id === playload.id)
   if (idx >= 0) {
-    state.data[idx] = playload
+    // state.data[idx] = playload
+    state.data.splice(idx, 1, playload)
   } else {
     state.data.push(playload)
   }
@@ -62,6 +64,15 @@ export const SET_ERROR = (state, error) => {
   state.loading = false
 }
 
-export const SET_PARAMS = (state, playload) => {
-  state.params[state.module] = playload
+export const SET_MODULE_PARAMS = (state, playload) => {
+  if (!state.modules[playload.module]) {
+    state.modules[playload.module] = {}
+  }
+  state.modules[playload.module]['params'] = playload.params
+}
+export const SET_MODULE_QUERY = (state, playload) => {
+  if (!state.modules[playload.module]) {
+    state.modules[playload.module] = {}
+  }
+  state.modules[playload.module]['query'] = playload.query
 }

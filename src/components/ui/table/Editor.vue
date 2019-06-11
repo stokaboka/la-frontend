@@ -1,7 +1,7 @@
 <template>
-  <q-page class="column justify-start items-center">
+  <div class="column justify-start items-center">
     <q-card>
-      <q-card-section class="text-h6 bg-secondary text-white">
+      <q-card-section class="q-mb-md text-h6 bg-secondary text-white">
         <span>{{model.title}}</span>
       </q-card-section>
       <q-card-section v-if="filterComponent">
@@ -10,9 +10,10 @@
           @filter-params-changed="onFilterParamsChanged">
         </component>
       </q-card-section>
-      <q-card-section v-if="model" class="q-pt-md">
+      <q-card-section v-if="model">
         <editable-data-table
           :model="model"
+          :module="module"
           :params="params"
           :selection="selection"
           :selected-row="selectedRow"
@@ -23,7 +24,7 @@
         </editable-data-table>
       </q-card-section>
     </q-card>
-  </q-page>
+  </div>
 </template>
 
 <script>

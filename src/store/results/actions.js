@@ -300,7 +300,7 @@ export const load = ({ commit, rootGetters }) => {
   const { id, attempt } = rootGetters['users/authUser']
 
   return axios
-    .get(`/results/list/user/${id}/attempt/${attempt}`)
+    .get(`/results/user/${id}/attempt/${attempt}`)
     .then(response => {
       commit('SET_SAVED_RESULTS', response.data)
     })

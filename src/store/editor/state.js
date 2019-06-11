@@ -1,5 +1,6 @@
 export default {
   module: '',
+  params: [],
   suffix: '',
   result: '',
   error: '',
@@ -16,5 +17,6 @@ export default {
   rowsNumber: 0,
   filter: '',
   query: false,
-  params: {}
+
+  modules: {}
 }

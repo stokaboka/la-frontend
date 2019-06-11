@@ -3,7 +3,6 @@ import axios from 'axios'
 export const load = ({ commit, getters, rootGetters }, query = '') => {
   // console.log(params)
   const api = rootGetters['app/api']
-  const module = getters['module']
   const suffix = getters['suffix']
   const url = `${api}/${suffix}${query}`
   commit('SET_LOADING', true)
@@ -12,7 +11,7 @@ export const load = ({ commit, getters, rootGetters }, query = '') => {
       const data = response.data
       commit('SET_DATA', data)
       commit('SET_RESULT', 'OK')
-      commit('SET_MODULE_QUERY', { module, query })
+      commit('SET_LAST_QUERY', query)
       commit('SET_LOADING', false)
       return data
     })
@@ -24,9 +23,7 @@ export const load = ({ commit, getters, rootGetters }, query = '') => {
 }
 
 export const reload = ({ getters, dispatch }, module) => {
-  const mdl = getters['modules'][module]
-  const query = mdl ? mdl.query ? mdl.query : '' : ''
-  return dispatch('load', query)
+  return dispatch('load', getters['lastQuery'])
 }
 
 export const insert = ({ commit, getters, rootGetters }, playload) => {
@@ -39,10 +36,12 @@ export const insert = ({ commit, getters, rootGetters }, playload) => {
     .then(response => {
       commit('SET_BY_ID', playload)
       commit('SET_RESULT', 'OK')
+      commit('SET_LOADING', false)
       return true
     })
     .catch(error => {
       commit('SET_ERROR', error)
+      commit('SET_LOADING', false)
       return false
     })
 }
@@ -58,10 +57,12 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
     .then(response => {
       commit('SET_BY_ID', playload)
       commit('SET_RESULT', 'OK')
+      commit('SET_LOADING', false)
       return true
     })
     .catch(error => {
       commit('SET_ERROR', error)
+      commit('SET_LOADING', false)
       return false
     })
 }
@@ -75,10 +76,12 @@ export const remove = ({ commit, getters, rootGetters }, playload) => {
   return axios.delete(url, playload)
     .then(response => {
       commit('SET_RESULT', 'OK')
+      commit('SET_LOADING', false)
       return true
     })
     .catch(error => {
       commit('SET_ERROR', error)
+      commit('SET_LOADING', false)
       return false
     })
 }

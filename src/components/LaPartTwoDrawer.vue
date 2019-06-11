@@ -82,7 +82,7 @@ export default {
           id: 'attempts',
           icon: 'offline_pin',
           label: 'Тесты',
-          route: '',
+          route: 'part-two-user-tests',
           active: false,
           badge: {
             floating: true,
