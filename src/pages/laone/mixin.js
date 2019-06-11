@@ -92,7 +92,7 @@ export default {
 
     async onReady () {
       const result = await this.calculateResults()
-      console.log(result)
+      // console.log(result)
       if (result) {
         if (result.level > 0) {
           this.SET_LEVEL(result.level)
@@ -111,7 +111,7 @@ export default {
     },
 
     onAnswer (answer) {
-      console.dir(answer)
+      // console.dir(answer)
       if (answer) {
         const { part, phase, category } = this
         this.SET_ANSWER({

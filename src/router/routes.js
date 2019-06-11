@@ -63,8 +63,9 @@ const routes = [
       const isLogged = store.getters['users/isLogged']
       if (isLogged) {
         const isClosed = store.getters['users/isClosed']
-        if (isClosed) {
-          next({ name: 'part-one-end' })
+        const name = (isClosed && to.name !== 'part-one-end') ? 'part-one-end' : ''
+        if (name) {
+          next({ name })
         } else {
           next()
         }

@@ -27,7 +27,7 @@ export const count = ({ state, commit }) => {
 export const load = ({ state, commit }) => {
   const paramsList = `test/${state.test}/part/${state.part}/phase/${state.phase}/category/${state.category}`
 
-  return axios.get(`/questions/list/${paramsList}`)
+  return axios.get(`/questions/${paramsList}`)
     .then(response => {
       commit('SET_QUESTIONS', response.data)
       commit('SET_QUESTION_INDEX', 0)
