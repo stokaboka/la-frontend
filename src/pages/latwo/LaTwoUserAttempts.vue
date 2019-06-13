@@ -32,7 +32,8 @@ export default {
   },
   methods: {
     setUserFilterParams (user) {
-      this.params = `/user/${user.id}`
+      if (user) this.params = `/user/${user.id}`
+      else this.params = '/user/0'
     },
     onTableRowClick (row) {
 

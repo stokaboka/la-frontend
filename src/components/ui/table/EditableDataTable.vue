@@ -124,9 +124,7 @@
 </template>
 
 <script>
-//  <!--    :selected.sync="selectedSecond"-->
-// <span class="table-title">{{title}}</span>
-// import { mapGetters, mapMutations, mapActions } from 'vuex'
+
 import { mapGetters, mapActions } from 'vuex'
 import { toDDMMYYYY } from '../../../lib/utils'
 
@@ -189,7 +187,7 @@ export default {
       tableVisibleColumns: [],
       rows: [],
       paginationControl: {
-        sortBy: null, // String, column "name" property value
+        sortBy: null,
         descending: false,
         rowsPerPage: 10,
         page: 1,
@@ -212,7 +210,6 @@ export default {
 
     this.tableVisibleColumns = this.visibleColumns
 
-    // this.init(this.model)
     if (!this.filterComponent) {
       this.request({
         pagination: this.paginationControl,
@@ -222,77 +219,36 @@ export default {
   },
   computed: {
     title () {
-      // return this.$store.getters[`${this.module}/model/title`]
       return this.$store.state[this.module].model.title
     },
     columns () {
-      // return this.$store.getters[`${this.module}/model/columns`]
       return this.$store.state[this.module].model.columns
     },
     visibleColumns () {
-      // return this.$store.getters[`${this.module}/model/visibleColumns`]
       return this.$store.state[this.module].model.columns.filter(e => e.visible).map(e => e.name)
     },
     data () {
-      // return this.$store.getters[`${this.module}/model/data`]
       return this.$store.state[this.module].model.data
     },
     query () {
-      // return this.$store.getters[`${this.module}/model/query`]
-      return this.$store.state[this.module].model.title
+      return this.$store.state[this.module].model.query
     },
-    result () {
-      // return this.$store.getters[`${this.module}/model/result`]
-      return this.$store.state[this.module].model.title
-    },
-    error () {
-      // return this.$store.getters[`${this.module}/model/error`]
-      return this.$store.state[this.module].model.title
-    },
-    // loading () {
-    //   // return this.$store.getters[`${this.module}/model/loading`]
-    //   return this.$store.state[this.module].model.title
-    // },
     edit () {
-      // return this.$store.getters[`${this.module}/model/edit`]
       return this.$store.state[this.module].model.edit
     },
     key () {
-      // return this.$store.getters[`${this.module}/model/key`]
       return this.$store.state[this.module].model.key
     },
-    // pagination () {
-    //   // return this.$store.getters[`${this.module}/model/pagination`]
-    //   return this.$store.state[this.module].model.title
-    // },
     rowsNumber () {
-      // return this.$store.getters[`${this.module}/model/rowsNumber`]
       return this.$store.state[this.module].model.rowsNumber
     },
     filterComponent () {
-      // return this.$store.getters[`${this.module}/model/filter`]
       return this.$store.state[this.module].model.filter
     },
-    ...mapGetters('editor', ['loading'])
-    // ...mapGetters(`${this.module}/model`, [
-    //   'title',
-    //   'columns',
-    //   'visibleColumns',
-    //   'data',
-    //   'query',
-    //   'result',
-    //   'error',
-    //   'loading',
-    //   'edit',
-    //   'key',
-    //   'pagination',
-    //   'rowsNumber',
-    //   'filterComponent'
-    // ])
+    ...mapGetters('editor', ['loading', 'results', 'error'])
   },
   methods: {
-    init (model) {
-      // this.setModel(model)
+    init () {
       this.tableVisibleColumns = this.visibleColumns
     },
     rowClick (row) {
@@ -396,10 +352,6 @@ export default {
 </script>
 
 <style scoped>
-.table-title {
-  margin-right: 1rem;
-}
-
 .q-table th {
   padding: 6px 12px;
 }
