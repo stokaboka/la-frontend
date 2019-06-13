@@ -41,7 +41,8 @@ export default {
       sortable: true,
       visible: true,
       update: false,
-      insert: false
+      insert: false,
+      mask: 'DD-MM-YYYY'
     },
     {
       name: 'test',
