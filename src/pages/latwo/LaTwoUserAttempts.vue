@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <editor
-      module="results"
+      module="attempts"
       selection="single"
       :filter="params"
       :selected-row="attempt"

@@ -5,7 +5,7 @@ export default {
 
   model: {
     key: 'id',
-    title: 'Попытки прохождения теста',
+    title: 'Результаты прохождения теста',
     data: [],
 
     columns: [

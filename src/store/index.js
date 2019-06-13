@@ -8,6 +8,7 @@ import questions from './questions'
 import results from './results'
 import users from './users'
 import editor from './editor'
+import attempts from './attempts'
 
 Vue.use(Vuex)
 
@@ -35,7 +36,8 @@ const store = new Vuex.Store({
     questions,
     results,
     users,
-    editor
+    editor,
+    attempts
   },
 
   strict: process.env.NODE_ENV !== 'production'

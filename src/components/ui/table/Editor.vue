@@ -90,10 +90,12 @@ export default {
   },
   computed: {
     model () {
-      return this.$store.getters[`${this.module}/model`]
+      // return this.$store.getters[`${this.module}/model`]
+      return this.$store.state[this.module].model
     },
     filterComponent () {
-      return this.$store.getters[`${this.module}/filter`]
+      // return this.$store.getters[`${this.module}/filter`]
+      return this.$store.state[this.module].model.filter
     }
   },
   methods: {
