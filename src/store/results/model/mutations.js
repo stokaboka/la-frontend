@@ -9,7 +9,7 @@ export const SET_LOADING = (state, loading) => {
 export const SET_BY_ID = (state, playload) => {
   const idx = state.data.findIndex(e => e.id === playload.id)
   if (idx >= 0) {
-    // state.data[idx] = playload
+    state.data.splice(idx, 1, playload)
     state.data.splice(idx, 1, playload)
   } else {
     state.data.push(playload)

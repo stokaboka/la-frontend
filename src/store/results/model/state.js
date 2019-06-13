@@ -4,7 +4,7 @@ export default {
   key: 'id',
   result: '',
   error: '',
-  title: 'Тестирование часть 1',
+  title: 'Попытки прохождения теста',
   data: [],
 
   columns: [
@@ -39,7 +39,7 @@ export default {
     {
       name: 'dt',
       field: 'dt',
-      label: 'dt',
+      label: 'Дата',
       sortable: true,
       visible: true,
       update: false,
@@ -57,9 +57,9 @@ export default {
     {
       name: 'part',
       field: 'part',
-      label: 'part',
+      label: 'Часть теста',
       sortable: false,
-      visible: false,
+      visible: true,
       update: false,
       insert: false
     },
@@ -75,9 +75,9 @@ export default {
     {
       name: 'level',
       field: 'level',
-      label: 'level',
+      label: 'Достигнутый уровень',
       sortable: false,
-      visible: false,
+      visible: true,
       update: false,
       insert: false
     },

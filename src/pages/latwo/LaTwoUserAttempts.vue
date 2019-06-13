@@ -34,7 +34,9 @@ export default {
     setUserFilterParams (user) {
       this.params = `/user/${user.id}`
     },
-    onTableRowClick (row) {}
+    onTableRowClick (row) {
+
+    }
   },
   watch: {
     user (val) {
