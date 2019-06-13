@@ -44,6 +44,8 @@ module.exports = function (ctx) {
         'QPageContainer',
         'QPage',
         'QTable',
+        'QTabPanels',
+        'QTabPanel',
         'QTh',
         'QTr',
         'QTd',

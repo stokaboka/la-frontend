@@ -90,7 +90,7 @@ export default {
           id: 'results',
           icon: 'ballot',
           label: 'Результат',
-          route: '',
+          route: 'part-two-user-results',
           active: false,
           badge: {
             floating: true,

@@ -139,9 +139,14 @@ const routes = [
         component: () => import('pages/latwo/LaTwoUsers')
       },
       {
-        path: 'usertest',
+        path: 'user-test',
         name: 'part-two-user-tests',
         component: () => import('pages/latwo/LaTwoUserAttempts')
+      },
+      {
+        path: 'user-results',
+        name: 'part-two-user-results',
+        component: () => import('pages/latwo/LaTwoUserResult')
       }
     ]
   }
