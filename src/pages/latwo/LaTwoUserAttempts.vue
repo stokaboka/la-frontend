@@ -3,7 +3,7 @@
     <editor
       module="results"
       selection="single"
-      :filter="resultsFilter"
+      :filter="params"
       :selected-row="attempt"
       hide-columns-selector
       hide-grid-selector
@@ -21,18 +21,24 @@ export default {
   data () {
     return {
       attempt: null,
-      resultsFilter: ''
+      params: ''
     }
+  },
+  mounted () {
+    this.setUserFilterParams(this.user)
   },
   computed: {
     ...mapGetters('users', ['user'])
   },
   methods: {
+    setUserFilterParams (user) {
+      this.params = `/user/${user.id}`
+    },
     onTableRowClick (row) {}
   },
   watch: {
     user (val) {
-      this.resultsFilter = `/user/${val.id}`
+      this.setUserFilterParams(val)
     }
   }
 }

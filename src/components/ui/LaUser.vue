@@ -69,8 +69,7 @@ export default {
   name: 'LaUser',
   data () {
     return {
-      attempt: null,
-      resultsFilter: ''
+      attempt: null
     }
   },
   computed: {
@@ -91,11 +90,6 @@ export default {
     },
     ...mapActions('users', ['newAttempt', 'fixAttempt']),
     ...mapActions('users/model', ['load', 'reload'])
-  },
-  watch: {
-    user (val) {
-      this.resultsFilter = `/user/${val.id}`
-    }
   }
 }
 </script>
