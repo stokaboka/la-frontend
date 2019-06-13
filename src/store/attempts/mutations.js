@@ -1,4 +1,3 @@
-/*
-export function someMutation (state) {
+export function SET_ATTEMPT (state, playload) {
+  state.attempt = playload
 }
-*/

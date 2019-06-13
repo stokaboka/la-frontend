@@ -4,13 +4,13 @@
       <div class="q-pa-md text-h6 bg-secondary text-white">
         Пользователь
       </div>
-      <div class="row justify-start items-center">
+      <div class="row justify-start items-start">
           <div v-for="column in columns" :key="column.field">
             <div
               v-if="user[column.field]"
               class="column items-start q-pa-sm text-grey-14"
             >
-              <span class="q-mr-md text-body2 text-blue">{{ column.label }}</span>
+              <span class="q-mr-md text-subtitle2">{{ column.label }}</span>
               <div v-if="column.gadget">
                 <q-chip
                   v-if="column.gadget.type === 'chip'"

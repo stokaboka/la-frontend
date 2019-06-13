@@ -22,11 +22,8 @@ export default {
       selection: 'single'
     }
   },
-  async mounted () {
-    // await this.usersList(null)
-  },
   computed: {
-    ...mapGetters('users', ['users', 'user'])
+    ...mapGetters('users', ['user'])
   },
   methods: {
     onTableRowClick (row) {

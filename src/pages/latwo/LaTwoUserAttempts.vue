@@ -13,14 +13,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import Editor from '../../components/ui/table/Editor'
 export default {
   name: 'LaTwoUserAttempts',
   components: { Editor },
   data () {
     return {
-      attempt: null,
       params: ''
     }
   },
@@ -28,7 +27,8 @@ export default {
     this.setUserFilterParams(this.user)
   },
   computed: {
-    ...mapGetters('users', ['user'])
+    ...mapGetters('users', ['user']),
+    ...mapGetters('attempts', ['attempt'])
   },
   methods: {
     setUserFilterParams (user) {
@@ -36,8 +36,9 @@ export default {
       else this.params = '/user/0'
     },
     onTableRowClick (row) {
-
-    }
+      this.SET_ATTEMPT(row)
+    },
+    ...mapMutations('attempts', ['SET_ATTEMPT'])
   },
   watch: {
     user (val) {

@@ -211,10 +211,12 @@ export default {
     this.tableVisibleColumns = this.visibleColumns
 
     if (!this.filterComponent) {
-      this.request({
-        pagination: this.paginationControl,
-        filter: this.filter
-      })
+      if (this.moduleParams && !this.params) {
+        this.request({
+          pagination: this.paginationControl,
+          filter: this.filter
+        })
+      }
     }
   },
   computed: {
@@ -232,6 +234,9 @@ export default {
     },
     query () {
       return this.$store.state[this.module].model.query
+    },
+    moduleParams () {
+      return this.$store.state[this.module].model.params
     },
     edit () {
       return this.$store.state[this.module].model.edit

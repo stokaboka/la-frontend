@@ -1,4 +1,7 @@
 export default {
+
+  attempt: null,
+
   model: {
     key: 'id',
     title: 'Попытки прохождения теста',
@@ -44,6 +47,7 @@ export default {
     rowsNumber: 0,
     filter: '',
 
-    query: true
+    params: true,
+    query: false
   }
 }

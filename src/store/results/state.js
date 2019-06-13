@@ -111,6 +111,7 @@ export default {
     rowsNumber: 0,
     filter: '',
 
+    params: true,
     query: true
   }
 }
