@@ -127,10 +127,10 @@ export default {
       }
     },
     async initQuestions () {
-      await this.load()
+      await this.loadQuestions()
     },
     async initQuestionsTotalCount () {
-      await this.count()
+      await this.countQuestions()
     },
     nextCategory () {
       if (this.category < this.maxCategory) {
@@ -141,7 +141,7 @@ export default {
       }
     },
     nextQuestion () {
-      if (this.questionIndex < this.questionsCount - 1) {
+      if (this.questionIndex < this.countQuestions - 1) {
         this.NEXT_QUESTION()
       } else {
         this.nextCategory()
@@ -202,7 +202,7 @@ export default {
       'CLEAR_QUESTIONS'
     ]),
     ...mapActions('users', ['fixAttempt']),
-    ...mapActions('questions', ['load', 'count']),
+    ...mapActions('questions', { loadQuestions: 'load', countQuestions: 'count' }),
     ...mapActions('results', ['calculateResults', 'save'])
   },
   computed: {

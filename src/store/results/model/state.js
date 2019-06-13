@@ -2,8 +2,6 @@ export default {
   module: 'results',
   suffix: 'results',
   key: 'id',
-  result: '',
-  error: '',
   title: 'Попытки прохождения теста',
   data: [],
 
@@ -106,10 +104,8 @@ export default {
     delete: false
   },
 
-  loading: false,
   rowsNumber: 0,
   filter: '',
-  query: true,
 
-  lastQuery: ''
+  query: true
 }

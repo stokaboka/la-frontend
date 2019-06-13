@@ -1,43 +1,38 @@
 import axios from 'axios'
 
-export const load = ({ commit, getters, rootGetters }, query = '') => {
-  // console.log(params)
+export const load = ({ commit, getters, rootGetters }, playload) => {
   const api = rootGetters['app/api']
-  const module = getters['module']
-  const suffix = getters['suffix']
-  const url = `${api}/${suffix}${query}`
-  commit('SET_LOADING', true)
+  const { module, query } = playload
+  const url = `${api}/${module}${query}`
+  commit('SET_LOADING')
   return axios.get(url)
     .then(response => {
       const data = response.data
-      commit('SET_DATA', data)
       commit('SET_RESULT', 'OK')
-      commit('SET_MODULE_QUERY', { module, query })
-      commit('SET_LOADING', false)
+      commit('SET_MODULE_DATA', { ...playload, data })
       return data
     })
     .catch(error => {
       commit('SET_ERROR', error)
-      commit('SET_LOADING', false)
       return false
     })
 }
 
-export const reload = ({ getters, dispatch }, module) => {
+export const reload = ({ getters, dispatch }, playload) => {
+  const { module } = playload
   const mdl = getters['modules'][module]
   const query = mdl ? mdl.query ? mdl.query : '' : ''
   return dispatch('load', query)
 }
 
 export const insert = ({ commit, getters, rootGetters }, playload) => {
-  // console.log(playload)
+  const { module, data } = playload
   const api = rootGetters['app/api']
-  const suffix = getters['suffix']
-  const url = `${api}/${suffix}`
-  commit('SET_LOADING', true)
-  return axios.post(url, playload)
+  const url = `${api}/${module}`
+  commit('SET_LOADING')
+  return axios.post(url, data)
     .then(response => {
-      commit('SET_BY_ID', playload)
+      commit('SET_MODULE_DATA_BY_ID', playload)
       commit('SET_RESULT', 'OK')
       return true
     })
@@ -48,15 +43,14 @@ export const insert = ({ commit, getters, rootGetters }, playload) => {
 }
 
 export const update = ({ commit, getters, rootGetters }, playload) => {
-  // console.log(playload)
+  const { module, data } = playload
   const api = rootGetters['app/api']
-  const suffix = getters['suffix']
-  const url = `${api}/${suffix}`
+  const url = `${api}/${module}`
   delete playload.__index
-  commit('SET_LOADING', true)
-  return axios.put(url, playload)
+  commit('SET_LOADING')
+  return axios.put(url, data)
     .then(response => {
-      commit('SET_BY_ID', playload)
+      commit('SET_MODULE_DATA_BY_ID', playload)
       commit('SET_RESULT', 'OK')
       return true
     })
@@ -67,13 +61,13 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
 }
 
 export const remove = ({ commit, getters, rootGetters }, playload) => {
-  // console.log(playload)
+  const { module, data } = playload
   const api = rootGetters['app/api']
-  const suffix = getters['suffix']
-  const url = `${api}/${suffix}`
-  commit('SET_LOADING', true)
-  return axios.delete(url, playload)
+  const url = `${api}/${module}`
+  commit('SET_LOADING')
+  return axios.delete(url, data)
     .then(response => {
+      commit('REMOVE_MODULE_DATA_BY_ID', playload)
       commit('SET_RESULT', 'OK')
       return true
     })

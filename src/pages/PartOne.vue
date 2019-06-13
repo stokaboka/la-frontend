@@ -40,7 +40,7 @@ export default {
     async startLa () {
       let name = 'part-one-phase-one'
       if (this.isLogged) {
-        await this.load()
+        await this.loadResults()
         if (this.savedResults.length > 0) {
           const lastResult = this.savedResults[this.savedResults.length - 1]
           name = this.modules[lastResult.phase - 1].next
@@ -52,7 +52,7 @@ export default {
       // name = 'part-one-phase-tree'
       this.$router.push({ name })
     },
-    ...mapActions('results', ['load'])
+    ...mapActions('results', { loadResults: 'load' })
   },
   computed: {
     ...mapGetters('users', [

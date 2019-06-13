@@ -82,14 +82,14 @@ export default {
     onTableRowClick (row) {},
     async addNewAttempt () {
       await this.newAttempt(this.user)
-      await this.reload('users')
+      await this.reload({ module: 'users' })
     },
     async closeAttempt () {
       await this.fixAttempt(this.user)
-      await this.reload('users')
+      await this.reload({ module: 'users' })
     },
     ...mapActions('users', ['newAttempt', 'fixAttempt']),
-    ...mapActions('users/model', ['load', 'reload'])
+    ...mapActions('editor', ['load', 'reload'])
   }
 }
 </script>

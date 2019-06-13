@@ -2,8 +2,6 @@ export default {
   module: 'users',
   title: 'Пользователи',
   suffix: 'users',
-  result: '',
-  error: '',
   data: [],
   columns: [
     {
@@ -136,10 +134,8 @@ export default {
     delete: false
   },
   key: 'id',
-  loading: false,
   rowsNumber: 0,
   filter: '',
-  query: true,
 
-  lastQuery: ''
+  query: true
 }

@@ -1,55 +1,7 @@
-export const SET_MODEL = (state, model) => {
-  state.title = model.title
-  state.module = model.module
-  state.params = model.params ? model.params : {}
-  state.suffix = model.suffix
-  state.columns = model.columns
-  state.edit = model.edit
-  state.key = model.key
-  state.filter = model.filter
-  state.query = model.hasOwnProperty('query') ? model.query : false
-}
-
-export const SET_EDIT = (state, edit) => {
-  state.edit = edit
-}
+import store from '../../store'
 
 export const SET_LOADING = (state, loading) => {
-  state.loading = loading
-}
-
-export const SET_TITLE = (state, title) => {
-  state.title = title
-}
-
-export const SET_COLUMNS = (state, columns) => {
-  state.columns = columns
-}
-
-export const SET_API_SUFFIX = (state, playload) => {
-  state.suffix = playload
-}
-
-export const SET_BY_ID = (state, playload) => {
-  const idx = state.data.findIndex(e => e.id === playload.id)
-  if (idx >= 0) {
-    // state.data[idx] = playload
-    state.data.splice(idx, 1, playload)
-  } else {
-    state.data.push(playload)
-  }
-}
-
-export const SET_DATA = (state, data) => {
-  if (Array.isArray(data)) {
-    state.data = data
-    state.rowsNumber = data.length
-  } else {
-    state.data = data.rows
-    state.rowsNumber = data.rowsNumber
-  }
-
-  state.loading = false
+  state.loading = true
 }
 
 export const SET_RESULT = (state, result) => {
@@ -64,15 +16,62 @@ export const SET_ERROR = (state, error) => {
   state.loading = false
 }
 
-export const SET_MODULE_PARAMS = (state, playload) => {
-  if (!state.modules[playload.module]) {
-    state.modules[playload.module] = {}
+/**
+ *
+ * @param state
+ * @param playload = {
+ *   module - module name/id
+ *   suffix - api suffix
+ *   query - url query
+ *   data - data from response, for insert/update/delete
+ * }
+ * @constructor
+ */
+export const SET_MODULE_DATA_BY_ID = (state, playload) => {
+  if (state.modules[playload.module]) {
+    const moduleObject = state.modules[playload.module]
+    const idx = moduleObject.data.findIndex(e => e.id === playload.data.id)
+    if (idx >= 0) {
+      moduleObject.data.splice(idx, 1, playload.data)
+    } else {
+      moduleObject.data.push(playload.data)
+    }
+    state.modules[playload.module] = moduleObject
+  } else {
+    state.modules[playload.module] = playload
   }
-  state.modules[playload.module]['params'] = playload.params
+
+  const idx = store.state[playload.module].model.data.findIndex(e => e.id === playload.data.id)
+  if (idx >= 0) {
+    store.state[playload.module].model.data.splice(idx, 1, playload.data)
+  } else {
+    store.state[playload.module].model.data.push(playload.data)
+  }
 }
-export const SET_MODULE_QUERY = (state, playload) => {
-  if (!state.modules[playload.module]) {
-    state.modules[playload.module] = {}
+
+export const REMOVE_MODULE_DATA_BY_ID = (state, playload) => {
+  store.state[playload.module].model.data = store.state[playload.module].model.data.filter(e => e.id !== playload.data.id)
+}
+
+/**
+ *
+ * @param state
+ * @param  playload = {
+ *   module - module name/id
+ *   suffix - api suffix
+ *   query - url query
+ *   data - data from response, for insert/update/delete
+ * }
+ * @constructor
+ */
+export const SET_MODULE_DATA = (state, playload) => {
+  if (Array.isArray(playload.data)) {
+    store.state[playload.module].model.data = playload.data
+    store.state[playload.module].model.rowsNumber = playload.data.length
+  } else {
+    store.state[playload.module].model.data = playload.data.rows
+    store.state[playload.module].model.rowsNumber = playload.data.rowsNumber
   }
-  state.modules[playload.module]['query'] = playload.query
+
+  state.modules[playload.module] = playload
 }
