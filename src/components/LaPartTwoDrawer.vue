@@ -5,6 +5,7 @@
     @click.capture="drawerClick"
     :width="250"
     :breakpoint="1024"
+    behavior="desktop"
     show-if-above
     bordered
     elevated
@@ -39,11 +40,6 @@
       </q-list>
     </q-scroll-area>
 
-    <!--
-      in this case, we use a button (can be anything)
-      so that user can switch back
-      to mini-mode
-    -->
     <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -18px">
       <q-btn
         dense
