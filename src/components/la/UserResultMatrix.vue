@@ -55,19 +55,32 @@
 </template>
 
 <script>
-
-const autoTestLevels = [1, 8.4, 17.1, 26.5, 35.1, 44.7, 54.1, 63.7, 73.1, 83.7, null]
+import { mapGetters, mapActions } from 'vuex'
+/**
+   * part I
+   */
+// const FinalRating_values = [1, 8.4, 17.1, 26.5, 35.1, 44.7, 54.1, 63.7, 73.1, 83.7, 100]
+const autoTestLevels = [1, 8.4, 17.1, 26.5, 35.1, 44.7, 54.1, 63.7, 73.1, 83.7, 100]
 const vocabularyLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, null]
 const grammarLevels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, null]
 const listeningLevels = [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, null]
+
+// Part1_values
+// Part1_ID
 const selfTestLevels = vocabularyLevels.map((e, i) => e + grammarLevels[i] + listeningLevels[i])
 
+/**
+   * part II
+   */
+// Part2_values
 const generalCommentOnOralAssessmentBands = [ 0, 0.4, 1.1, 2.5, 3.1, 4.7, 6.1, 7.7, 9.1, 11.7, 12.0 ]
 const confidenceInSpeaking = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const speakingRate = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const usingOfCliche = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const interactivityOfSpeech = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const usingOfTheRussianLanguageInSpeech = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// const Part2_final_values = [0, 5.4, 11.1, 17.5, 23.1, 29.7, 36.1, 42.7, 49.1, 56.7, 62]
 const talkTestLevels = generalCommentOnOralAssessmentBands.map((e, i) =>
   e +
   confidenceInSpeaking[i] +
@@ -76,6 +89,8 @@ const talkTestLevels = generalCommentOnOralAssessmentBands.map((e, i) =>
   interactivityOfSpeech[i] +
   usingOfTheRussianLanguageInSpeech[i]
 )
+
+const FinalRating_values = [1, 8.4, 17.1, 26.5, 35.1, 44.7, 54.1, 63.7, 73.1, 83.7, 100]
 
 const phoneticAndPronunciation = [
   { value: 1, label: 'необходима работа над звуками' },
@@ -262,7 +277,10 @@ export default {
     }
   },
   mounted () {
-    // this.reindex()
+    this.load()
+  },
+  computed: {
+    ...mapGetters('results', ['savedResults'])
   },
   methods: {
     reindex () {
@@ -275,7 +293,8 @@ export default {
         })
         return r
       })
-    }
+    },
+    ...mapActions('results', { loadResults: 'load' })
   }
 }
 </script>

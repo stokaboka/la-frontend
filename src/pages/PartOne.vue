@@ -40,7 +40,7 @@ export default {
     async startLa () {
       let name = 'part-one-phase-one'
       if (this.isLogged) {
-        await this.loadResults()
+        await this.loadResults(this.authUser)
         if (this.savedResults.length > 0) {
           const lastResult = this.savedResults[this.savedResults.length - 1]
           name = this.modules[lastResult.phase - 1].next

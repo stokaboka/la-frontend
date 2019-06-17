@@ -82,7 +82,7 @@ export default {
     },
 
     async saveResults () {
-      await this.save()
+      await this.save(this.authUser)
     },
 
     async fixUserAttempt () {

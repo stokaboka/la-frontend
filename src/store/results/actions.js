@@ -296,8 +296,9 @@ export const count = ({ commit, rootGetters }) => {
     })
 }
 
-export const load = ({ commit, rootGetters }) => {
-  const { id, attempt } = rootGetters['users/authUser']
+export const load = ({ commit, rootGetters }, user) => {
+  // const { id, attempt } = rootGetters['users/authUser']
+  const { id, attempt } = user
 
   return axios
     .get(`/results/user/${id}/attempt/${attempt}`)
@@ -309,8 +310,9 @@ export const load = ({ commit, rootGetters }) => {
     })
 }
 
-export const save = ({ commit, getters, rootGetters }, data) => {
-  const { id, attempt } = rootGetters['users/authUser']
+export const save = ({ commit, getters, rootGetters }, user) => {
+  // const { id, attempt } = rootGetters['users/authUser']
+  const { id, attempt } = user
 
   const test = rootGetters['app/test']
   const part = rootGetters['app/part']
