@@ -304,6 +304,7 @@ export const load = ({ commit, rootGetters }, params) => {
     .get(`/results/user/${id}/attempt/${attempt}`)
     .then(response => {
       commit('SET_SAVED_RESULTS', response.data)
+      return response.data
     })
     .catch(error => {
       errorNotify(error.message)

@@ -48,6 +48,20 @@
           </div>
         </div>
       </div>
+      <div v-if="descriptions">
+        <div class="row">
+          <div class="col-3 q-table--bordered items-center matrix-col matrix-col__font">Система уровней</div>
+          <div class="col-1 q-table--bordered items-center matrix-col matrix-col__font">Уровень</div>
+          <div class="col-8 q-table--bordered items-center matrix-col matrix-col__font">Комментарий</div>
+        </div>
+        <div v-for="description in descriptions" :key="description.id" class="column" :class="description.labelClass">
+          <div class="row">
+            <div class="col-3 q-table--bordered items-center matrix-col matrix-col__font">{{description.label}}</div>
+            <div class="col-1 q-table--bordered items-center matrix-col matrix-col__font">{{description.level}}</div>
+            <div class="col-8 q-table--bordered items-center matrix-col matrix-col__font">{{description.description}}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +69,84 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { findMinElementIndex } from '../../lib/utils'
+
+const categories = {
+  vocabulary: {
+    part: 1,
+    phase: 1,
+    label: 'Лексика / Vocabulary',
+    labelClass: 'bg-green-2',
+    rowsClass: 'col-1-11',
+    target: 'vocabularyLevel'
+  },
+  grammar: {
+    part: 1,
+    phase: 2,
+    label: 'Грамматика / Grammar',
+    labelClass: 'bg-deep-orange-2',
+    rowsClass: 'col-1-11',
+    target: 'grammarLevel'
+  },
+  listening: {
+    part: 1,
+    phase: 3,
+    label: 'Восприятие на слух / Listening',
+    labelClass: 'bg-purple-2',
+    rowsClass: 'col-1-11',
+    target: 'listeningLevel'
+  },
+  generalCommentOnOralAssessmentBands: {
+    part: 2,
+    phase: 1,
+    label: 'Устное владение лексико-грамматическими компетентностями / General comment on oral Assessment Bands',
+    labelClass: 'bg-light-blue-1',
+    rowsClass: 'col-1-11'
+  },
+  confidenceInSpeaking: {
+    part: 2,
+    phase: 2,
+    label: 'Уверенность и охотность при говорении / Confidence in speaking',
+    labelClass: 'bg-light-blue-2',
+    rowsClass: 'col-1-11'
+  },
+  speakingRate: {
+    part: 2,
+    phase: 3,
+    label: 'Скорость речи / Speaking rate',
+    labelClass: 'bg-light-blue-3',
+    rowsClass: 'col-1-11'
+  },
+  usingOfCliche: {
+    part: 2,
+    phase: 4,
+    label: 'Языковые клише и стандартные фразы / Using of cliché',
+    labelClass: 'bg-light-blue-4',
+    rowsClass: 'col-1-11'
+  },
+  interactivityOfSpeech: {
+    part: 2,
+    phase: 5,
+    label: 'Характер интерактивности речи / Interactivity of speech',
+    labelClass: 'bg-light-blue-5',
+    rowsClass: 'col-1-11'
+  },
+  usingOfTheRussianLanguageInSpeech: {
+    part: 2,
+    phase: 6,
+    label:
+      'Использование помощи русского в речи / Using of the Russian language in speech',
+    labelClass: 'bg-light-blue-6',
+    rowsClass: 'col-1-11'
+  },
+  phoneticAndPronunciationSelect: {
+    part: 2,
+    phase: 7,
+    label: 'Комментарий к фонетике и произношению / Phonetic and pronunciation',
+    labelClass: 'bg-light-blue-7',
+    rowsClass: 'col-1-11'
+  }
+}
+
 /**
  * part I
  */
@@ -129,6 +221,8 @@ export default {
   name: 'UserResultMatrix',
   data () {
     return {
+      results: null,
+      descriptions: null,
       phoneticAndPronunciation: {
         options: phoneticAndPronunciation,
         model: null
@@ -203,10 +297,7 @@ export default {
         },
 
         {
-          label: 'Лексика / Vocabulary',
-          labelClass: 'bg-green-2',
-          rowsClass: 'col-1-11',
-          target: 'vocabularyLevel',
+          ...categories.vocabulary,
           rows: [
             vocabularyLevels.map(e => {
               return { value: e }
@@ -215,10 +306,7 @@ export default {
         },
 
         {
-          label: 'Грамматика / Grammar',
-          labelClass: 'bg-deep-orange-2',
-          rowsClass: 'col-1-11',
-          target: 'grammarLevel',
+          ...categories.grammar,
           rows: [
             grammarLevels.map(e => {
               return { value: e }
@@ -227,10 +315,7 @@ export default {
         },
 
         {
-          label: 'Восприятие на слух / Listening',
-          labelClass: 'bg-purple-2',
-          rowsClass: 'col-1-11',
-          target: 'listeningLevel',
+          ...categories.listening,
           rows: [
             listeningLevels.map(e => {
               return { value: e }
@@ -256,7 +341,8 @@ export default {
             'Сумма набранных баллов по самостоятельной части тестирования (отражается балл и соответствующий уровень):',
           labelClass: 'bg-orange-1',
           rowsClass: 'col-1-11',
-          rows: []
+          source: 'levelOne',
+          rows: [[{ value: 0 }]]
         },
 
         {
@@ -266,10 +352,11 @@ export default {
         },
 
         {
-          label:
-            'Устное владение лексико-грамматическими компетентностями / General comment on oral Assessment Bands',
-          labelClass: 'bg-light-blue-1',
-          rowsClass: 'col-1-11',
+          ...categories.generalCommentOnOralAssessmentBands,
+          // label:
+          //   'Устное владение лексико-грамматическими компетентностями / General comment on oral Assessment Bands',
+          // labelClass: 'bg-light-blue-1',
+          // rowsClass: 'col-1-11',
           rows: [
             generalCommentOnOralAssessmentBands.map(e => {
               return { value: e }
@@ -278,10 +365,11 @@ export default {
         },
 
         {
-          label:
-            'Уверенность и охотность при говорении / Confidence in speaking',
-          labelClass: 'bg-light-blue-2',
-          rowsClass: 'col-1-11',
+          ...categories.confidenceInSpeaking,
+          // label:
+          //   'Уверенность и охотность при говорении / Confidence in speaking',
+          // labelClass: 'bg-light-blue-2',
+          // rowsClass: 'col-1-11',
           rows: [
             confidenceInSpeaking.map(e => {
               return { value: e }
@@ -290,9 +378,7 @@ export default {
         },
 
         {
-          label: 'Скорость речи / Speaking rate',
-          labelClass: 'bg-light-blue-3',
-          rowsClass: 'col-1-11',
+          ...categories.speakingRate,
           rows: [
             speakingRate.map(e => {
               return { value: e }
@@ -301,9 +387,7 @@ export default {
         },
 
         {
-          label: 'Языковые клише и стандартные фразы / Using of cliché',
-          labelClass: 'bg-light-blue-4',
-          rowsClass: 'col-1-11',
+          ...categories.usingOfCliche,
           rows: [
             usingOfCliche.map(e => {
               return { value: e }
@@ -312,9 +396,7 @@ export default {
         },
 
         {
-          label: 'Характер интерактивности речи / Interactivity of speech',
-          labelClass: 'bg-light-blue-5',
-          rowsClass: 'col-1-11',
+          ...categories.interactivityOfSpeech,
           rows: [
             interactivityOfSpeech.map(e => {
               return { value: e }
@@ -323,10 +405,7 @@ export default {
         },
 
         {
-          label:
-            'Использование помощи русского в речи / Using of the Russian language in speech',
-          labelClass: 'bg-light-blue-6',
-          rowsClass: 'col-1-11',
+          ...categories.usingOfTheRussianLanguageInSpeech,
           rows: [
             usingOfTheRussianLanguageInSpeech.map(e => {
               return { value: e }
@@ -335,10 +414,7 @@ export default {
         },
 
         {
-          label:
-            'Комментарий к фонетике и произношению / Phonetic and pronunciation',
-          labelClass: 'bg-light-blue-7',
-          rowsClass: 'col-1-11',
+          ...categories.phoneticAndPronunciationSelect,
           rows: [],
           gadget: 'phoneticAndPronunciationSelect'
         },
@@ -365,10 +441,7 @@ export default {
       ]
     }
   },
-  async mounted () {
-    const { id } = this.user
-    const { attempt } = this.attempt
-    await this.loadResults({ id, attempt })
+  mounted () {
     this.initResults()
   },
   computed: {
@@ -390,15 +463,31 @@ export default {
   },
   methods: {
     getPartPhaseLevel (part, phase) {
-      const phaseObj = this.savedResults.find(
+      const phaseObj = this.results.find(
         e => e.part === part && e.phase === phase
       )
       if (phaseObj) return phaseObj.level
       return 0
     },
-    initResults () {
+    async initResults () {
+      const { id } = this.user
+      const { attempt } = this.attempt
+      this.results = await this.loadResults({ id, attempt })
+
       this.levelOne = this.calcResultsPartOne()
       this.levelTwo = this.calcResultsPartTwo()
+
+      this.descriptions = await this.loadDescription({
+        test: this.attempt.test,
+        results: this.results
+      }).then(data =>
+        data.map(e => {
+          const category = Object.values(categories).find(ee => ee.part === e.part && ee.phase === e.phase)
+          if (category) return { ...e, ...category }
+          return e
+        })
+      )
+
       this.showLevels()
     },
     showLevels () {
@@ -411,24 +500,31 @@ export default {
             }, this)
           }, this)
         }
-        // const midx = findMinElementIndex(e.rows, this[e.target], 'value')
-        // e.rows = e.rows.map((ee, ii) => {
-        //   return ee.map((eee, iii) => {
-        //     return { ...eee, ...{ class: iii === midx ? 'bg-red text-white text-weight-bold shadow-2' : '' } }
-        //   })
-        // })
+        if (e.source) {
+          e.rows = e.rows.map(row => {
+            return row.map((item) => {
+              return { ...item, value: this[e.source] }
+            }, this)
+          }, this)
+        }
         return { ...e }
       })
     },
     calcResultsPartOne () {
-      const levelOne = this.savedResults
+      const level = this.results
         .filter(e => e.part === 1)
         .reduce((acc, e) => acc + e.level, 0)
-      return levelOne
+      return level
     },
-    calcResultsPartTwo () {},
+    calcResultsPartTwo () {
+      const level = this.results
+        .filter(e => e.part === 2)
+        .reduce((acc, e) => acc + e.level, 0)
+      return level
+    },
 
-    ...mapActions('results', { loadResults: 'load' })
+    ...mapActions('results', { loadResults: 'load' }),
+    ...mapActions('description', { loadDescription: 'load' })
   }
 }
 </script>
@@ -440,6 +536,7 @@ export default {
 .matrix-col {
   flex: 1 0 auto;
   overflow: hidden;
+  padding: 0.25rem;
 }
 
 .matrix-col__font {
@@ -456,106 +553,5 @@ export default {
 
 .col-3-11 {
   width: calc(100% * 3 / 11);
-}
-
-.a-reached-level {
-  background-color: red;
-}
-
-/* CSS Document */
-
-.title_text {
-  color: #ff0000;
-}
-
-.rating-table {
-  border: 1px solid #666;
-}
-
-.ratingTable_td {
-  border: 1px solid #666;
-  text-align: center;
-}
-
-.rating_table_header,
-.rating_table_footer {
-  background: #cccc99;
-}
-
-.Beginner {
-  background: #ffff00;
-}
-
-.Elementary {
-  background: #ffcc00;
-}
-
-.Pre-Intermediate {
-  background: #00ff00;
-}
-
-.Intermediate {
-  background: #00ffcc;
-}
-
-.Upper-Intermediate {
-  background: #6699ff;
-}
-
-.Advanced {
-  background: #3366cc;
-}
-
-.part_header {
-  background: #cc33cc;
-}
-
-.Vocabulary {
-  background: #cccc66;
-}
-
-.Grammar {
-  background: #ff9966;
-}
-
-.Listening {
-  background: #cc9999;
-}
-
-.part_two_body {
-  background: #ccddff;
-}
-
-.General_comment_on_oral_Assessment_Bands {
-  background: #bbffff;
-}
-
-.Confidence_in_speaking {
-  background: #aaffff;
-}
-
-.Speaking_rate {
-  background: #aaeeff;
-}
-
-.Using_of_cliche {
-  background: #88eeff;
-}
-
-.Interactivity_of_speech {
-  background: #77ddff;
-}
-
-.Using_of_the_Russian_language_in_speech {
-  background: #66ccff;
-}
-
-.Phonetic_and_pronunciation {
-  background: #9cf;
-}
-
-.ratingSelectedCell {
-  background: #ff0000;
-  border: 2px solid #ff0;
 }
 </style>

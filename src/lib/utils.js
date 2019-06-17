@@ -43,7 +43,7 @@ export const secondsToTimeTextLong = (val) => {
 }
 
 export const findMinElementIndex = (list, value, prop) => {
-  let idx = 0
+  let idx = -1
   for (const item of list) {
     if (item[prop] !== null && item[prop] < value) {
       idx++
@@ -51,7 +51,7 @@ export const findMinElementIndex = (list, value, prop) => {
       break
     }
   }
-  return idx
+  return idx >= 0 ? idx : 0
 }
 
 export const findMinElement = (list, value, prop) => {
