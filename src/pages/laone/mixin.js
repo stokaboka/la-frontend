@@ -82,7 +82,7 @@ export default {
     },
 
     async saveResults () {
-      await this.save(this.authUser)
+      await this.save({ id: this.authUser.id, attempt: this.authUser.attempt })
     },
 
     async fixUserAttempt () {

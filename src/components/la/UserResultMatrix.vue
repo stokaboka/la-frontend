@@ -1,12 +1,8 @@
 <template>
   <div>
     <div class="column q-table--bordered">
-      <div
-        v-for="(r, rIndex) in matrix"
-        :key="`r-${rIndex}`"
-        class="column"
-      >
-        <div v-if="r.content" class="row">
+      <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column">
+        <div v-if="r.rows" class="row">
           <div
             :class="r.labelClass"
             class="col-3 q-table--bordered items-center matrix-col matrix-col__font"
@@ -15,26 +11,30 @@
           </div>
 
           <div class="column col-9" :class="r.labelClass">
-            <div v-if="r.gadget && r.gadget === 'phoneticAndPronunciationSelect'" class="col row items-center">
-              <q-select outlined v-model="phoneticAndPronunciation.model" :options="phoneticAndPronunciation.options" />
+            <div
+              v-if="r.gadget && r.gadget === 'phoneticAndPronunciationSelect'"
+              class="col row items-center"
+            >
+              <q-select
+                outlined
+                v-model="phoneticAndPronunciation.model"
+                :options="phoneticAndPronunciation.options"
+              />
             </div>
             <div
-              v-for="(rContent, cIndex) in r.content"
-              :key="`c-${cIndex}`"
+              v-for="(row, rIndex) in r.rows"
+              :key="`c-${rIndex}`"
               class="col row items-stretch"
             >
-
               <div
-                v-for="(cContent, ccIndex) in rContent"
-                :key="`c-${ccIndex}`"
-                :class="[cContent.class, r.contentClass]"
-
+                v-for="(rowItem, rowItemIndex) in row"
+                :key="`c-${rowItemIndex}`"
+                :class="[r.rowsClass, rowItem.class]"
                 class="column text-center vertical-middle q-table--bordered matrix-col matrix-col__font"
               >
-                <span v-if="cContent.label">{{ cContent.label }}</span>
-                <span v-if="cContent.value">{{ cContent.value }}</span>
+                <span v-if="rowItem.label">{{ rowItem.label }}</span>
+                <span v-if="rowItem.value">{{ rowItem.value }}</span>
               </div>
-
             </div>
           </div>
         </div>
@@ -47,33 +47,58 @@
             {{ r.label }}
           </div>
         </div>
-
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { findMinElementIndex } from '../../lib/utils'
 /**
-   * part I
-   */
+ * part I
+ */
 // const FinalRating_values = [1, 8.4, 17.1, 26.5, 35.1, 44.7, 54.1, 63.7, 73.1, 83.7, 100]
-const autoTestLevels = [1, 8.4, 17.1, 26.5, 35.1, 44.7, 54.1, 63.7, 73.1, 83.7, 100]
+const autoTestLevels = [
+  1,
+  8.4,
+  17.1,
+  26.5,
+  35.1,
+  44.7,
+  54.1,
+  63.7,
+  73.1,
+  83.7,
+  100
+]
 const vocabularyLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, null]
 const grammarLevels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, null]
 const listeningLevels = [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, null]
 
 // Part1_values
 // Part1_ID
-const selfTestLevels = vocabularyLevels.map((e, i) => e + grammarLevels[i] + listeningLevels[i])
+const selfTestLevels = vocabularyLevels.map(
+  (e, i) => e + grammarLevels[i] + listeningLevels[i]
+)
 
 /**
-   * part II
-   */
+ * part II
+ */
 // Part2_values
-const generalCommentOnOralAssessmentBands = [ 0, 0.4, 1.1, 2.5, 3.1, 4.7, 6.1, 7.7, 9.1, 11.7, 12.0 ]
+const generalCommentOnOralAssessmentBands = [
+  0,
+  0.4,
+  1.1,
+  2.5,
+  3.1,
+  4.7,
+  6.1,
+  7.7,
+  9.1,
+  11.7,
+  12.0
+]
 const confidenceInSpeaking = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const speakingRate = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const usingOfCliche = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -81,16 +106,17 @@ const interactivityOfSpeech = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const usingOfTheRussianLanguageInSpeech = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 // const Part2_final_values = [0, 5.4, 11.1, 17.5, 23.1, 29.7, 36.1, 42.7, 49.1, 56.7, 62]
-const talkTestLevels = generalCommentOnOralAssessmentBands.map((e, i) =>
-  e +
-  confidenceInSpeaking[i] +
-  speakingRate[i] +
-  usingOfCliche[i] +
-  interactivityOfSpeech[i] +
-  usingOfTheRussianLanguageInSpeech[i]
+const talkTestLevels = generalCommentOnOralAssessmentBands.map(
+  (e, i) =>
+    e +
+    confidenceInSpeaking[i] +
+    speakingRate[i] +
+    usingOfCliche[i] +
+    interactivityOfSpeech[i] +
+    usingOfTheRussianLanguageInSpeech[i]
 )
 
-const FinalRating_values = [1, 8.4, 17.1, 26.5, 35.1, 44.7, 54.1, 63.7, 73.1, 83.7, 100]
+// const FinalRating_values = [1, 8.4, 17.1, 26.5, 35.1, 44.7, 54.1, 63.7, 73.1, 83.7, 100]
 
 const phoneticAndPronunciation = [
   { value: 1, label: 'необходима работа над звуками' },
@@ -107,13 +133,15 @@ export default {
         options: phoneticAndPronunciation,
         model: null
       },
+      levelOne: 0,
+      levelTwo: 0,
       matrix: [
         {
           label:
             'Общеевропейская Система Уровней Владения Иностранными Языками (CEF)',
           labelClass: 'bg-orange-1',
-          contentClass: 'bg-orange-1',
-          content: [
+          rowsClass: 'bg-orange-1',
+          rows: [
             [
               { label: 'A1', class: 'col-3-11' },
               { label: 'A2', class: 'col-2-11' },
@@ -128,7 +156,7 @@ export default {
         {
           label: 'Система Уровней Владения Иностранными Языками Свободы Слова',
           labelClass: 'bg-white',
-          content: [
+          rows: [
             [
               { label: 'Beginner', class: 'col-2-11 bg-yellow' },
               { label: 'Elementary', class: 'col-2-11 bg-orange-11' },
@@ -159,141 +187,247 @@ export default {
         {
           label: 'Баллы для автоматического подсчета итогов тестирования',
           labelClass: 'bg-orange-1',
-          contentClass: 'col-1-11 bg-orange-1',
-          content: [ autoTestLevels.map(e => { return { value: e } }) ]
+          rowsClass: 'col-1-11',
+          target: 'finalLevel',
+          rows: [
+            autoTestLevels.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
           label: 'ЧАСТЬ I: САМОСТОЯТЕЛЬНАЯ',
           labelClass: 'bg-purple-11',
-          content: null
+          rows: null
         },
 
         {
           label: 'Лексика / Vocabulary',
           labelClass: 'bg-green-2',
-          contentClass: 'col-1-11 bg-green-2',
-          content: [ vocabularyLevels.map(e => { return { value: e } }) ]
+          rowsClass: 'col-1-11',
+          target: 'vocabularyLevel',
+          rows: [
+            vocabularyLevels.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
           label: 'Грамматика / Grammar',
           labelClass: 'bg-deep-orange-2',
-          contentClass: 'col-1-11 bg-deep-orange-2',
-          content: [ grammarLevels.map(e => { return { value: e } }) ]
+          rowsClass: 'col-1-11',
+          target: 'grammarLevel',
+          rows: [
+            grammarLevels.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
           label: 'Восприятие на слух / Listening',
           labelClass: 'bg-purple-2',
-          contentClass: 'col-1-11 bg-purple-2',
-          content: [ listeningLevels.map(e => { return { value: e } }) ]
+          rowsClass: 'col-1-11',
+          target: 'listeningLevel',
+          rows: [
+            listeningLevels.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
-          label: 'Баллы для автоматического определения уровня (по самостоятельной части)',
+          label:
+            'Баллы для автоматического определения уровня (по самостоятельной части)',
           labelClass: 'bg-orange-1',
-          contentClass: 'col-1-11 bg-orange-1',
-          content: [ selfTestLevels.map(e => { return { value: e } }) ]
+          rowsClass: 'col-1-11',
+          target: 'levelOne',
+          rows: [
+            selfTestLevels.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
-          label: 'Сумма набранных баллов по самостоятельной части тестирования (отражается балл и соответствующий уровень):',
+          label:
+            'Сумма набранных баллов по самостоятельной части тестирования (отражается балл и соответствующий уровень):',
           labelClass: 'bg-orange-1',
-          contentClass: 'col-1-11 bg-orange-1',
-          content: []
+          rowsClass: 'col-1-11',
+          rows: []
         },
 
         {
           label: 'ЧАСТЬ II: УСТНАЯ',
           labelClass: 'bg-purple-11',
-          content: null
+          rows: null
         },
 
         {
-          label: 'Устное владение лексико-грамматическими компетентностями / General comment on oral Assessment Bands',
+          label:
+            'Устное владение лексико-грамматическими компетентностями / General comment on oral Assessment Bands',
           labelClass: 'bg-light-blue-1',
-          contentClass: 'col-1-11 bg-light-blue-1',
-          content: [ generalCommentOnOralAssessmentBands.map(e => { return { value: e } }) ]
+          rowsClass: 'col-1-11',
+          rows: [
+            generalCommentOnOralAssessmentBands.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
-          label: 'Уверенность и охотность при говорении / Confidence in speaking',
-          labelClass: 'bg-light-blue-1',
-          contentClass: 'col-1-11 bg-light-blue-1',
-          content: [ confidenceInSpeaking.map(e => { return { value: e } }) ]
+          label:
+            'Уверенность и охотность при говорении / Confidence in speaking',
+          labelClass: 'bg-light-blue-2',
+          rowsClass: 'col-1-11',
+          rows: [
+            confidenceInSpeaking.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
           label: 'Скорость речи / Speaking rate',
-          labelClass: 'bg-light-blue-1',
-          contentClass: 'col-1-11 bg-light-blue-1',
-          content: [ speakingRate.map(e => { return { value: e } }) ]
+          labelClass: 'bg-light-blue-3',
+          rowsClass: 'col-1-11',
+          rows: [
+            speakingRate.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
           label: 'Языковые клише и стандартные фразы / Using of cliché',
-          labelClass: 'bg-light-blue-1',
-          contentClass: 'col-1-11 bg-light-blue-1',
-          content: [ usingOfCliche.map(e => { return { value: e } }) ]
+          labelClass: 'bg-light-blue-4',
+          rowsClass: 'col-1-11',
+          rows: [
+            usingOfCliche.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
           label: 'Характер интерактивности речи / Interactivity of speech',
-          labelClass: 'bg-light-blue-1',
-          contentClass: 'col-1-11 bg-light-blue-1',
-          content: [ interactivityOfSpeech.map(e => { return { value: e } }) ]
+          labelClass: 'bg-light-blue-5',
+          rowsClass: 'col-1-11',
+          rows: [
+            interactivityOfSpeech.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
-          label: 'Использование помощи русского в речи / Using of the Russian language in speech',
-          labelClass: 'bg-light-blue-1',
-          contentClass: 'col-1-11 bg-light-blue-1',
-          content: [ usingOfTheRussianLanguageInSpeech.map(e => { return { value: e } }) ]
+          label:
+            'Использование помощи русского в речи / Using of the Russian language in speech',
+          labelClass: 'bg-light-blue-6',
+          rowsClass: 'col-1-11',
+          rows: [
+            usingOfTheRussianLanguageInSpeech.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
-          label: 'Комментарий к фонетике и произношению / Phonetic and pronunciation',
-          labelClass: 'bg-light-blue-1',
-          contentClass: 'col-1-11 bg-light-blue-1',
-          content: [ ],
+          label:
+            'Комментарий к фонетике и произношению / Phonetic and pronunciation',
+          labelClass: 'bg-light-blue-7',
+          rowsClass: 'col-1-11',
+          rows: [],
           gadget: 'phoneticAndPronunciationSelect'
         },
 
         {
-          label: 'Баллы для автоматического определения уровня (по устной части)',
+          label:
+            'Баллы для автоматического определения уровня (по устной части)',
           labelClass: 'bg-orange-1',
-          contentClass: 'col-1-11 bg-orange-1',
-          content: [ talkTestLevels.map(e => { return { value: e } }) ]
+          rowsClass: 'col-1-11',
+          rows: [
+            talkTestLevels.map(e => {
+              return { value: e }
+            })
+          ]
         },
 
         {
-          label: 'Сумма набранных баллов по устной части тестирования (отражается балл и соответствующий уровень):',
+          label:
+            'Сумма набранных баллов по устной части тестирования (отражается балл и соответствующий уровень):',
           labelClass: 'bg-white',
-          contentClass: 'col-1-11 bg-white',
-          content: [ ]
+          rowsClass: 'col-1-11',
+          rows: []
         }
       ]
     }
   },
-  mounted () {
-    this.load()
+  async mounted () {
+    const { id } = this.user
+    const { attempt } = this.attempt
+    await this.loadResults({ id, attempt })
+    this.initResults()
   },
   computed: {
-    ...mapGetters('results', ['savedResults'])
+    vocabularyLevel () {
+      return this.getPartPhaseLevel(1, 1)
+    },
+    grammarLevel () {
+      return this.getPartPhaseLevel(1, 2)
+    },
+    listeningLevel () {
+      return this.getPartPhaseLevel(1, 3)
+    },
+    finalLevel () {
+      return this.levelOne + this.levelTwo
+    },
+    ...mapGetters('users', ['user']),
+    ...mapGetters('results', ['savedResults']),
+    ...mapGetters('attempts', ['attempt'])
   },
   methods: {
-    reindex () {
-      let _r = 0
-      let _c = 0
-      this.matrix = this.matrix.map(r => {
-        ++_r
-        r.content = r.content.map(c => {
-          return { ...c, id: `${_r}-${++_c}` }
-        })
-        return r
+    getPartPhaseLevel (part, phase) {
+      const phaseObj = this.savedResults.find(
+        e => e.part === part && e.phase === phase
+      )
+      if (phaseObj) return phaseObj.level
+      return 0
+    },
+    initResults () {
+      this.levelOne = this.calcResultsPartOne()
+      this.levelTwo = this.calcResultsPartTwo()
+      this.showLevels()
+    },
+    showLevels () {
+      this.matrix = this.matrix.map(e => {
+        if (e.target) {
+          e.rows = e.rows.map(row => {
+            const minIdx = findMinElementIndex(row, this[e.target], 'value')
+            return row.map((item, itemIdx) => {
+              return { ...item, ...{ class: itemIdx === minIdx ? 'bg-red text-white text-weight-bold shadow-2' : '' } }
+            }, this)
+          }, this)
+        }
+        // const midx = findMinElementIndex(e.rows, this[e.target], 'value')
+        // e.rows = e.rows.map((ee, ii) => {
+        //   return ee.map((eee, iii) => {
+        //     return { ...eee, ...{ class: iii === midx ? 'bg-red text-white text-weight-bold shadow-2' : '' } }
+        //   })
+        // })
+        return { ...e }
       })
     },
+    calcResultsPartOne () {
+      const levelOne = this.savedResults
+        .filter(e => e.part === 1)
+        .reduce((acc, e) => acc + e.level, 0)
+      return levelOne
+    },
+    calcResultsPartTwo () {},
+
     ...mapActions('results', { loadResults: 'load' })
   }
 }
@@ -304,7 +438,7 @@ export default {
 }
 
 .matrix-col {
-  flex: 1 0 fit-content;
+  flex: 1 0 auto;
   overflow: hidden;
 }
 
@@ -322,6 +456,10 @@ export default {
 
 .col-3-11 {
   width: calc(100% * 3 / 11);
+}
+
+.a-reached-level {
+  background-color: red;
 }
 
 /* CSS Document */
