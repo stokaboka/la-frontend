@@ -127,10 +127,19 @@ export default {
       }
     },
     async initQuestions () {
-      await this.loadQuestions()
+      await this.loadQuestions({
+        test: this.questionTest,
+        part: this.questionPart,
+        phase: this.questionPhase,
+        category: this.category
+      })
     },
     async initQuestionsTotalCount () {
-      await this.countQuestions()
+      await this.loadCountQuestions({
+        test: this.questionTest,
+        part: this.questionPart,
+        phase: this.questionPhase
+      })
     },
     nextCategory () {
       if (this.category < this.maxCategory) {
@@ -141,7 +150,7 @@ export default {
       }
     },
     nextQuestion () {
-      if (this.questionIndex < this.countQuestions - 1) {
+      if (this.questionIndex < this.questionsCount - 1) {
         this.NEXT_QUESTION()
       } else {
         this.nextCategory()
@@ -202,7 +211,7 @@ export default {
       'CLEAR_QUESTIONS'
     ]),
     ...mapActions('users', ['fixAttempt']),
-    ...mapActions('questions', { loadQuestions: 'load', countQuestions: 'count' }),
+    ...mapActions('questions', { loadQuestions: 'load', loadCountQuestions: 'count' }),
     ...mapActions('results', ['calculateResults', 'save'])
   },
   computed: {
@@ -226,6 +235,9 @@ export default {
       'questions',
       'questionsCount',
       'questionIndex',
+      'questionTest',
+      'questionPart',
+      'questionPhase',
       'category'
     ])
   },

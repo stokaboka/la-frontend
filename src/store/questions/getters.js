@@ -1,8 +1,8 @@
 export const questions = s => s.questions
 export const question = s => s.questions ? s.questions[s.questionIndex] : {}
-// export const questionTest = s => s.test
-// export const questionPart = s => s.part
-// export const questionPhase = s => s.phase
+export const questionTest = s => s.test
+export const questionPart = s => s.part
+export const questionPhase = s => s.phase
 export const category = s => s.category
 
 export const questionIndex = s => s.questionIndex

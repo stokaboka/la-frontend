@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Notify } from 'quasar'
+import { objectToParamStr } from '../../lib/utils'
 
 const errorNotify = function (error) {
   console.warn(error)
@@ -11,10 +12,12 @@ const errorNotify = function (error) {
   })
 }
 
-export const count = ({ state, commit }) => {
-  const paramsCount = `test/${state.test}/part/${state.part}/phase/${state.phase}`
+export const count = ({ state, commit }, params) => {
+  const keys = ['test', 'part', 'phase']
+  const paramsList = objectToParamStr(keys, params)
+  // const paramsCount = `test/${state.test}/part/${state.part}/phase/${state.phase}`
 
-  return axios.get(`/questions/count/${paramsCount}`)
+  return axios.get(`/questions/count/${paramsList}`)
     .then(response => {
       commit('SET_PHASE_QUESTIONS_COUNT', response.data)
     })
@@ -24,8 +27,11 @@ export const count = ({ state, commit }) => {
     })
 }
 
-export const load = ({ state, commit }) => {
-  const paramsList = `test/${state.test}/part/${state.part}/phase/${state.phase}/category/${state.category}`
+export const load = ({ state, commit }, params) => {
+  const keys = ['test', 'part', 'phase', 'category']
+  const paramsList = objectToParamStr(keys, params)
+  // const paramsList = `test/${state.test}/part/${state.part}/phase/${state.phase}/category/${state.category}`
+  // const paramsList = `test/${state.test}/part/${state.part}/phase/${state.phase}`
 
   return axios.get(`/questions/${paramsList}`)
     .then(response => {

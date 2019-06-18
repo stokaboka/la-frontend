@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import UserResultMatrix from '../../components/la/UserResultMatrix'
+import UserResultMatrix from '../../components/la/parttwo/UserResultMatrix'
 export default {
   name: 'LaTwoUserResult',
   components: { UserResultMatrix },
