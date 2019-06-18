@@ -1,6 +1,6 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { findMinElement, findMinElementIndex } from '../../../lib/utils'
-import { categories, selfTestLevels } from './constants'
+import { categories, selfTestLevels, partTwoCategories } from './constants'
 
 export default {
   data () {
@@ -14,7 +14,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('users', ['user']),
+    levelOneByCategoryABCN () {
+      return partTwoCategories[this.levelOneByCategoryID - 1]
+    },
+    ...mapGetters('app', ['test']),
+    ...mapGetters('users', ['user', 'authUser']),
     ...mapGetters('results', ['savedResults']),
     ...mapGetters('attempts', ['attempt']),
     ...mapGetters('questions', [
@@ -115,6 +119,23 @@ export default {
       if (levelOneByCategory >= 15 && levelOneByCategory < 21) return 3
       return 4
     },
+
+    async saveResults (level, answers, extra) {
+      const { id, attempt } = this.user
+      const { test } = this
+      const part = 2
+      const phase = this.levelOneByCategoryID
+      await this.save({
+        id,
+        attempt,
+        test,
+        part,
+        phase,
+        level,
+        answers,
+        extra
+      })
+    },
     ...mapMutations('questions', [
       'SET_TEST',
       'SET_PART',
@@ -125,8 +146,11 @@ export default {
       'NEXT_QUESTION',
       'CLEAR_QUESTIONS'
     ]),
-    ...mapActions('results', { loadResults: 'load' }),
+    ...mapActions('results', { loadResults: 'load', save: 'save' }),
     ...mapActions('description', { loadDescription: 'load' }),
-    ...mapActions('questions', { loadQuestions: 'load', loadCountQuestions: 'count' })
+    ...mapActions('questions', {
+      loadQuestions: 'load',
+      loadCountQuestions: 'count'
+    })
   }
 }

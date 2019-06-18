@@ -144,3 +144,5 @@ export const phoneticAndPronunciation = [
   { value: 3, label: 'необходима работа над фонетикой' },
   { value: 4, label: 'рекомендована работа над фонетикой' }
 ]
+
+export const partTwoCategories = ['A1', 'A2', 'B1', 'B2']

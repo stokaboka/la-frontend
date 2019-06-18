@@ -297,7 +297,6 @@ export const count = ({ commit, rootGetters }) => {
 }
 
 export const load = ({ commit, rootGetters }, params) => {
-  // const { id, attempt } = rootGetters['users/authUser']
   const { id, attempt } = params
 
   return axios
@@ -311,8 +310,7 @@ export const load = ({ commit, rootGetters }, params) => {
     })
 }
 
-export const save = ({ commit, getters, rootGetters }, params) => {
-  // const { id, attempt } = rootGetters['users/authUser']
+export const savePartOne = ({ commit, getters, rootGetters }, params) => {
   const { id, attempt } = params
 
   const test = rootGetters['app/test']
@@ -327,6 +325,35 @@ export const save = ({ commit, getters, rootGetters }, params) => {
     part,
     phase,
     level
+  }
+
+  return axios
+    .post('/results/save', postData)
+    .then(response => {
+      Notify.create({
+        message: 'Результат сохранен, Вы можете продолжить позднее.',
+        color: 'positive',
+        textColor: 'white',
+        icon: 'done'
+      })
+    })
+    .catch(error => {
+      errorNotify(error.message)
+    })
+}
+
+export const save = ({ commit, getters, rootGetters }, params) => {
+  const { id, attempt, test, part, phase, level, answers, extra } = params
+
+  const postData = {
+    idUser: id,
+    attempt,
+    test,
+    part,
+    phase,
+    level,
+    answers,
+    extra
   }
 
   return axios

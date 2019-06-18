@@ -63,7 +63,7 @@ export const findMinElement = (list, value, prop = '') => {
 
 export const objectToParamStr = (keys, params) => {
   return keys
-    .filter(key => params[key] !== 'undefined')
+    .filter(key => params[key] !== undefined)
     .map(key => {
       return `${key}/${params[key]}`
     })

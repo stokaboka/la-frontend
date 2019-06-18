@@ -82,7 +82,18 @@ export default {
     },
 
     async saveResults () {
-      await this.save({ id: this.authUser.id, attempt: this.authUser.attempt })
+      const { id, attempt } = this.authUser
+      const { test, part, phase, level } = this
+      await this.save({
+        id,
+        attempt,
+        test,
+        part,
+        phase,
+        level,
+        answers: '',
+        extra: ''
+      })
     },
 
     async fixUserAttempt () {
@@ -219,6 +230,7 @@ export default {
     ...mapGetters('app', [
       'api', 'module', 'modules', 'lastModule',
       'description',
+      'test',
       'part',
       'phase',
       'lastPhase',

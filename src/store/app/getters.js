@@ -46,6 +46,7 @@ export function lockResume (state) {
   return state.lockResume
 }
 
+export const test = s => s.test
 export const mode = s => s.mode
 
 export const volume = s => s.volume

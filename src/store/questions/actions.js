@@ -30,8 +30,6 @@ export const count = ({ state, commit }, params) => {
 export const load = ({ state, commit }, params) => {
   const keys = ['test', 'part', 'phase', 'category']
   const paramsList = objectToParamStr(keys, params)
-  // const paramsList = `test/${state.test}/part/${state.part}/phase/${state.phase}/category/${state.category}`
-  // const paramsList = `test/${state.test}/part/${state.part}/phase/${state.phase}`
 
   return axios.get(`/questions/${paramsList}`)
     .then(response => {
