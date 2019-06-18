@@ -24,8 +24,7 @@
               </q-tab-panel>
 
               <q-tab-panel name="parttwo">
-                <div class="text-h6">Тестирование - устная часть</div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <speaking-test></speaking-test>
               </q-tab-panel>
 
               <q-tab-panel name="offer">
@@ -40,9 +39,10 @@
 
 <script>
 import UserResultMatrix from '../../components/la/parttwo/UserResultMatrix'
+import SpeakingTest from '../../components/la/parttwo/SpeakingTest'
 export default {
   name: 'LaTwoUserResult',
-  components: { UserResultMatrix },
+  components: { SpeakingTest, UserResultMatrix },
   data () {
     return {
       tab: 'result'

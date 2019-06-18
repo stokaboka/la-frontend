@@ -16,9 +16,26 @@ export default {
   computed: {
     ...mapGetters('users', ['user']),
     ...mapGetters('results', ['savedResults']),
-    ...mapGetters('attempts', ['attempt'])
+    ...mapGetters('attempts', ['attempt']),
+    ...mapGetters('questions', [
+      'question',
+      'questions',
+      'questionsCount',
+      'questionIndex',
+      'questionTest',
+      'questionPart',
+      'questionPhase',
+      'category'
+    ])
   },
   methods: {
+    async initQuestions () {
+      await this.loadQuestions({
+        test: this.questionTest,
+        part: 2,
+        phase: this.levelOneByCategoryID
+      })
+    },
     getPartPhaseLevel (part, phase) {
       if (this.results) {
         const phaseObj = this.results.find(
@@ -88,8 +105,8 @@ export default {
         .reduce((acc, e) => acc + e.level, 0)
     },
     calcLevelOneByCategory (levelOne) {
-      const obj = findMinElement(selfTestLevels, levelOne, 'value')
-      if (obj) return obj.value
+      const obj = findMinElement(selfTestLevels, levelOne)
+      if (obj) return obj
       return 0
     },
     calcLevelOneByCategoryID (levelOneByCategory) {
@@ -110,6 +127,6 @@ export default {
     ]),
     ...mapActions('results', { loadResults: 'load' }),
     ...mapActions('description', { loadDescription: 'load' }),
-    ...mapActions('questions', { loadQuestions: 'load', countQuestions: 'count' })
+    ...mapActions('questions', { loadQuestions: 'load', loadCountQuestions: 'count' })
   }
 }
