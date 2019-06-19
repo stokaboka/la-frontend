@@ -1,8 +1,8 @@
 {
   "name": "la-frontend",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Language Assessment© - система оценки знаний английского языка и отслеживания прогресса студента, изучающего язык.",
+  "productName": "Свобода слова - Language Assessment©",
   "cordovaId": "org.cordova.quasar.app",
   "author": "stokaboka <igothorev@gmail.com>",
   "private": true,

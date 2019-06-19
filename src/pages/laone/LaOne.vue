@@ -64,7 +64,7 @@
 
 <script>
 import mixin from './mixin'
-import MultiChoice from '../../components/la/MultiChoice'
+import MultiChoice from '../../components/la/part-one/MultiChoice'
 
 export default {
   name: 'LaOne',

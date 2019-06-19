@@ -1,5 +1,4 @@
 <template>
-  <q-page padding>
     <editor
       module="attempts"
       selection="single"
@@ -9,12 +8,11 @@
       hide-grid-selector
       @table-row-click="onTableRowClick"
     ></editor>
-  </q-page>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import Editor from '../../components/ui/table/Editor'
+import Editor from '../../ui/table/Editor'
 export default {
   name: 'LaTwoUserAttempts',
   components: { Editor },

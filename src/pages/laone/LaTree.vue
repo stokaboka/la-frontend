@@ -74,7 +74,7 @@
 
 <script>
 import mixin from './mixin'
-import GroupMultiChoice from '../../components/la/GroupMultiChoice'
+import GroupMultiChoice from '../../components/la/part-one/GroupMultiChoice'
 export default {
   name: 'LaTree',
   components: { GroupMultiChoice },

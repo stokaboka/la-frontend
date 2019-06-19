@@ -32,8 +32,8 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import MultiChoice from './MultiChoice'
-import TimerHelper from '../../lib/TimerHelper'
-import AudioHelper from '../../lib/AudioHelper'
+import TimerHelper from '../../../lib/TimerHelper'
+import AudioHelper from '../../../lib/AudioHelper'
 let timer = null
 let audio = null
 

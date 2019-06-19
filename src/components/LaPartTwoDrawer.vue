@@ -74,18 +74,18 @@ export default {
             label: '4k'
           }
         },
-        {
-          id: 'attempts',
-          icon: 'offline_pin',
-          label: 'Тесты',
-          route: 'part-two-user-tests',
-          active: false,
-          badge: {
-            floating: true,
-            color: 'red',
-            label: ''
-          }
-        },
+        // {
+        //   id: 'attempts',
+        //   icon: 'offline_pin',
+        //   label: 'Тесты',
+        //   route: 'part-two-user-tests',
+        //   active: false,
+        //   badge: {
+        //     floating: true,
+        //     color: 'red',
+        //     label: ''
+        //   }
+        // },
         {
           id: 'results',
           icon: 'ballot',

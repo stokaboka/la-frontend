@@ -1,13 +1,15 @@
 <template>
   <q-page padding>
-    <editor
-      module="users"
-      :selection="selection"
-      :selected-row="user"
-      hide-columns-selector
-      hide-grid-selector
-      @table-row-click="onTableRowClick"
-    ></editor>
+    <div class="row">
+      <editor
+        module="users"
+        :selection="selection"
+        :selected-row="user"
+        hide-columns-selector
+        hide-grid-selector
+        @table-row-click="onTableRowClick"
+      ></editor>
+    </div>
   </q-page>
 </template>
 

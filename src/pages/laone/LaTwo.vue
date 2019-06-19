@@ -64,7 +64,7 @@
 
 <script>
 import mixin from './mixin'
-import Cloze from '../../components/la/Cloze'
+import Cloze from '../../components/la/part-one/Cloze'
 
 export default {
   name: 'LaTwo',

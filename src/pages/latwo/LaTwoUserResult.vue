@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import UserResultMatrix from '../../components/la/parttwo/UserResultMatrix'
-import SpeakingTest from '../../components/la/parttwo/SpeakingTest'
+import UserResultMatrix from '../../components/la/part-two/UserResultMatrix'
+import SpeakingTest from '../../components/la/part-two/SpeakingTest'
 export default {
   name: 'LaTwoUserResult',
   components: { SpeakingTest, UserResultMatrix },
