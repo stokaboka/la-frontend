@@ -2,7 +2,7 @@
     <div class="row q-gutter-md no-wrap">
       <row-form v-if="user" :data="user" title="Пользователь" :model="usersModel" :visible-columns="userVisibleColumns">
         <template v-slot:actions>
-          <div class="row q-gutter-md">
+          <div v-if="isUsersPage" class="row q-gutter-md">
             <q-btn
               :disable="user.closed === 0"
               color="primary"
@@ -31,6 +31,7 @@
       <row-form v-if="attempt" :data="attempt" title="Попытка" :model="attemptModel">
         <template v-slot:actions>
           <q-btn
+            v-if="isUsersPage"
             color="green"
             label="Результат"
             @click="$router.push({ name: 'part-two-user-results' })"
@@ -61,6 +62,9 @@ export default {
     }
   },
   computed: {
+    isUsersPage () {
+      return this.$route.name === 'part-two-users'
+    },
     ...mapGetters('users', { user: 'user', authUser: 'authUser', usersModel: 'model' }),
     ...mapGetters('attempts', { attempt: 'attempt', attemptModel: 'model' })
   },

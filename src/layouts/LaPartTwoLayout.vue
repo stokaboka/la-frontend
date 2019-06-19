@@ -10,7 +10,7 @@
         leave-active-class="animated slideOutDown"
         mode="out-in"
       >
-        <la-user-manager key="usermanager" class="q-layout-padding"></la-user-manager>
+        <la-user-manager v-if="!isAboutPage" key="usermanager" class="q-layout-padding"></la-user-manager>
 
         <router-view key="laadmin"/>
 
@@ -33,6 +33,11 @@ export default {
     LaUserManager,
     LaFooter,
     LaHeader
+  },
+  computed: {
+    isAboutPage () {
+      return this.$route.name === 'part-two-home'
+    }
   }
 }
 </script>
