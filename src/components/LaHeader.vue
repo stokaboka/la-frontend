@@ -32,6 +32,39 @@
           replace
         ></q-route-tab>
 
+        <q-route-tab
+          v-if="adminMode"
+          :to="{ name: 'part-two-users' }"
+          default
+          hide="label"
+          icon="people"
+          label="Пользователи"
+          name="part-two-users"
+          replace
+        ></q-route-tab>
+
+        <q-route-tab
+          v-if="adminMode"
+          :to="{ name: 'part-two-user-results' }"
+          default
+          hide="label"
+          icon="ballot"
+          label="Результат"
+          name="part-two-user-results"
+          replace
+        ></q-route-tab>
+
+        <q-route-tab
+          v-if="adminMode"
+          :to="{ name: 'part-one-home' }"
+          default
+          hide="label"
+          icon="play_circle_outline"
+          label="Фаза I"
+          name="part-one-home"
+          replace
+        ></q-route-tab>
+
         <user-log-in-out-button
           color="dark"
           name="login"
@@ -59,6 +92,9 @@ export default {
     },
     showTestTitle () {
       return this.showTitle && this.mode === 'test'
+    },
+    adminMode () {
+      return this.isLogged && (this.isAdmin || this.isOperator)
     },
     ...mapGetters('users', [
       'isLogged',

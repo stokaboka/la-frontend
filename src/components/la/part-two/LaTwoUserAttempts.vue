@@ -33,7 +33,7 @@ export default {
       if (user) this.params = `/user/${user.id}`
       else this.params = '/user/0'
     },
-    onTableRowClick (row) {
+    onUsersTableRowClick (row) {
       this.SET_ATTEMPT(row)
     },
     ...mapMutations('attempts', ['SET_ATTEMPT'])

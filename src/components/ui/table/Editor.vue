@@ -1,29 +1,25 @@
 <template>
   <div class="column justify-start items-center">
-    <q-card>
-      <q-card-section class="q-mb-md text-h6 bg-secondary text-white">
-        <span>{{model.title}}</span>
-      </q-card-section>
-      <q-card-section v-if="filterComponent">
+      <div v-if="filterComponent">
         <component
           :is="filterComponent"
           @filter-params-changed="onFilterParamsChanged">
         </component>
-      </q-card-section>
-      <q-card-section v-if="model">
+      </div>
+      <div v-if="model">
         <editable-data-table
           :model="model"
           :module="module"
           :params="params"
           :selection="selection"
           :selected-row="selectedRow"
+          :hide-search-field="hideSearchField"
           :hide-columns-selector="hideColumnsSelector"
           :hide-grid-selector="hideGridSelector"
           @table-row-click="onTableRowClick"
         >
         </editable-data-table>
-      </q-card-section>
-    </q-card>
+      </div>
   </div>
 </template>
 
@@ -48,6 +44,13 @@ export default {
       required: false
     },
     hideGridSelector: {
+      type: Boolean,
+      default () {
+        return false
+      },
+      required: false
+    },
+    hideSearchField: {
       type: Boolean,
       default () {
         return false

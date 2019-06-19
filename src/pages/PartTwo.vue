@@ -33,7 +33,7 @@
           label="Продолжить"
           color="primary"
           class="q-ma-md"
-          @click="startLa()"
+          @click="$router.push({ name: 'part-two-users' })"
         />
       </div>
 

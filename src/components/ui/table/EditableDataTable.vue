@@ -34,9 +34,14 @@
         </q-td>
         <q-td v-for="column in columns" :key="column.field" :props="props">
           <div v-if="column.gadget">
+            <q-icon
+              v-if="column.gadget.type === 'icon'"
+              v-bind="column.gadget.options[props.row[column.field]]"
+            ></q-icon>
             <q-chip
               v-if="column.gadget.type === 'chip'"
               v-bind="column.gadget.options[props.row[column.field]]"
+              dense
               class="shadow-2"
             ></q-chip>
             <q-toggle
@@ -78,9 +83,12 @@
     </template>
 
     <template v-slot:top="props">
+      <div class="q-mr-md text-h6">{{title}}</div>
+
+      <q-space />
+
       <q-input
-        borderless
-        dense
+        v-if="!hideSearchField"
         debounce="300"
         v-model="filter"
         placeholder="Поиск"
@@ -172,6 +180,13 @@ export default {
       },
       required: false
     },
+    hideSearchField: {
+      type: Boolean,
+      default () {
+        return false
+      },
+      required: false
+    },
     hideGridSelector: {
       type: Boolean,
       default () {
@@ -220,6 +235,9 @@ export default {
     }
   },
   computed: {
+    showTopSlot () {
+      return !this.hideSearchField || !this.hideGridSelector || !this.hideColumnsSelector
+    },
     title () {
       return this.$store.state[this.module].model.title
     },

@@ -64,7 +64,7 @@ export default {
       items: [
         {
           id: 'users',
-          icon: 'person',
+          icon: 'people',
           label: 'Пользователи',
           route: 'part-two-users',
           active: true,

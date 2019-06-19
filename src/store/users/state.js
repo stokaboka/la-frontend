@@ -88,19 +88,22 @@ export default {
         update: false,
         insert: false,
         gadget: {
-          type: 'chip',
+          // type: 'chip',
+          type: 'icon',
           options: {
             0: {
-              label: 'Резрешено',
-              icon: 'check',
+              // label: null,
+              name: 'check_circle',
               color: 'green',
-              'text-color': 'white'
+              size: '2rem'
+              // 'text-color': 'white'
             },
             1: {
-              label: 'Запрешено',
-              icon: 'clear',
+              // label: null,
+              name: 'cancel',
               color: 'red',
-              'text-color': 'white'
+              size: '2rem'
+              // 'text-color': 'white'
             }
           }
           // options: {

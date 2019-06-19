@@ -1,13 +1,23 @@
 <template>
   <q-page padding>
-    <div class="row">
+    <div class="row q-gutter-md">
       <editor
         module="users"
         :selection="selection"
         :selected-row="user"
         hide-columns-selector
         hide-grid-selector
-        @table-row-click="onTableRowClick"
+        @table-row-click="onUsersTableRowClick"
+      ></editor>
+      <editor
+        module="attempts"
+        :selection="selection"
+        :filter="attemptsParams"
+        :selected-row="attempt"
+        hide-search-field
+        hide-columns-selector
+        hide-grid-selector
+        @table-row-click="onAttemptsTableRowClick"
       ></editor>
     </div>
   </q-page>
@@ -21,16 +31,30 @@ export default {
   components: { Editor },
   data () {
     return {
-      selection: 'single'
+      selection: 'single',
+      attemptsParams: ''
     }
   },
+  mounted () {
+    this.setUserFilterParams(this.user)
+  },
   computed: {
-    ...mapGetters('users', ['user'])
+    ...mapGetters('users', ['user']),
+    ...mapGetters('attempts', ['attempt'])
   },
   methods: {
-    onTableRowClick (row) {
-      this.SET_USER(row)
+    onAttemptsTableRowClick (row) {
+      this.SET_ATTEMPT(row)
     },
+    onUsersTableRowClick (row) {
+      this.SET_USER(row)
+      this.setUserFilterParams(row)
+    },
+    setUserFilterParams (user) {
+      if (user) this.attemptsParams = `/user/${user.id}`
+      else this.attemptsParams = '/user/0'
+    },
+    ...mapMutations('attempts', ['SET_ATTEMPT']),
     ...mapMutations('users', ['SET_USER']),
     ...mapActions('users', ['usersList'])
   }
