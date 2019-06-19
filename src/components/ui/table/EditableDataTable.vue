@@ -219,10 +219,6 @@ export default {
     }
   },
   mounted () {
-    if (this.selectedRow) {
-      this.selected = [this.selectedRow]
-    }
-
     this.tableVisibleColumns = this.visibleColumns
 
     if (!this.filterComponent) {
@@ -369,6 +365,9 @@ export default {
       // } else {
       //   this.selected = []
       // }
+    },
+    selectedRow (val) {
+      this.selected = val === null ? [] : [val]
     }
   }
 }

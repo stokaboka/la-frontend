@@ -21,8 +21,8 @@ export const load = ({ commit, getters, rootGetters }, playload) => {
 export const reload = ({ getters, dispatch }, playload) => {
   const { module } = playload
   const mdl = getters['modules'][module]
-  const query = mdl ? mdl.query ? mdl.query : '' : ''
-  return dispatch('load', query)
+  if (mdl) return dispatch('load', mdl)
+  return null
 }
 
 export const insert = ({ commit, getters, rootGetters }, playload) => {

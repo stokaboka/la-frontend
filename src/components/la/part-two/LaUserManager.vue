@@ -1,6 +1,6 @@
 <template>
     <div class="row q-gutter-md no-wrap">
-      <la-user v-if="user" :user="user" title="Пользователь" :model="model" :visible-columns="userVisibleColumns">
+      <row-form v-if="user" :data="user" title="Пользователь" :model="usersModel" :visible-columns="userVisibleColumns">
         <template v-slot:actions>
           <div class="row q-gutter-md">
             <q-btn
@@ -25,31 +25,34 @@
               </q-tooltip>
             </q-btn>
 
-            <q-btn
-              color="primary"
-              label="Результат"
-              @click="closeAttempt"
-            >
-              <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-                Перейти к результатам теста
-              </q-tooltip>
-            </q-btn>
-
           </div>
         </template>
-      </la-user>
-      <la-user v-if="authUser" :user="authUser" title="Инструктор" :model="model" :visible-columns="managerVisibleColumns">
-      </la-user>
+      </row-form>
+      <row-form v-if="attempt" :data="attempt" title="Попытка" :model="attemptModel">
+        <template v-slot:actions>
+          <q-btn
+            color="green"
+            label="Результат"
+            @click="$router.push({ name: 'part-two-user-results' })"
+          >
+            <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+              Перейти к результатам теста
+            </q-tooltip>
+          </q-btn>
+        </template>
+      </row-form>
+      <row-form v-if="authUser" :data="authUser" title="Инструктор" :model="usersModel" :visible-columns="managerVisibleColumns">
+      </row-form>
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import LaUser from './LaUser'
+import RowForm from '../../ui/table/RowForm'
 export default {
   name: 'LaUserManager',
   components: {
-    LaUser
+    RowForm
   },
   data () {
     return {
@@ -58,7 +61,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('users', ['user', 'authUser', 'model'])
+    ...mapGetters('users', { user: 'user', authUser: 'authUser', usersModel: 'model' }),
+    ...mapGetters('attempts', { attempt: 'attempt', attemptModel: 'model' })
   },
   methods: {
     onUsersTableRowClick (row) {},

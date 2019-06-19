@@ -49,6 +49,7 @@ export default {
     onUsersTableRowClick (row) {
       this.SET_USER(row)
       this.setUserFilterParams(row)
+      this.SET_ATTEMPT(null)
     },
     setUserFilterParams (user) {
       if (user) this.attemptsParams = `/user/${user.id}`

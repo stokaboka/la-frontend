@@ -44,7 +44,7 @@
         ></q-route-tab>
 
         <q-route-tab
-          v-if="adminMode"
+          v-if="adminMode && attempt"
           :to="{ name: 'part-two-user-results' }"
           default
           hide="label"
@@ -103,7 +103,8 @@ export default {
       'isUser',
       'authUser'
     ]),
-    ...mapGetters('app', ['title', 'mode', 'leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description'])
+    ...mapGetters('app', ['title', 'mode', 'leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description']),
+    ...mapGetters('attempts', { attempt: 'attempt' })
   }
 }
 </script>
