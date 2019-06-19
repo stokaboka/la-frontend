@@ -3,8 +3,6 @@
 
     <la-header/>
 
-<!--    <la-part-two-drawer/>-->
-
     <q-page-container class="bg-white">
       <transition-group
         appear
@@ -12,9 +10,10 @@
         leave-active-class="animated slideOutDown"
         mode="out-in"
       >
-        <la-user-manager key="usermanager"></la-user-manager>
+        <la-user-manager key="usermanager" class="q-layout-padding"></la-user-manager>
 
         <router-view key="laadmin"/>
+
       </transition-group>
     </q-page-container>
 
@@ -26,18 +25,12 @@
 
 import LaHeader from '../components/LaHeader'
 import LaFooter from '../components/LaFooter'
-// import LaPartTwoDrawer from '../components/LaPartTwoDrawer'
-// import LaUser from '../components/ui/part-two/LaUser'
-// import LaManager from '../components/ui/part-two/LaManager'
 import LaUserManager from '../components/la/part-two/LaUserManager'
 
 export default {
   name: 'LaPartTwoLayout',
   components: {
     LaUserManager,
-    // LaManager,
-    // LaUser,
-    // LaPartTwoDrawer,
     LaFooter,
     LaHeader
   }

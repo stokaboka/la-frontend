@@ -1,10 +1,9 @@
 <template>
-  <div class="q-ma-lg">
-    <div v-if="user">
-      <div class="q-pa-sm text-h6 bg-secondary text-white">
+    <q-card>
+      <q-card-section class="text-h6 bg-secondary text-white">
         {{title}}
-      </div>
-      <div class="row justify-start items-start">
+      </q-card-section>
+      <q-card-section class="row justify-start items-start">
           <div v-for="column in columns" :key="column.field">
             <div
               v-if="user[column.field] != undefined"
@@ -32,14 +31,12 @@
               </div>
             </div>
           </div>
-      </div>
+      </q-card-section>
 
-      <slot name="actions"></slot>
-
-      <q-separator />
-
-    </div>
-  </div>
+      <q-card-section>
+        <slot name="actions"></slot>
+      </q-card-section>
+    </q-card>
 </template>
 
 <script>

@@ -2,7 +2,7 @@
     <div class="row q-gutter-md no-wrap">
       <la-user v-if="user" :user="user" title="Пользователь" :model="model" :visible-columns="userVisibleColumns">
         <template v-slot:actions>
-          <div class="q-mb-md row q-gutter-md">
+          <div class="row q-gutter-md">
             <q-btn
               :disable="user.closed === 0"
               color="primary"
@@ -22,6 +22,16 @@
             >
               <q-tooltip transition-show="flip-right" transition-hide="flip-left">
                 Запретить пользователю проходить самостоятельное тестирование
+              </q-tooltip>
+            </q-btn>
+
+            <q-btn
+              color="primary"
+              label="Результат"
+              @click="closeAttempt"
+            >
+              <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+                Перейти к результатам теста
               </q-tooltip>
             </q-btn>
 
