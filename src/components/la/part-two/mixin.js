@@ -10,7 +10,8 @@ export default {
       levelOne: 0,
       levelTwo: 0,
       levelOneByCategory: 0,
-      levelOneByCategoryID: 0
+      levelOneByCategoryID: 0,
+      savedLevelOneByCategoryID: 0
     }
   },
   computed: {
@@ -60,6 +61,7 @@ export default {
       this.levelOneByCategoryID = this.calcLevelOneByCategoryID(
         this.levelOneByCategory
       )
+      this.savedLevelOneByCategoryID = this.levelOneByCategoryID
     },
     async initDescriptions () {
       this.descriptions = await this.loadDescription({
