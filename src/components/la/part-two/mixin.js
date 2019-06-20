@@ -11,7 +11,9 @@ export default {
       levelTwo: 0,
       levelOneByCategory: 0,
       levelOneByCategoryID: 0,
-      savedLevelTwoByCategoryID: 0
+      savedLevelTwoByCategoryID: 0,
+      partTwoQuestions: null,
+      tempTwoResults: [[], [], [], []]
     }
   },
   computed: {
@@ -137,6 +139,50 @@ export default {
         answers,
         extra
       })
+    },
+    initPartTwoQuestions () {
+      this.partTwoQuestions = this.questions
+        .map(e => {
+          const resultExtra = this.getTempResult(e)
+          return {
+            ...e,
+            question: e.question.split('#'),
+            answer: e.answer.split('#').map((e, i) => {
+              return { label: e, value: i }
+            }),
+            ...resultExtra
+          }
+        }, this)
+        .sort((a, b) => a.category - b.category)
+    },
+    getTempResult (obj) {
+      const out = this.tempTwoResults[this.levelOneByCategoryID - 1]
+        .find(e =>
+          e.part === obj.part &&
+          e.phase === obj.phase &&
+          e.category === obj.category
+        )
+      if (out) {
+        const { result, extra } = out
+        return { result, extra }
+      }
+      return { result: null, extra: '' }
+    },
+    initTempTwoResults (levelID, result) {
+      for (let levelID = 1; levelID < this.levelOneByCategoryID; levelID++) {
+        this.fillTempTwoResults(levelID, result)
+      }
+    },
+    fillTempTwoResults (levelID, result) {
+      const extra = ''
+      this.tempTwoResults[levelID - 1] = this.partTwoQuestions
+        .map(e => {
+          const { phase, part, category } = e
+          return { phase, part, category, result, extra }
+        })
+    },
+    clearTempTwoResults (levelID) {
+      this.tempTwoResults[levelID - 1] = []
     },
     ...mapMutations('questions', [
       'SET_TEST',

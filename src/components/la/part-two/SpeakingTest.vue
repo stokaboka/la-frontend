@@ -67,14 +67,12 @@ export default {
   name: 'SpeakingTest',
   mixins: [mixin],
   data () {
-    return {
-      partTwoQuestions: null,
-      tempResults: [[], [], [], []]
-    }
+    return {}
   },
   async mounted () {
     await this.initResults()
     await this.initQuestions()
+    this.initTempTwoResults(this.levelOneByCategoryID, 2)
     this.initPartTwoQuestions()
   },
   methods: {
@@ -88,7 +86,7 @@ export default {
     async prevLevelTwoByCategory () {
       if (this.levelOneByCategoryID > 1) {
         for (let levelID = this.levelOneByCategoryID; levelID < 5; levelID++) {
-          this.clearTempResults(levelID)
+          this.clearTempTwoResults(levelID)
         }
 
         this.levelOneByCategoryID--
@@ -98,55 +96,14 @@ export default {
     },
     async nextLevelTwoByCategory () {
       if (this.levelOneByCategoryID < 4) {
-        this.fillTempResults(this.levelOneByCategoryID, 2)
+        this.fillTempTwoResults(this.levelOneByCategoryID, 2)
         this.levelOneByCategoryID++
         await this.initQuestions()
         this.initPartTwoQuestions()
       }
     },
-    initPartTwoQuestions () {
-      this.partTwoQuestions = this.questions
-        .map(e => {
-          const resultExtra = this.getTempResult(e)
-          return {
-            ...e,
-            question: e.question.split('#'),
-            answer: e.answer.split('#').map((e, i) => {
-              return { label: e, value: i }
-            }),
-            ...resultExtra
-            // result: null,
-            // extra: ''
-          }
-        }, this)
-        .sort((a, b) => a.category - b.category)
-    },
-    getTempResult (obj) {
-      const out = this.tempResults[this.levelOneByCategoryID - 1]
-        .find(e =>
-          e.part === obj.part &&
-          e.phase === obj.phase &&
-          e.category === obj.category
-        )
-      if (out) {
-        const { result, extra } = out
-        return { result, extra }
-      }
-      return { result: null, extra: '' }
-    },
-    fillTempResults (levelID, result) {
-      const extra = ''
-      this.tempResults[levelID - 1] = this.partTwoQuestions
-        .map(e => {
-          const { phase, part, category } = e
-          return { phase, part, category, result, extra }
-        })
-    },
-    clearTempResults (levelID) {
-      this.tempResults[levelID - 1] = []
-    },
     onInput () {
-      this.tempResults[this.levelOneByCategoryID - 1] = this.partTwoQuestions
+      this.tempTwoResults[this.levelOneByCategoryID - 1] = this.partTwoQuestions
         .filter(e => e.result || e.extra)
         .map(e => {
           const { phase, part, category, result, extra } = e
