@@ -11,7 +11,7 @@ export default {
       levelTwo: 0,
       levelOneByCategory: 0,
       levelOneByCategoryID: 0,
-      savedLevelOneByCategoryID: 0
+      savedLevelTwoByCategoryID: 0
     }
   },
   computed: {
@@ -57,11 +57,11 @@ export default {
 
       this.levelOne = this.calcResultsPart(1)
       this.levelTwo = this.calcResultsPart(2)
-      this.levelOneByCategory = this.calcLevelOneByCategory(this.levelOne)
-      this.levelOneByCategoryID = this.calcLevelOneByCategoryID(
-        this.levelOneByCategory
+      this.levelTwoByCategory = this.calcLevelTwoByCategory(this.levelOne)
+      this.levelTwoByCategoryID = this.calcLevelTwoByCategoryID(
+        this.levelTwoByCategory
       )
-      this.savedLevelOneByCategoryID = this.levelOneByCategoryID
+      this.savedLevelTwoByCategoryID = this.levelTwoByCategoryID
     },
     async initDescriptions () {
       this.descriptions = await this.loadDescription({
@@ -110,15 +110,15 @@ export default {
         .filter(e => e.part === part)
         .reduce((acc, e) => acc + e.level, 0)
     },
-    calcLevelOneByCategory (levelOne) {
+    calcLevelTwoByCategory (levelOne) {
       const obj = findMinElement(selfTestLevels, levelOne)
       if (obj) return obj
       return 0
     },
-    calcLevelOneByCategoryID (levelOneByCategory) {
-      if (levelOneByCategory >= 1 && levelOneByCategory < 9) return 1
-      if (levelOneByCategory >= 9 && levelOneByCategory < 15) return 2
-      if (levelOneByCategory >= 15 && levelOneByCategory < 21) return 3
+    calcLevelTwoByCategoryID (levelTwoByCategory) {
+      if (levelTwoByCategory >= 1 && levelTwoByCategory < 9) return 1
+      if (levelTwoByCategory >= 9 && levelTwoByCategory < 15) return 2
+      if (levelTwoByCategory >= 15 && levelTwoByCategory < 21) return 3
       return 4
     },
 
@@ -126,7 +126,7 @@ export default {
       const { id, attempt } = this.user
       const { test } = this
       const part = 2
-      const phase = this.levelOneByCategoryID
+      const phase = this.levelTwoByCategoryID
       await this.save({
         id,
         attempt,

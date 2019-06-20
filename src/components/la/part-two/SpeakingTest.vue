@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="row q-gutter-md">
-      <q-btn icon="first_page" color="secondary" label="Начать сначала" @click="restartLevelOneByCategory"></q-btn>
+      <q-btn icon="first_page" color="secondary" label="Начать сначала" @click="restartLevelTwoByCategory"></q-btn>
       <q-btn
         icon="chevron_left"
         color="grey"
         label="Назад"
         :disabled="levelOneByCategoryID === 1"
-        @click="prevLevelOneByCategory"
+        @click="prevLevelTwoByCategory"
       ></q-btn>
       <q-banner rounded class="bg-orange text-white"
         ><span class="text-h6">{{ levelOneByCategoryABCN }}</span></q-banner
@@ -17,7 +17,7 @@
         color="grey"
         label="Вперед"
         :disabled="levelOneByCategoryID === 4"
-        @click="nextLevelOneByCategory"
+        @click="nextLevelTwoByCategory"
       ></q-btn>
       <q-btn icon="check" color="primary" label="Завершить тест"></q-btn>
     </div>
@@ -78,22 +78,27 @@ export default {
     this.initPartTwoQuestions()
   },
   methods: {
-    async restartLevelOneByCategory () {
+    async restartLevelTwoByCategory () {
       if (this.levelOneByCategoryID > 1) {
-        this.levelOneByCategoryID = this.savedLevelOneByCategoryID
+        this.levelOneByCategoryID = this.savedLevelTwoByCategoryID
         await this.initQuestions()
         this.initPartTwoQuestions()
       }
     },
-    async prevLevelOneByCategory () {
+    async prevLevelTwoByCategory () {
       if (this.levelOneByCategoryID > 1) {
+        for (let levelID = this.levelOneByCategoryID; levelID < 5; levelID++) {
+          this.clearTempResults(levelID)
+        }
+
         this.levelOneByCategoryID--
         await this.initQuestions()
         this.initPartTwoQuestions()
       }
     },
-    async nextLevelOneByCategory () {
+    async nextLevelTwoByCategory () {
       if (this.levelOneByCategoryID < 4) {
+        this.fillTempResults(this.levelOneByCategoryID, 2)
         this.levelOneByCategoryID++
         await this.initQuestions()
         this.initPartTwoQuestions()
@@ -117,12 +122,28 @@ export default {
         .sort((a, b) => a.category - b.category)
     },
     getTempResult (obj) {
-      const out = this.tempResults[this.levelOneByCategoryID - 1].find(e => e.part === obj.part && e.phase === obj.phase && e.category === obj.category)
+      const out = this.tempResults[this.levelOneByCategoryID - 1]
+        .find(e =>
+          e.part === obj.part &&
+          e.phase === obj.phase &&
+          e.category === obj.category
+        )
       if (out) {
         const { result, extra } = out
         return { result, extra }
       }
       return { result: null, extra: '' }
+    },
+    fillTempResults (levelID, result) {
+      const extra = ''
+      this.tempResults[levelID - 1] = this.partTwoQuestions
+        .map(e => {
+          const { phase, part, category } = e
+          return { phase, part, category, result, extra }
+        })
+    },
+    clearTempResults (levelID) {
+      this.tempResults[levelID - 1] = []
     },
     onInput () {
       this.tempResults[this.levelOneByCategoryID - 1] = this.partTwoQuestions
