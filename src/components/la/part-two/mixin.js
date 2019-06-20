@@ -1,6 +1,6 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { findMinElement, findMinElementIndex } from '../../../lib/utils'
-import { categories, selfTestLevels, partTwoCategories } from './constants'
+import { categories, selfTestLevels, partTwoCategories, generalCommentOnOralAssessmentBands } from './constants'
 
 export default {
   data () {
@@ -9,16 +9,25 @@ export default {
       descriptions: null,
       levelOne: 0,
       levelTwo: 0,
-      levelOneByCategory: 0,
-      levelOneByCategoryID: 0,
+      levelTwoByCategory: 0,
+      levelTwoByCategoryID: 0,
       savedLevelTwoByCategoryID: 0,
       partTwoQuestions: null,
-      tempTwoResults: [[], [], [], []]
+      tempTwoResults: [[], [], [], []],
+      partTwoResultAnswers: 0,
+      confidenceInSpeaking: 0,
+      speakingRate: 0,
+      usingOfCliche: 0,
+      interactivityOfSpeech: 0,
+      usingOfTheRussianLanguageInSpeech: 0,
+      phoneticAndPronunciationSelect: 0,
+      partTwoResultClear: 0,
+      partTwoResult: 0
     }
   },
   computed: {
-    levelOneByCategoryABCN () {
-      return partTwoCategories[this.levelOneByCategoryID - 1]
+    levelTwoByCategoryABCN () {
+      return partTwoCategories[this.levelTwoByCategoryID - 1]
     },
     ...mapGetters('app', ['test']),
     ...mapGetters('users', ['user', 'authUser']),
@@ -40,7 +49,7 @@ export default {
       await this.loadQuestions({
         test: this.questionTest,
         part: 2,
-        phase: this.levelOneByCategoryID
+        phase: this.levelTwoByCategoryID
       })
     },
     getPartPhaseLevel (part, phase) {
@@ -60,9 +69,7 @@ export default {
       this.levelOne = this.calcResultsPart(1)
       this.levelTwo = this.calcResultsPart(2)
       this.levelTwoByCategory = this.calcLevelTwoByCategory(this.levelOne)
-      this.levelTwoByCategoryID = this.calcLevelTwoByCategoryID(
-        this.levelTwoByCategory
-      )
+      this.levelTwoByCategoryID = this.calcLevelTwoByCategoryID(this.levelTwoByCategory)
       this.savedLevelTwoByCategoryID = this.levelTwoByCategoryID
     },
     async initDescriptions () {
@@ -123,7 +130,22 @@ export default {
       if (levelTwoByCategory >= 15 && levelTwoByCategory < 21) return 3
       return 4
     },
-
+    calcPartTwoResults () {
+      const partTwoRating = this.calcPartTwoRating()
+      this.partTwoResultClear = this.tempTwoResults
+        .flat()
+        .reduce((a, e) => a + e.result, 0) / 10
+      this.partTwoResultAnswers = findMinElement(generalCommentOnOralAssessmentBands, this.partTwoResultClear)
+      this.partTwoResult = this.partTwoResultAnswers + partTwoRating
+      this.partTwoResultClear += partTwoRating
+    },
+    calcPartTwoRating () {
+      return this.confidenceInSpeaking +
+        this.speakingRate +
+        this.usingOfCliche +
+        this.interactivityOfSpeech +
+        this.usingOfTheRussianLanguageInSpeech
+    },
     async saveResults (level, answers, extra) {
       const { id, attempt } = this.user
       const { test } = this
@@ -156,7 +178,7 @@ export default {
         .sort((a, b) => a.category - b.category)
     },
     getTempResult (obj) {
-      const out = this.tempTwoResults[this.levelOneByCategoryID - 1]
+      const out = this.tempTwoResults[this.levelTwoByCategoryID - 1]
         .find(e =>
           e.part === obj.part &&
           e.phase === obj.phase &&
@@ -169,17 +191,23 @@ export default {
       return { result: null, extra: '' }
     },
     initTempTwoResults (levelID, result) {
-      for (let levelID = 1; levelID < this.levelOneByCategoryID; levelID++) {
-        this.fillTempTwoResults(levelID, result)
+      for (let l = 1; l < levelID; l++) {
+        this.fillTempTwoResults(l, result)
       }
     },
     fillTempTwoResults (levelID, result) {
       const extra = ''
-      this.tempTwoResults[levelID - 1] = this.partTwoQuestions
-        .map(e => {
-          const { phase, part, category } = e
+      const part = 2
+      const phase = levelID
+      this.tempTwoResults[levelID - 1] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        .map(category => {
           return { phase, part, category, result, extra }
         })
+      // this.tempTwoResults[levelID - 1] = this.partTwoQuestions
+      //   .map(e => {
+      //     const { phase, part, category } = e
+      //     return { phase, part, category, result, extra }
+      //   })
     },
     clearTempTwoResults (levelID) {
       this.tempTwoResults[levelID - 1] = []

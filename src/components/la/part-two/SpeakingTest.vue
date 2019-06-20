@@ -6,17 +6,17 @@
         icon="chevron_left"
         color="grey"
         label="Назад"
-        :disabled="levelOneByCategoryID === 1"
+        :disabled="levelTwoByCategoryID === 1"
         @click="prevLevelTwoByCategory"
       ></q-btn>
       <q-banner rounded class="bg-orange text-white"
-        ><span class="text-h6">{{ levelOneByCategoryABCN }}</span></q-banner
+        ><span class="text-h6">{{ levelTwoByCategoryABCN }}</span></q-banner
       >
       <q-btn
         icon="chevron_right"
         color="grey"
         label="Вперед"
-        :disabled="levelOneByCategoryID === 4"
+        :disabled="levelTwoByCategoryID === 4"
         @click="nextLevelTwoByCategory"
       ></q-btn>
       <q-btn icon="check" color="primary" label="Завершить тест"></q-btn>
@@ -72,38 +72,45 @@ export default {
   async mounted () {
     await this.initResults()
     await this.initQuestions()
-    this.initTempTwoResults(this.levelOneByCategoryID, 2)
     this.initPartTwoQuestions()
+    this.initTempTwoResults(this.levelTwoByCategoryID, 2)
   },
   methods: {
     async restartLevelTwoByCategory () {
-      if (this.levelOneByCategoryID > 1) {
-        this.levelOneByCategoryID = this.savedLevelTwoByCategoryID
+      if (this.levelTwoByCategoryID > 1) {
+        this.levelTwoByCategoryID = this.savedLevelTwoByCategoryID
+
+        for (let l = 1; l < 5; l++) {
+          this.clearTempTwoResults(l)
+        }
+
         await this.initQuestions()
         this.initPartTwoQuestions()
+        this.initTempTwoResults(this.levelTwoByCategoryID, 2)
       }
     },
     async prevLevelTwoByCategory () {
-      if (this.levelOneByCategoryID > 1) {
-        for (let levelID = this.levelOneByCategoryID; levelID < 5; levelID++) {
+      if (this.levelTwoByCategoryID > 1) {
+        for (let levelID = this.levelTwoByCategoryID; levelID < 5; levelID++) {
           this.clearTempTwoResults(levelID)
         }
 
-        this.levelOneByCategoryID--
+        this.levelTwoByCategoryID--
+        this.clearTempTwoResults(this.levelTwoByCategoryID)
         await this.initQuestions()
         this.initPartTwoQuestions()
       }
     },
     async nextLevelTwoByCategory () {
-      if (this.levelOneByCategoryID < 4) {
-        this.fillTempTwoResults(this.levelOneByCategoryID, 2)
-        this.levelOneByCategoryID++
+      if (this.levelTwoByCategoryID < 4) {
+        this.fillTempTwoResults(this.levelTwoByCategoryID, 2)
+        this.levelTwoByCategoryID++
         await this.initQuestions()
         this.initPartTwoQuestions()
       }
     },
     onInput () {
-      this.tempTwoResults[this.levelOneByCategoryID - 1] = this.partTwoQuestions
+      this.tempTwoResults[this.levelTwoByCategoryID - 1] = this.partTwoQuestions
         .filter(e => e.result || e.extra)
         .map(e => {
           const { phase, part, category, result, extra } = e

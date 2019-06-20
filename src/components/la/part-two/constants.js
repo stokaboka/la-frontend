@@ -35,42 +35,42 @@ export const categories = {
     phase: 2,
     label: 'Уверенность и охотность при говорении / Confidence in speaking',
     labelClass: 'bg-light-blue-2',
-    rowsClass: 'col-1-11'
+    rowsClass: 'col-1-11 cursor-pointer matrix-col__interactive'
   },
   speakingRate: {
     part: 2,
     phase: 3,
     label: 'Скорость речи / Speaking rate',
-    labelClass: 'bg-light-blue-3',
-    rowsClass: 'col-1-11'
+    labelClass: 'bg-light-blue-2',
+    rowsClass: 'col-1-11 cursor-pointer matrix-col__interactive'
   },
   usingOfCliche: {
     part: 2,
     phase: 4,
     label: 'Языковые клише и стандартные фразы / Using of cliché',
-    labelClass: 'bg-light-blue-4',
-    rowsClass: 'col-1-11'
+    labelClass: 'bg-light-blue-2',
+    rowsClass: 'col-1-11 cursor-pointer matrix-col__interactive'
   },
   interactivityOfSpeech: {
     part: 2,
     phase: 5,
     label: 'Характер интерактивности речи / Interactivity of speech',
-    labelClass: 'bg-light-blue-5',
-    rowsClass: 'col-1-11'
+    labelClass: 'bg-light-blue-2',
+    rowsClass: 'col-1-11 cursor-pointer matrix-col__interactive'
   },
   usingOfTheRussianLanguageInSpeech: {
     part: 2,
     phase: 6,
     label:
       'Использование помощи русского в речи / Using of the Russian language in speech',
-    labelClass: 'bg-light-blue-6',
-    rowsClass: 'col-1-11'
+    labelClass: 'bg-light-blue-2',
+    rowsClass: 'col-1-11 cursor-pointer matrix-col__interactive'
   },
   phoneticAndPronunciationSelect: {
     part: 2,
     phase: 7,
     label: 'Комментарий к фонетике и произношению / Phonetic and pronunciation',
-    labelClass: 'bg-light-blue-7',
+    labelClass: 'bg-light-blue-3',
     rowsClass: 'col-1-11'
   }
 }

@@ -31,6 +31,7 @@
                 :key="`c-${rowItemIndex}`"
                 :class="[r.rowsClass, rowItem.class]"
                 class="column text-center vertical-middle q-table--bordered matrix-col matrix-col__font"
+                @click="onInteractiveCellClick(r, rowItem)"
               >
                 <span v-if="rowItem.label">{{ rowItem.label }}</span>
                 <span v-if="rowItem.value">{{ rowItem.value }}</span>
@@ -228,10 +229,7 @@ export default {
 
         {
           ...categories.generalCommentOnOralAssessmentBands,
-          // label:
-          //   'Устное владение лексико-грамматическими компетентностями / General comment on oral Assessment Bands',
-          // labelClass: 'bg-light-blue-1',
-          // rowsClass: 'col-1-11',
+          target: 'partTwoResultAnswers',
           rows: [
             generalCommentOnOralAssessmentBands.map(e => {
               return { value: e }
@@ -241,10 +239,8 @@ export default {
 
         {
           ...categories.confidenceInSpeaking,
-          // label:
-          //   'Уверенность и охотность при говорении / Confidence in speaking',
-          // labelClass: 'bg-light-blue-2',
-          // rowsClass: 'col-1-11',
+          target: 'confidenceInSpeaking',
+          mouseClick: 'confidenceInSpeaking',
           rows: [
             confidenceInSpeaking.map(e => {
               return { value: e }
@@ -254,6 +250,8 @@ export default {
 
         {
           ...categories.speakingRate,
+          target: 'speakingRate',
+          mouseClick: 'speakingRate',
           rows: [
             speakingRate.map(e => {
               return { value: e }
@@ -263,6 +261,8 @@ export default {
 
         {
           ...categories.usingOfCliche,
+          target: 'usingOfCliche',
+          mouseClick: 'usingOfCliche',
           rows: [
             usingOfCliche.map(e => {
               return { value: e }
@@ -272,6 +272,8 @@ export default {
 
         {
           ...categories.interactivityOfSpeech,
+          target: 'interactivityOfSpeech',
+          mouseClick: 'interactivityOfSpeech',
           rows: [
             interactivityOfSpeech.map(e => {
               return { value: e }
@@ -281,6 +283,8 @@ export default {
 
         {
           ...categories.usingOfTheRussianLanguageInSpeech,
+          target: 'usingOfTheRussianLanguageInSpeech',
+          mouseClick: 'usingOfTheRussianLanguageInSpeech',
           rows: [
             usingOfTheRussianLanguageInSpeech.map(e => {
               return { value: e }
@@ -290,6 +294,7 @@ export default {
 
         {
           ...categories.phoneticAndPronunciationSelect,
+          gadgetInput: 'phoneticAndPronunciationSelect',
           rows: [],
           gadget: 'phoneticAndPronunciationSelect'
         },
@@ -299,6 +304,7 @@ export default {
             'Баллы для автоматического определения уровня (по устной части)',
           labelClass: 'bg-orange-1',
           rowsClass: 'col-1-11',
+          target: 'partTwoResult',
           rows: [
             talkTestLevels.map(e => {
               return { value: e }
@@ -311,7 +317,8 @@ export default {
             'Сумма набранных баллов по устной части тестирования (отражается балл и соответствующий уровень):',
           labelClass: 'bg-white',
           rowsClass: 'col-1-11',
-          rows: []
+          source: 'partTwoResultClear',
+          rows: [[{ value: 0 }]]
         }
       ]
     }
@@ -320,6 +327,14 @@ export default {
     await this.initResults()
     await this.initDescriptions()
     this.showLevels()
+  },
+  methods: {
+    onInteractiveCellClick (row, item) {
+      if (row.mouseClick) {
+        this[row.mouseClick] = item.value
+        this.showLevels()
+      }
+    }
   },
   computed: {
     vocabularyLevel () {
@@ -347,6 +362,10 @@ export default {
 
 .matrix-col__font {
   font-size: 0.8rem;
+}
+
+.matrix-col__interactive:hover {
+  background-color: lime;
 }
 
 .col-1-11 {
