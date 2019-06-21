@@ -20,11 +20,17 @@
             <q-tab-panels v-model="tab" animated>
 
               <q-tab-panel name="result">
-                <user-result-matrix></user-result-matrix>
+                <user-result-matrix
+                  ref="matrix"
+                  @set-level-one="onSetLevelOne"
+                ></user-result-matrix>
               </q-tab-panel>
 
               <q-tab-panel name="parttwo">
-                <speaking-test></speaking-test>
+                <speaking-test
+                  :level-one="levelOne"
+                  @part-two-result-saved="onSpeakingTestSaved"
+                ></speaking-test>
               </q-tab-panel>
 
               <q-tab-panel name="offer">
@@ -45,7 +51,18 @@ export default {
   components: { SpeakingTest, UserResultMatrix },
   data () {
     return {
-      tab: 'result'
+      tab: 'result',
+      levelOne: 0
+    }
+  },
+  methods: {
+    onSetLevelOne (val) {
+      this.levelOne = val
+    },
+    async onSpeakingTestSaved () {
+      this.tab = 'result'
+      await this.$nextTick()
+      this.$refs.matrix.refresh()
     }
   }
 }

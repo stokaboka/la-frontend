@@ -72,6 +72,20 @@ export const categories = {
     label: 'Комментарий к фонетике и произношению / Phonetic and pronunciation',
     labelClass: 'bg-light-blue-3',
     rowsClass: 'col-1-11'
+  },
+  partTwoResult: {
+    part: 2,
+    phase: 8,
+    label: 'Баллы для автоматического определения уровня (по устной части)',
+    labelClass: 'bg-orange-1',
+    rowsClass: 'col-1-11'
+  },
+  partTwoResultClear: {
+    part: 2,
+    phase: 9,
+    label: 'Сумма набранных баллов по устной части тестирования (отражается балл и соответствующий уровень):',
+    labelClass: 'bg-white',
+    rowsClass: 'col-1-11'
   }
 }
 

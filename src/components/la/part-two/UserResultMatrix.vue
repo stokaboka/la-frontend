@@ -12,13 +12,15 @@
 
           <div class="column col-9" :class="r.labelClass">
             <div
-              v-if="r.gadget && r.gadget === 'phoneticAndPronunciationSelect'"
+              v-if="r.gadget"
               class="col row items-center"
             >
               <q-select
+                v-if="r.gadget.type === 'select'"
                 outlined
-                v-model="phoneticAndPronunciation.model"
-                :options="phoneticAndPronunciation.options"
+                v-model="r.gadget.model"
+                :options="r.gadget.options"
+                @input="onGadgetInput(r)"
               />
             </div>
             <div
@@ -95,6 +97,7 @@ import {
   talkTestLevels,
   phoneticAndPronunciation
 } from './constants'
+import { findMinElementIndex, findMinElement } from '../../../lib/utils'
 
 export default {
   name: 'UserResultMatrix',
@@ -105,6 +108,9 @@ export default {
         options: phoneticAndPronunciation,
         model: null
       },
+      descriptions: null,
+      levelOne: 0,
+      levelTwo: 0,
       matrix: [
         {
           label:
@@ -296,14 +302,15 @@ export default {
           ...categories.phoneticAndPronunciationSelect,
           gadgetInput: 'phoneticAndPronunciationSelect',
           rows: [],
-          gadget: 'phoneticAndPronunciationSelect'
+          gadget: {
+            type: 'select',
+            options: phoneticAndPronunciation,
+            model: null
+          }
         },
 
         {
-          label:
-            'Баллы для автоматического определения уровня (по устной части)',
-          labelClass: 'bg-orange-1',
-          rowsClass: 'col-1-11',
+          ...categories.partTwoResult,
           target: 'partTwoResult',
           rows: [
             talkTestLevels.map(e => {
@@ -313,27 +320,155 @@ export default {
         },
 
         {
-          label:
-            'Сумма набранных баллов по устной части тестирования (отражается балл и соответствующий уровень):',
-          labelClass: 'bg-white',
-          rowsClass: 'col-1-11',
+          ...categories.partTwoResultClear,
           source: 'partTwoResultClear',
           rows: [[{ value: 0 }]]
         }
       ]
     }
   },
-  async mounted () {
-    await this.initResults()
-    await this.initDescriptions()
-    this.showLevels()
+  mounted () {
+    this.refresh()
   },
   methods: {
+    refresh () {
+      this.asyncRefresh()
+    },
+    async asyncRefresh () {
+      await this.initResults()
+      await this.initDescriptions()
+      this.calcPartTwoFinalResult()
+      this.showLevels()
+    },
+    async initResults () {
+      const { id } = this.user
+      const { attempt } = this.attempt
+      this.results = await this.loadResults({ id, attempt })
+
+      this.levelOne = this.calcResultsPart(1)
+      this.levelTwo = this.calcResultsPart(2)
+
+      this.$emit('set-level-one', this.levelOne)
+    },
+    async initDescriptions () {
+      this.descriptions = await this.loadDescription({
+        test: this.attempt.test,
+        results: this.results.filter(e => e.phase < 7)
+      }).then(data =>
+        data.map(e => {
+          const category = Object.values(categories).find(
+            ee => ee.part === e.part && ee.phase === e.phase
+          )
+          if (category) return { ...e, ...category }
+          return e
+        })
+      )
+    },
+    showLevels () {
+      this.matrix = this.matrix.map(e => {
+        if (e.gadget) {
+          const val = this[e.gadgetInput]
+          e.gadget.model = e.gadget.options.find(ee => ee.value === val)
+        }
+        if (e.target) {
+          e.rows = e.rows.map(row => {
+            const minIdx = findMinElementIndex(row, this[e.target], 'value')
+            return row.map((item, itemIdx) => {
+              return {
+                ...item,
+                ...{
+                  class:
+                    itemIdx === minIdx
+                      ? 'bg-red text-white text-weight-bold shadow-2'
+                      : ''
+                }
+              }
+            }, this)
+          }, this)
+        }
+        if (e.source) {
+          e.rows = e.rows.map(row => {
+            return row.map(item => {
+              return { ...item, value: this[e.source] }
+            }, this)
+          }, this)
+        }
+        return { ...e }
+      })
+    },
     onInteractiveCellClick (row, item) {
       if (row.mouseClick) {
         this[row.mouseClick] = item.value
         this.showLevels()
       }
+    },
+    onGadgetInput (val) {
+      console.log(val)
+      if (val.gadgetInput) {
+        this[val.gadgetInput] = val.gadget.model.value
+      }
+    },
+    getPartPhaseLevel (part, phase) {
+      if (this.results) {
+        const phaseObj = this.results.find(
+          e => e.part === part && e.phase === phase
+        )
+        if (phaseObj) return phaseObj.level
+      }
+      return 0
+    },
+
+    calcPartTwoFinalResult () {
+      this.partTwoResultClear = this.partTwoResultAnswers +
+        this.confidenceInSpeaking +
+        this.speakingRate +
+        this.usingOfCliche +
+        this.interactivityOfSpeech +
+        this.usingOfTheRussianLanguageInSpeech
+
+      console.log(talkTestLevels)
+      this.partTwoResult = findMinElement(talkTestLevels, this.partTwoResultClear)
+    },
+
+    setPartPhaseLevel (part, phase, level, recalc = true) {
+      console.log('setPartPhaseLevel', part, phase, level)
+      if (this.results) {
+        const tmp = this.results.map(e => e)
+        const idx = tmp.findIndex(
+          e => e.part === part && e.phase === phase
+        )
+
+        if (idx >= 0) {
+          const e = tmp[idx]
+          tmp.splice(idx, 1, { ...e, level })
+        } else {
+          tmp.push({ part, phase, level })
+        }
+
+        this.results = tmp
+      }
+
+      this.saveResults(part, phase, level)
+      if (recalc) {
+        this.calcPartTwoFinalResult()
+      }
+    },
+    async saveResults (part, phase, level) {
+      const { id } = this.user
+      const { test, attempt } = this.attempt
+      const answers = ''
+      const extra = ''
+
+      await this.save({
+        id,
+        attempt,
+        test,
+        part,
+        phase,
+        level,
+        answers,
+        extra
+      })
     }
   },
   computed: {
@@ -346,8 +481,75 @@ export default {
     listeningLevel () {
       return this.getPartPhaseLevel(1, 3)
     },
+    partTwoResultAnswers () {
+      return this.getPartPhaseLevel(2, categories.generalCommentOnOralAssessmentBands.phase)
+    },
+    confidenceInSpeaking: {
+      get () {
+        return this.getPartPhaseLevel(2, categories.confidenceInSpeaking.phase)
+      },
+      set (val) {
+        this.setPartPhaseLevel(2, categories.confidenceInSpeaking.phase, val)
+      }
+    },
+    speakingRate: {
+      get () {
+        return this.getPartPhaseLevel(2, categories.speakingRate.phase)
+      },
+      set (val) {
+        this.setPartPhaseLevel(2, categories.speakingRate.phase, val)
+      }
+    },
+    usingOfCliche: {
+      get () {
+        return this.getPartPhaseLevel(2, categories.usingOfCliche.phase)
+      },
+      set (val) {
+        this.setPartPhaseLevel(2, categories.usingOfCliche.phase, val)
+      }
+    },
+    interactivityOfSpeech: {
+      get () {
+        return this.getPartPhaseLevel(2, categories.interactivityOfSpeech.phase)
+      },
+      set (val) {
+        this.setPartPhaseLevel(2, categories.interactivityOfSpeech.phase, val)
+      }
+    },
+    usingOfTheRussianLanguageInSpeech: {
+      get () {
+        return this.getPartPhaseLevel(2, categories.usingOfTheRussianLanguageInSpeech.phase)
+      },
+      set (val) {
+        this.setPartPhaseLevel(2, categories.usingOfTheRussianLanguageInSpeech.phase, val)
+      }
+    },
+    phoneticAndPronunciationSelect: {
+      get () {
+        return this.getPartPhaseLevel(2, categories.phoneticAndPronunciationSelect.phase)
+      },
+      set (val) {
+        this.setPartPhaseLevel(2, categories.phoneticAndPronunciationSelect.phase, val)
+      }
+    },
+    partTwoResult: {
+      get () {
+        return this.getPartPhaseLevel(2, categories.partTwoResult.phase)
+      },
+      set (val) {
+        this.setPartPhaseLevel(2, categories.partTwoResult.phase, val, false)
+      }
+    },
+    partTwoResultClear: {
+      get () {
+        return this.getPartPhaseLevel(2, categories.partTwoResultClear.phase)
+      },
+      set (val) {
+        return this.setPartPhaseLevel(2, categories.partTwoResultClear.phase, val, false)
+      }
+    },
     finalLevel () {
-      return this.levelOne + this.levelTwo
+      return this.levelOne + this.partTwoResult
     }
   }
 }

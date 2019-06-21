@@ -359,12 +359,14 @@ export const save = ({ commit, getters, rootGetters }, params) => {
   return axios
     .post('/results/save', postData)
     .then(response => {
-      Notify.create({
-        message: 'Результат сохранен, Вы можете продолжить позднее.',
-        color: 'positive',
-        textColor: 'white',
-        icon: 'done'
-      })
+      if (part === 1) {
+        Notify.create({
+          message: 'Результат сохранен, Вы можете продолжить позднее.',
+          color: 'positive',
+          textColor: 'white',
+          icon: 'done'
+        })
+      }
     })
     .catch(error => {
       errorNotify(error.message)

@@ -1,227 +1,24 @@
-import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { findMinElement, findMinElementIndex } from '../../../lib/utils'
-import { categories, selfTestLevels, partTwoCategories, generalCommentOnOralAssessmentBands } from './constants'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
-      results: null,
-      descriptions: null,
-      levelOne: 0,
-      levelTwo: 0,
-      levelTwoByCategory: 0,
-      levelTwoByCategoryID: 0,
-      savedLevelTwoByCategoryID: 0,
-      partTwoQuestions: null,
-      tempTwoResults: [[], [], [], []],
-      partTwoResultAnswers: 0,
-      confidenceInSpeaking: 0,
-      speakingRate: 0,
-      usingOfCliche: 0,
-      interactivityOfSpeech: 0,
-      usingOfTheRussianLanguageInSpeech: 0,
-      phoneticAndPronunciationSelect: 0,
-      partTwoResultClear: 0,
-      partTwoResult: 0
+      results: null
     }
   },
   computed: {
-    levelTwoByCategoryABCN () {
-      return partTwoCategories[this.levelTwoByCategoryID - 1]
-    },
     ...mapGetters('app', ['test']),
     ...mapGetters('users', ['user', 'authUser']),
     ...mapGetters('results', ['savedResults']),
     ...mapGetters('attempts', ['attempt']),
-    ...mapGetters('questions', [
-      'question',
-      'questions',
-      'questionsCount',
-      'questionIndex',
-      'questionTest',
-      'questionPart',
-      'questionPhase',
-      'category'
-    ])
+    ...mapGetters('questions', ['questions'])
   },
   methods: {
-    async initQuestions () {
-      await this.loadQuestions({
-        test: this.questionTest,
-        part: 2,
-        phase: this.levelTwoByCategoryID
-      })
-    },
-    getPartPhaseLevel (part, phase) {
-      if (this.results) {
-        const phaseObj = this.results.find(
-          e => e.part === part && e.phase === phase
-        )
-        if (phaseObj) return phaseObj.level
-      }
-      return 0
-    },
-    async initResults () {
-      const { id } = this.user
-      const { attempt } = this.attempt
-      this.results = await this.loadResults({ id, attempt })
-
-      this.levelOne = this.calcResultsPart(1)
-      this.levelTwo = this.calcResultsPart(2)
-      this.levelTwoByCategory = this.calcLevelTwoByCategory(this.levelOne)
-      this.levelTwoByCategoryID = this.calcLevelTwoByCategoryID(this.levelTwoByCategory)
-      this.savedLevelTwoByCategoryID = this.levelTwoByCategoryID
-    },
-    async initDescriptions () {
-      this.descriptions = await this.loadDescription({
-        test: this.attempt.test,
-        results: this.results
-      }).then(data =>
-        data.map(e => {
-          const category = Object.values(categories).find(
-            ee => ee.part === e.part && ee.phase === e.phase
-          )
-          if (category) return { ...e, ...category }
-          return e
-        })
-      )
-    },
-    showLevels () {
-      this.matrix = this.matrix.map(e => {
-        if (e.target) {
-          e.rows = e.rows.map(row => {
-            const minIdx = findMinElementIndex(row, this[e.target], 'value')
-            return row.map((item, itemIdx) => {
-              return {
-                ...item,
-                ...{
-                  class:
-                    itemIdx === minIdx
-                      ? 'bg-red text-white text-weight-bold shadow-2'
-                      : ''
-                }
-              }
-            }, this)
-          }, this)
-        }
-        if (e.source) {
-          e.rows = e.rows.map(row => {
-            return row.map(item => {
-              return { ...item, value: this[e.source] }
-            }, this)
-          }, this)
-        }
-        return { ...e }
-      })
-    },
     calcResultsPart (part) {
       return this.results
         .filter(e => e.part === part)
         .reduce((acc, e) => acc + e.level, 0)
     },
-    calcLevelTwoByCategory (levelOne) {
-      const obj = findMinElement(selfTestLevels, levelOne)
-      if (obj) return obj
-      return 0
-    },
-    calcLevelTwoByCategoryID (levelTwoByCategory) {
-      if (levelTwoByCategory >= 1 && levelTwoByCategory < 9) return 1
-      if (levelTwoByCategory >= 9 && levelTwoByCategory < 15) return 2
-      if (levelTwoByCategory >= 15 && levelTwoByCategory < 21) return 3
-      return 4
-    },
-    calcPartTwoResults () {
-      const partTwoRating = this.calcPartTwoRating()
-      this.partTwoResultClear = this.tempTwoResults
-        .flat()
-        .reduce((a, e) => a + e.result, 0) / 10
-      this.partTwoResultAnswers = findMinElement(generalCommentOnOralAssessmentBands, this.partTwoResultClear)
-      this.partTwoResult = this.partTwoResultAnswers + partTwoRating
-      this.partTwoResultClear += partTwoRating
-    },
-    calcPartTwoRating () {
-      return this.confidenceInSpeaking +
-        this.speakingRate +
-        this.usingOfCliche +
-        this.interactivityOfSpeech +
-        this.usingOfTheRussianLanguageInSpeech
-    },
-    async saveResults (level, answers, extra) {
-      const { id, attempt } = this.user
-      const { test } = this
-      const part = 2
-      const phase = this.levelTwoByCategoryID
-      await this.save({
-        id,
-        attempt,
-        test,
-        part,
-        phase,
-        level,
-        answers,
-        extra
-      })
-    },
-    initPartTwoQuestions () {
-      this.partTwoQuestions = this.questions
-        .map(e => {
-          const resultExtra = this.getTempResult(e)
-          return {
-            ...e,
-            question: e.question.split('#'),
-            answer: e.answer.split('#').map((e, i) => {
-              return { label: e, value: i }
-            }),
-            ...resultExtra
-          }
-        }, this)
-        .sort((a, b) => a.category - b.category)
-    },
-    getTempResult (obj) {
-      const out = this.tempTwoResults[this.levelTwoByCategoryID - 1]
-        .find(e =>
-          e.part === obj.part &&
-          e.phase === obj.phase &&
-          e.category === obj.category
-        )
-      if (out) {
-        const { result, extra } = out
-        return { result, extra }
-      }
-      return { result: null, extra: '' }
-    },
-    initTempTwoResults (levelID, result) {
-      for (let l = 1; l < levelID; l++) {
-        this.fillTempTwoResults(l, result)
-      }
-    },
-    fillTempTwoResults (levelID, result) {
-      const extra = ''
-      const part = 2
-      const phase = levelID
-      this.tempTwoResults[levelID - 1] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        .map(category => {
-          return { phase, part, category, result, extra }
-        })
-      // this.tempTwoResults[levelID - 1] = this.partTwoQuestions
-      //   .map(e => {
-      //     const { phase, part, category } = e
-      //     return { phase, part, category, result, extra }
-      //   })
-    },
-    clearTempTwoResults (levelID) {
-      this.tempTwoResults[levelID - 1] = []
-    },
-    ...mapMutations('questions', [
-      'SET_TEST',
-      'SET_PART',
-      'SET_PHASE',
-      'SET_CATEGORY',
-      'NEXT_CATEGORY',
-      'RESET_CATEGORY',
-      'NEXT_QUESTION',
-      'CLEAR_QUESTIONS'
-    ]),
     ...mapActions('results', { loadResults: 'load', save: 'save' }),
     ...mapActions('description', { loadDescription: 'load' }),
     ...mapActions('questions', {
