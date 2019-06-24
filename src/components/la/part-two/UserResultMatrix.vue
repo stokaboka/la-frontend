@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="column q-table--bordered">
+      <div class="row">
+        <q-btn label="xlsx" @click="loadResultAsFile('xlsx')"></q-btn>
+      </div>
       <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column">
         <div v-if="r.rows" class="row">
           <div
@@ -112,6 +115,7 @@ export default {
       descriptions: null,
       levelOne: 0,
       isInteractiveChangeCellData: false,
+      objForSave: {},
       matrix: [
         {
           label:
@@ -365,14 +369,22 @@ export default {
       )
     },
     showLevels () {
+      this.objForSave = { descriptions: this.descriptions.map(e => {
+        const { category, description, label, level, target } = e
+        return { category, description, label, level, target }
+      }) }
       this.matrix = this.matrix.map(e => {
         if (e.gadget) {
           const val = this[e.gadgetInput]
           e.gadget.model = e.gadget.options.find(ee => ee.value === val)
+          if (e.gadget.model) {
+            this.objForSave[`${e.gadgetInput}_value`] = e.gadget.model.label
+          }
         }
         if (e.target) {
           e.rows = e.rows.map(row => {
             const minIdx = findMinElementIndex(row, this[e.target], 'value')
+            this.objForSave[e.target] = minIdx
             return row.map((item, itemIdx) => {
               return {
                 ...item,
@@ -387,6 +399,7 @@ export default {
           }, this)
         }
         if (e.source) {
+          this.objForSave[`${e.source}_value`] = this[e.source]
           e.rows = e.rows.map(row => {
             return row.map(item => {
               return { ...item, value: this[e.source] }
@@ -394,7 +407,7 @@ export default {
           }, this)
         }
         return { ...e }
-      })
+      }, this)
     },
     onInteractiveCellClick (row, item) {
       if (row.mouseClick && this[row.mouseClick] !== undefined) {
@@ -475,6 +488,17 @@ export default {
         answers,
         extra
       })
+    },
+    loadResultAsFile (type) {
+      const data = {
+        student: this.user,
+        manager: this.authUser,
+        date: new Date(),
+        results: this.objForSave
+      }
+      if (type === 'xlsx') {
+        this.loadAsXLSX(data)
+      }
     }
   },
   computed: {

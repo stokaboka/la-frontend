@@ -24,6 +24,7 @@ export default {
     ...mapActions('questions', {
       loadQuestions: 'load',
       loadCountQuestions: 'count'
-    })
+    }),
+    ...mapActions('reports', { loadAsXLSX: 'xlsx' })
   }
 }
