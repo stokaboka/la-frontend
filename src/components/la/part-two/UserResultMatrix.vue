@@ -111,6 +111,7 @@ export default {
       },
       descriptions: null,
       levelOne: 0,
+      saveCellData: false,
       // levelTwo: 0,
       matrix: [
         {
@@ -399,6 +400,7 @@ export default {
     },
     onInteractiveCellClick (row, item) {
       if (row.mouseClick && this[row.mouseClick] !== undefined) {
+        this.saveCellData = true
         this[row.mouseClick] = item.value
         this.showLevels()
       }
@@ -406,6 +408,7 @@ export default {
     onGadgetInput (val) {
       console.log(val)
       if (val.gadgetInput && this[val.gadgetInput] !== undefined) {
+        this.saveCellData = true
         this[val.gadgetInput] = val.gadget.model.value
       }
     },
@@ -448,10 +451,15 @@ export default {
         this.results = tmp
       }
 
-      this.saveResults(part, phase, level)
+      if (this.saveCellData) {
+        this.saveResults(part, phase, level)
+      }
+
       if (recalc) {
         this.calcPartTwoFinalResult()
       }
+
+      this.saveCellData = false
     },
     async saveResults (part, phase, level) {
       const { id } = this.user
