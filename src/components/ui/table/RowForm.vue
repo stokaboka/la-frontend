@@ -3,7 +3,7 @@
       <q-card-section class="text-h6 bg-secondary text-white">
         {{title}}
       </q-card-section>
-      <q-card-section class="row justify-start items-start">
+      <q-card-section v-if="data" class="row justify-start items-start">
           <div v-for="column in columns" :key="column.field">
             <div
               v-if="data[column.field] != undefined"
@@ -36,6 +36,11 @@
       <q-card-section>
         <slot name="actions"></slot>
       </q-card-section>
+
+      <q-card-section>
+        <slot name="message"></slot>
+      </q-card-section>
+
     </q-card>
 </template>
 
@@ -46,7 +51,7 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
+      required: false
     },
     model: {
       type: Object,

@@ -34,6 +34,7 @@
                 :class="[r.rowsClass, rowItem.class]"
                 class="column text-center vertical-middle q-table--bordered matrix-col matrix-col__font"
                 @click="onInteractiveCellClick(r, rowItem)"
+                @touchend="onInteractiveCellClick(r, rowItem)"
               >
                 <span v-if="rowItem.label">{{ rowItem.label }}</span>
                 <span v-if="rowItem.value">{{ rowItem.value }}</span>
@@ -379,7 +380,7 @@ export default {
                 ...{
                   class:
                     itemIdx === minIdx
-                      ? 'bg-red text-white text-weight-bold shadow-2'
+                      ? 'bg-deep-orange text-white text-weight-bold shadow-3'
                       : ''
                 }
               }
