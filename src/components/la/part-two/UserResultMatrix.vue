@@ -111,8 +111,7 @@ export default {
       },
       descriptions: null,
       levelOne: 0,
-      saveCellData: false,
-      // levelTwo: 0,
+      isInteractiveChangeCellData: false,
       matrix: [
         {
           label:
@@ -400,7 +399,7 @@ export default {
     },
     onInteractiveCellClick (row, item) {
       if (row.mouseClick && this[row.mouseClick] !== undefined) {
-        this.saveCellData = true
+        this.isInteractiveChangeCellData = true
         this[row.mouseClick] = item.value
         this.showLevels()
       }
@@ -408,7 +407,7 @@ export default {
     onGadgetInput (val) {
       console.log(val)
       if (val.gadgetInput && this[val.gadgetInput] !== undefined) {
-        this.saveCellData = true
+        this.isInteractiveChangeCellData = true
         this[val.gadgetInput] = val.gadget.model.value
       }
     },
@@ -451,7 +450,7 @@ export default {
         this.results = tmp
       }
 
-      if (this.saveCellData) {
+      if (this.isInteractiveChangeCellData) {
         this.saveResults(part, phase, level)
       }
 
@@ -459,7 +458,7 @@ export default {
         this.calcPartTwoFinalResult()
       }
 
-      this.saveCellData = false
+      this.isInteractiveChangeCellData = false
     },
     async saveResults (part, phase, level) {
       const { id } = this.user
