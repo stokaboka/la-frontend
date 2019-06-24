@@ -347,7 +347,6 @@ export default {
       this.results = await this.loadResults({ id, attempt })
 
       this.levelOne = this.calcResultsPart(1)
-      // this.levelTwo = this.calcResultsPart(2)
 
       this.$emit('set-level-one', this.levelOne)
     },

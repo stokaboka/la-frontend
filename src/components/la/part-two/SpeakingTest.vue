@@ -99,7 +99,6 @@ export default {
     await this.initQuestions()
     this.initPhaseData()
     this.initPartTwoQuestions()
-    // this.initTempTwoResults(this.levelTwoByCategoryID, 2)
   },
   computed: {
     levelTwoByCategoryABCN () {
@@ -157,24 +156,17 @@ export default {
 
         await this.initQuestions()
         this.initPartTwoQuestions()
-        // this.initTempTwoResults(this.levelTwoByCategoryID, 2)
       }
     },
     async prevLevelTwoByCategory () {
       if (this.levelTwoByCategoryID > 1) {
-        // for (let levelID = this.levelTwoByCategoryID; levelID < 5; levelID++) {
-        //   this.clearTempTwoResults(levelID)
-        // }
-
         this.levelTwoByCategoryID--
-        // this.clearTempTwoResults(this.levelTwoByCategoryID)
         await this.initQuestions()
         this.initPartTwoQuestions()
       }
     },
     async nextLevelTwoByCategory () {
       if (this.levelTwoByCategoryID < 4) {
-        // this.fillTempTwoResults(this.levelTwoByCategoryID, 2)
         this.levelTwoByCategoryID++
         await this.initQuestions()
         this.initPartTwoQuestions()
@@ -219,28 +211,8 @@ export default {
     initTempTwoResults (levelID, result) {
       this.tempTwoResults[levelID - 1] = result
     },
-    // initTempTwoResults (levelID, result) {
-    //   for (let l = 1; l < levelID; l++) {
-    //     this.fillTempTwoResults(l, result)
-    //   }
-    // },
-    fillTempTwoResults (levelID, result) {
-      // const extra = ''
-      // const part = 2
-      // const phase = levelID
-      // this.tempTwoResults[levelID - 1] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      //   .map(category => {
-      //     return { phase, part, category, result, extra }
-      //   })
-      // this.tempTwoResults[levelID - 1] = this.partTwoQuestions
-      //   .map(e => {
-      //     const { phase, part, category } = e
-      //     return { phase, part, category, result, extra }
-      //   })
-    },
     clearTempTwoResults (levelID) {
       this.tempTwoResults[levelID - 1] = []
-      // this.tempTwoResults = []
     },
     calcPartTwoResults () {
       /**
@@ -271,8 +243,6 @@ export default {
         return { part, phase, category, result, extra }
       })
       const answers = JSON.stringify(a)
-      // const e = this.tempTwoResults[this.levelTwoByCategoryID - 1].map(e => e.extra)
-      // const extra = JSON.stringify(e)
 
       await this.save({
         id,
@@ -284,13 +254,6 @@ export default {
         answers
       })
     }
-    // calcPartTwoRating () {
-    //   return this.confidenceInSpeaking +
-    //     this.speakingRate +
-    //     this.usingOfCliche +
-    //     this.interactivityOfSpeech +
-    //     this.usingOfTheRussianLanguageInSpeech
-    // }
   }
 }
 </script>
