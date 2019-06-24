@@ -5,7 +5,7 @@
     :selection="selection"
     :selected.sync="selected"
     :title="title"
-    :data="rows"
+    :data="data"
     :columns="columns"
     :visible-columns="tableVisibleColumns"
     :filter="filter"
@@ -200,7 +200,7 @@ export default {
       filter: '',
       separator: 'cell',
       tableVisibleColumns: [],
-      rows: [],
+      // rows: [],
       paginationControl: {
         sortBy: null,
         descending: false,
@@ -220,17 +220,17 @@ export default {
   },
   mounted () {
     this.tableVisibleColumns = this.visibleColumns
-
     if (!this.filterComponent) {
-      if (this.moduleParams && !this.params) {
-        this.request({
-          pagination: this.paginationControl,
-          filter: this.filter
-        })
-      }
+      this.request({
+        pagination: this.paginationControl,
+        filter: this.filter
+      })
     }
   },
   computed: {
+    // rows () {
+    //   return this.data.map(e => Object.assign({}, e))
+    // },
     showTopSlot () {
       return !this.hideSearchField || !this.hideGridSelector || !this.hideColumnsSelector
     },
@@ -248,9 +248,6 @@ export default {
     },
     query () {
       return this.$store.state[this.module].model.query
-    },
-    moduleParams () {
-      return this.$store.state[this.module].model.params
     },
     edit () {
       return this.$store.state[this.module].model.edit
@@ -357,15 +354,9 @@ export default {
         filter: this.filter
       })
     },
-    data (val) {
-      this.rows = val.map(e => Object.assign({}, e))
-      // if (this.rows && this.rows.length > 0) {
-      //   // this.selected = [this.rows[0]]
-      //   this.selected = []
-      // } else {
-      //   this.selected = []
-      // }
-    },
+    // data (val) {
+    //   this.rows = val.map(e => Object.assign({}, e))
+    // },
     selectedRow (val) {
       this.selected = val === null ? [] : [val]
     }
