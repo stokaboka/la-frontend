@@ -110,7 +110,7 @@ export default {
       },
       descriptions: null,
       levelOne: 0,
-      levelTwo: 0,
+      // levelTwo: 0,
       matrix: [
         {
           label:
@@ -346,7 +346,7 @@ export default {
       this.results = await this.loadResults({ id, attempt })
 
       this.levelOne = this.calcResultsPart(1)
-      this.levelTwo = this.calcResultsPart(2)
+      // this.levelTwo = this.calcResultsPart(2)
 
       this.$emit('set-level-one', this.levelOne)
     },
@@ -397,14 +397,14 @@ export default {
       })
     },
     onInteractiveCellClick (row, item) {
-      if (row.mouseClick) {
+      if (row.mouseClick && this[row.mouseClick] !== undefined) {
         this[row.mouseClick] = item.value
         this.showLevels()
       }
     },
     onGadgetInput (val) {
       console.log(val)
-      if (val.gadgetInput) {
+      if (val.gadgetInput && this[val.gadgetInput] !== undefined) {
         this[val.gadgetInput] = val.gadget.model.value
       }
     },
@@ -426,7 +426,6 @@ export default {
         this.interactivityOfSpeech +
         this.usingOfTheRussianLanguageInSpeech
 
-      console.log(talkTestLevels)
       this.partTwoResult = findMinElement(talkTestLevels, this.partTwoResultClear)
     },
 
