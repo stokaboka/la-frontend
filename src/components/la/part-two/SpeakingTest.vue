@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="row q-gutter-md">
-      <q-btn icon="first_page" color="secondary" label="Начать сначала" @click="restartLevelTwoByCategory"></q-btn>
+      <q-btn
+        icon="first_page"
+        color="secondary"
+        label="Начать сначала"
+        @click="restartLevelTwoByCategory"
+      ></q-btn>
       <q-btn
         icon="chevron_left"
         color="grey"
@@ -19,7 +24,12 @@
         :disabled="levelTwoByCategoryID === 4"
         @click="nextLevelTwoByCategory"
       ></q-btn>
-      <q-btn icon="check" color="primary" label="Завершить тест" @click="completeTest"></q-btn>
+      <q-btn
+        icon="check"
+        color="primary"
+        label="Завершить тест"
+        @click="completeTest"
+      ></q-btn>
     </div>
     <div v-if="partTwoQuestions" class="column q-mt-md">
       <div class="row">
@@ -87,6 +97,7 @@ export default {
   async mounted () {
     await this.initResults()
     await this.initQuestions()
+    this.initPhaseData()
     this.initPartTwoQuestions()
     // this.initTempTwoResults(this.levelTwoByCategoryID, 2)
   },
@@ -102,7 +113,9 @@ export default {
       this.results = await this.loadResults({ id, attempt })
 
       this.levelTwoByCategory = this.calcLevelTwoByCategory(this.levelOne)
-      this.levelTwoByCategoryID = this.calcLevelTwoByCategoryID(this.levelTwoByCategory)
+      this.levelTwoByCategoryID = this.calcLevelTwoByCategoryID(
+        this.levelTwoByCategory
+      )
       this.savedLevelTwoByCategoryID = this.levelTwoByCategoryID
     },
     async initQuestions () {
@@ -114,6 +127,14 @@ export default {
         part,
         phase
       })
+    },
+    initPhaseData () {
+      const phaseData = this.results.find(e => e.part === 2 && e.phase === 1)
+      if (phaseData) {
+        const { answers } = phaseData
+        const phaseDataArr = JSON.parse(answers)
+        this.initTempTwoResults(this.levelTwoByCategoryID, phaseDataArr)
+      }
     },
     calcLevelTwoByCategory (levelOne) {
       const obj = findMinElement(selfTestLevels, levelOne)
@@ -183,17 +204,20 @@ export default {
         .sort((a, b) => a.category - b.category)
     },
     getTempResult (obj) {
-      const out = this.tempTwoResults[this.levelTwoByCategoryID - 1]
-        .find(e =>
+      const out = this.tempTwoResults[this.levelTwoByCategoryID - 1].find(
+        e =>
           e.part === obj.part &&
           e.phase === obj.phase &&
           e.category === obj.category
-        )
+      )
       if (out) {
         const { result, extra } = out
         return { result, extra }
       }
       return { result: null, extra: '' }
+    },
+    initTempTwoResults (levelID, result) {
+      this.tempTwoResults[levelID - 1] = result
     },
     // initTempTwoResults (levelID, result) {
     //   for (let l = 1; l < levelID; l++) {
@@ -223,9 +247,12 @@ export default {
        * 2 - default category
        * 10 - num questions
        */
-      this.partTwoResult = (this.levelTwoByCategoryID - 1) * 2 * 10 +
-        this.tempTwoResults[this.levelTwoByCategoryID - 1]
-          .reduce((a, e) => a + e.result, 0)
+      this.partTwoResult =
+        (this.levelTwoByCategoryID - 1) * 2 * 10 +
+        this.tempTwoResults[this.levelTwoByCategoryID - 1].reduce(
+          (a, e) => a + e.result,
+          0
+        )
       this.partTwoResult /= 10
     },
     completeTest () {
@@ -239,10 +266,13 @@ export default {
       const part = 2
       const phase = categories.generalCommentOnOralAssessmentBands.phase
       const level = this.partTwoResult
-      const a = this.tempTwoResults[this.levelTwoByCategoryID - 1].map(e => e.result)
+      const a = this.tempTwoResults[this.levelTwoByCategoryID - 1].map(e => {
+        const { part, phase, category, result, extra } = e
+        return { part, phase, category, result, extra }
+      })
       const answers = JSON.stringify(a)
-      const e = this.tempTwoResults[this.levelTwoByCategoryID - 1].map(e => e.extra)
-      const extra = JSON.stringify(e)
+      // const e = this.tempTwoResults[this.levelTwoByCategoryID - 1].map(e => e.extra)
+      // const extra = JSON.stringify(e)
 
       await this.save({
         id,
@@ -251,8 +281,7 @@ export default {
         part,
         phase,
         level,
-        answers,
-        extra
+        answers
       })
     }
     // calcPartTwoRating () {
