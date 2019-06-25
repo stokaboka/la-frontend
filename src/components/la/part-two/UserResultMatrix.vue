@@ -115,7 +115,7 @@ export default {
       descriptions: null,
       levelOne: 0,
       isInteractiveChangeCellData: false,
-      objForSave: {},
+      // objForSave: {},
       matrix: [
         {
           label:
@@ -368,23 +368,48 @@ export default {
         })
       )
     },
-    showLevels () {
-      this.objForSave = { descriptions: this.descriptions.map(e => {
+    getReport () {
+      const out = { descriptions: this.descriptions.map(e => {
         const { category, description, label, level, target } = e
         return { category, description, label, level, target }
       }) }
+      this.matrix.forEach(e => {
+        if (e.gadget) {
+          const value = this[e.gadgetInput]
+          const model = e.gadget.options.find(ee => ee.value === value)
+          if (model) {
+            out[`${e.gadgetInput}_value`] = model.label
+          }
+        }
+        if (e.target) {
+          e.rows.forEach(row => {
+            const minIdx = findMinElementIndex(row, this[e.target], 'value')
+            out[e.target] = minIdx
+          }, this)
+        }
+        if (e.source) {
+          out[`${e.source}_value`] = this[e.source]
+        }
+      }, this)
+      return out
+    },
+    showLevels () {
+      // this.objForSave = { descriptions: this.descriptions.map(e => {
+      //   const { category, description, label, level, target } = e
+      //   return { category, description, label, level, target }
+      // }) }
       this.matrix = this.matrix.map(e => {
         if (e.gadget) {
           const val = this[e.gadgetInput]
           e.gadget.model = e.gadget.options.find(ee => ee.value === val)
-          if (e.gadget.model) {
-            this.objForSave[`${e.gadgetInput}_value`] = e.gadget.model.label
-          }
+          // if (e.gadget.model) {
+          //   this.objForSave[`${e.gadgetInput}_value`] = e.gadget.model.label
+          // }
         }
         if (e.target) {
           e.rows = e.rows.map(row => {
             const minIdx = findMinElementIndex(row, this[e.target], 'value')
-            this.objForSave[e.target] = minIdx
+            // this.objForSave[e.target] = minIdx
             return row.map((item, itemIdx) => {
               return {
                 ...item,
@@ -399,7 +424,7 @@ export default {
           }, this)
         }
         if (e.source) {
-          this.objForSave[`${e.source}_value`] = this[e.source]
+          // this.objForSave[`${e.source}_value`] = this[e.source]
           e.rows = e.rows.map(row => {
             return row.map(item => {
               return { ...item, value: this[e.source] }
