@@ -1,6 +1,7 @@
 
 import axios from 'axios'
 import { Notify } from 'quasar'
+import { objectToParamStr } from '../../lib/utils'
 
 const errorNotify = function (error) {
   console.warn(error)
@@ -23,9 +24,12 @@ export const save = ({ getters }, data) => {
     })
 }
 
-export const load = ({ getters }, data) => {
+export const load = ({ getters }, params) => {
+  const { format } = params
+  const keys = ['user', 'test', 'attempt']
+  const pStr = objectToParamStr(keys, params)
   return axios
-    .post('/reports/result/xlsx', data)
+    .get(`/reports/${format}/${pStr}`)
     .then(response => {
       console.log('loadFile', response.data)
     })

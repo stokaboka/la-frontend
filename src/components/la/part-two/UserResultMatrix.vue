@@ -542,9 +542,9 @@ export default {
       await this.loadReportFile(reportFileParams)
     },
 
-    loadFileAs (format) {
-      this.saveResultReport()
-      // this.loadResultAsFile(format)
+    async loadFileAs (format) {
+      await this.saveResultReport()
+      await this.loadResultAsFile(format)
     }
   },
   computed: {
