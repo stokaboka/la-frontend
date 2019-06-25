@@ -23,11 +23,11 @@ export const save = ({ getters }, data) => {
     })
 }
 
-export const xlsx = ({ getters }, data) => {
+export const load = ({ getters }, data) => {
   return axios
     .post('/reports/result/xlsx', data)
     .then(response => {
-      console.log('XLSX', response.data)
+      console.log('loadFile', response.data)
     })
     .catch(error => {
       errorNotify(error.message)

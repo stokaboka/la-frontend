@@ -515,7 +515,7 @@ export default {
       })
     },
 
-    async saveResultsReport () {
+    async saveResultReport () {
       const type = 'result'
 
       const {
@@ -535,17 +535,16 @@ export default {
       await this.saveReport(report)
     },
     async loadResultAsFile (format) {
-      await this.saveResultsReport()
-
       const { id: user } = this.user
       const { test, attempt } = this.attempt
       const reportFileParams = { format, user, test, attempt }
-      await this.loadAsXLSX(reportFileParams)
+
+      await this.loadReportFile(reportFileParams)
     },
 
     loadFileAs (format) {
-      this.saveResultsReport()
-      this.loadResultAsFile(format)
+      this.saveResultReport()
+      // this.loadResultAsFile(format)
     }
   },
   computed: {

@@ -25,6 +25,6 @@ export default {
       loadQuestions: 'load',
       loadCountQuestions: 'count'
     }),
-    ...mapActions('reports', { loadAsXLSX: 'xlsx', saveReport: 'save' })
+    ...mapActions('reports', { loadReportFile: 'load', saveReport: 'save' })
   }
 }
