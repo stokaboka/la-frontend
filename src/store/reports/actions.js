@@ -12,6 +12,17 @@ const errorNotify = function (error) {
   })
 }
 
+export const save = ({ getters }, data) => {
+  return axios
+    .post('/reports/result', data)
+    .then(response => {
+      console.log('REPORT', response.data)
+    })
+    .catch(error => {
+      errorNotify(error.message)
+    })
+}
+
 export const xlsx = ({ getters }, data) => {
   return axios
     .post('/reports/result/xlsx', data)
