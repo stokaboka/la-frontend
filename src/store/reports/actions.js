@@ -14,9 +14,9 @@ const errorNotify = function (error) {
 
 export const save = ({ getters }, data) => {
   return axios
-    .post('/reports/result', data)
+    .post('/reports/save', data)
     .then(response => {
-      console.log('REPORT', response.data)
+      console.log('REPORT SAVE', response.data)
     })
     .catch(error => {
       errorNotify(error.message)

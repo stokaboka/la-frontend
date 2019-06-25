@@ -8,7 +8,7 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['test']),
-    ...mapGetters('users', ['user', 'authUser']),
+    ...mapGetters('users', ['user', 'authUser', 'fioUser', 'fioAuthUser']),
     ...mapGetters('results', ['savedResults']),
     ...mapGetters('attempts', ['attempt']),
     ...mapGetters('questions', ['questions'])
@@ -25,6 +25,6 @@ export default {
       loadQuestions: 'load',
       loadCountQuestions: 'count'
     }),
-    ...mapActions('reports', { loadAsXLSX: 'xlsx' })
+    ...mapActions('reports', { loadAsXLSX: 'xlsx', saveReport: 'save' })
   }
 }

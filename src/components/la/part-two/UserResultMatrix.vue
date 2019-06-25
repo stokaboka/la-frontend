@@ -2,7 +2,7 @@
   <div>
     <div class="column q-table--bordered">
       <div class="row">
-        <q-btn label="xlsx" @click="loadResultAsFile('xlsx')"></q-btn>
+        <q-btn label="xlsx" @click="loadFileAs('xlsx')"></q-btn>
       </div>
       <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column">
         <div v-if="r.rows" class="row">
@@ -514,16 +514,38 @@ export default {
         extra
       })
     },
-    loadResultAsFile (type) {
-      const data = {
-        student: this.user,
-        manager: this.authUser,
-        date: new Date(),
-        results: this.objForSave
-      }
-      if (type === 'xlsx') {
-        this.loadAsXLSX(data)
-      }
+
+    async saveResultsReport () {
+      const type = 'result'
+
+      const {
+        fioUser: student,
+        fioAuthUser: manager,
+        fioAuthUser: trainer
+      } = this
+
+      const { id: idUser } = this.user
+      const { test, attempt } = this.attempt
+      const date = new Date()
+      const results = this.getReport()
+
+      const data = { student, manager, trainer, date, results }
+      const report = { type, idUser, attempt, test, data }
+
+      await this.saveReport(report)
+    },
+    async loadResultAsFile (format) {
+      await this.saveResultsReport()
+
+      const { id: user } = this.user
+      const { test, attempt } = this.attempt
+      const reportFileParams = { format, user, test, attempt }
+      await this.loadAsXLSX(reportFileParams)
+    },
+
+    loadFileAs (format) {
+      this.saveResultsReport()
+      this.loadResultAsFile(format)
     }
   },
   computed: {

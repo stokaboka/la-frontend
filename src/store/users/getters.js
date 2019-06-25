@@ -19,3 +19,17 @@ export const model = (s) => s.model
 // }
 
 export const filter = (s) => s.filter
+
+export const fioUser = s => {
+  if (s.user) {
+    return `${s.user.firstName} ${s.user.secondName} ${s.user.lastName}`
+  }
+  return ''
+}
+
+export const fioAuthUser = s => {
+  if (s.authUser) {
+    return `${s.authUser.firstName} ${s.authUser.secondName} ${s.authUser.lastName}`
+  }
+  return ''
+}
