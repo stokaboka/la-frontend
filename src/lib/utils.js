@@ -1,6 +1,6 @@
 export const sleep = (ms) => (new Promise(resolve => setTimeout(resolve, ms)))
 
-export const toDDMMYYYY = (dt) => (dt ? dt.toString().substr(0, 10).split('-').reverse().join('/') : '')
+export const toDDMMYYYY = (dt) => (dt ? dt.toString().substr(0, 10).split('-').reverse().join('.') : '')
 
 const textRules = {
   minutes: [

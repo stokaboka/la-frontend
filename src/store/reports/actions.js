@@ -1,7 +1,7 @@
-
 import axios from 'axios'
 import { Notify } from 'quasar'
 import { objectToParamStr } from '../../lib/utils'
+import FileSaver from 'file-saver'
 
 const errorNotify = function (error) {
   console.warn(error)
@@ -25,13 +25,16 @@ export const save = ({ getters }, data) => {
 }
 
 export const load = ({ getters }, params) => {
-  const { format } = params
+  const { format, filename } = params
   const keys = ['user', 'test', 'attempt']
   const pStr = objectToParamStr(keys, params)
-  return axios
-    .get(`/reports/${format}/${pStr}`)
+  return axios({
+    url: `/reports/${format}/${pStr}`,
+    method: 'GET',
+    responseType: 'blob' // important
+  })
     .then(response => {
-      console.log('loadFile', response.data)
+      FileSaver.saveAs(new Blob([response.data]), filename)
     })
     .catch(error => {
       errorNotify(error.message)

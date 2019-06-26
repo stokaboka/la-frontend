@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="column q-table--bordered">
-      <div class="row">
+      <div class="row q-ma-sm">
         <q-btn label="xlsx" @click="loadFileAs('xlsx')"></q-btn>
       </div>
       <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column">
@@ -101,7 +101,7 @@ import {
   talkTestLevels,
   phoneticAndPronunciation
 } from './constants'
-import { findMinElementIndex, findMinElement } from '../../../lib/utils'
+import { findMinElementIndex, findMinElement, toDDMMYYYY } from '../../../lib/utils'
 
 export default {
   name: 'UserResultMatrix',
@@ -535,9 +535,11 @@ export default {
       await this.saveReport(report)
     },
     async loadResultAsFile (format) {
+      const date = new Date()
       const { id: user } = this.user
       const { test, attempt } = this.attempt
-      const reportFileParams = { format, user, test, attempt }
+      const filename = `результат Language Assessment ${this.fioUser} от ${toDDMMYYYY(date.toISOString())}.xlsx`
+      const reportFileParams = { format, user, test, attempt, filename }
 
       await this.loadReportFile(reportFileParams)
     },
