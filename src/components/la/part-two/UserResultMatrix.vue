@@ -1,8 +1,10 @@
 <template>
   <div>
     <div class="column q-table--bordered">
-      <div class="row q-ma-sm">
+      <div class="row q-gutter-x-md q-ma-sm items-center">
+        <div>Экспорт результа в:</div>
         <q-btn label="xlsx" @click="loadFileAs('xlsx')"></q-btn>
+        <q-btn label="pdf" @click="loadFileAs('pdf')"></q-btn>
       </div>
       <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column">
         <div v-if="r.rows" class="row">
