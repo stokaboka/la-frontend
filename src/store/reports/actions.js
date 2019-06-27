@@ -25,11 +25,11 @@ export const save = ({ getters }, data) => {
 }
 
 export const load = ({ getters }, params) => {
-  const { format, filename } = params
-  const keys = ['user', 'test', 'attempt']
+  const { filename } = params
+  const keys = ['user', 'test', 'attempt', 'format']
   const pStr = objectToParamStr(keys, params)
   return axios({
-    url: `/reports/${format}/${pStr}`,
+    url: `/reports/${pStr}`,
     method: 'GET',
     responseType: 'blob' // important
   })
