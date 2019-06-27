@@ -540,7 +540,7 @@ export default {
       const date = new Date()
       const { id: user } = this.user
       const { test, attempt } = this.attempt
-      const filename = `результат Language Assessment ${this.fioUser} от ${toDDMMYYYY(date.toISOString())}.xlsx`
+      const filename = `результат Language Assessment ${this.fioUser} от ${toDDMMYYYY(date.toISOString())}.${format}`
       const reportFileParams = { format, user, test, attempt, filename }
 
       await this.loadReportFile(reportFileParams)
