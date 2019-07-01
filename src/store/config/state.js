@@ -3,7 +3,7 @@ export default {
   config: {
     'result': {
       'export': {
-        'pdf': 'результат Language Assessment {{--USER_FIO--}} от {{DATE_NOW}}.pdf',
+        'pdf': 'результат Language Assessment {{USER_FIO}} от {{DATE_NOW}}.pdf',
         'xlsx': 'результат Language Assessment {{USER_FIO}} от {{DATE_NOW}}.xlsx'
       }
     }
