@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import app from './app'
+import config from './config'
 import auth from './auth'
 import test from './test'
 import questions from './questions'
@@ -33,6 +34,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     app,
+    config,
     auth,
     test,
     questions,

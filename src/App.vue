@@ -11,6 +11,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'App',
   async mounted () {
+    await this.loadConfig()
     await this.signin()
     let name = 'home'
     if (this.isLogged) {
@@ -22,7 +23,8 @@ export default {
     ...mapGetters('users', ['isLogged', 'isAdmin', 'isOperator'])
   },
   methods: {
-    ...mapActions('auth', ['signin'])
+    ...mapActions('auth', ['signin']),
+    ...mapActions('config', { loadConfig: 'load' })
   }
 }
 </script>

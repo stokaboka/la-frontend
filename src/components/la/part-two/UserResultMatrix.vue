@@ -3,8 +3,9 @@
     <div class="column q-table--bordered">
       <div class="row q-gutter-x-md q-ma-sm items-center">
         <div>Экспорт результа в:</div>
-        <q-btn label="xlsx" @click="loadFileAs('xlsx')"></q-btn>
-        <q-btn label="pdf" @click="loadFileAs('pdf')"></q-btn>
+<!--        <q-btn label="xlsx" @click="loadFileAs('xlsx')"></q-btn>-->
+<!--        <q-btn label="pdf" @click="loadFileAs('pdf')"></q-btn>-->
+        <q-btn v-for="exp in exportFormats" :key="exp.format" :label="exp.format" @click="exportResults(exp)"></q-btn>
       </div>
       <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column">
         <div v-if="r.rows" class="row">
@@ -103,7 +104,7 @@ import {
   talkTestLevels,
   phoneticAndPronunciation
 } from './constants'
-import { findMinElementIndex, findMinElement, toDDMMYYYY } from '../../../lib/utils'
+import { findMinElementIndex, findMinElement } from '../../../lib/utils'
 
 export default {
   name: 'UserResultMatrix',
@@ -396,22 +397,14 @@ export default {
       return out
     },
     showLevels () {
-      // this.objForSave = { descriptions: this.descriptions.map(e => {
-      //   const { category, description, label, level, target } = e
-      //   return { category, description, label, level, target }
-      // }) }
       this.matrix = this.matrix.map(e => {
         if (e.gadget) {
           const val = this[e.gadgetInput]
           e.gadget.model = e.gadget.options.find(ee => ee.value === val)
-          // if (e.gadget.model) {
-          //   this.objForSave[`${e.gadgetInput}_value`] = e.gadget.model.label
-          // }
         }
         if (e.target) {
           e.rows = e.rows.map(row => {
             const minIdx = findMinElementIndex(row, this[e.target], 'value')
-            // this.objForSave[e.target] = minIdx
             return row.map((item, itemIdx) => {
               return {
                 ...item,
@@ -426,7 +419,6 @@ export default {
           }, this)
         }
         if (e.source) {
-          // this.objForSave[`${e.source}_value`] = this[e.source]
           e.rows = e.rows.map(row => {
             return row.map(item => {
               return { ...item, value: this[e.source] }
@@ -536,20 +528,21 @@ export default {
 
       await this.saveReport(report)
     },
-    async loadResultAsFile (format) {
-      const date = new Date()
+    async loadResultAsFile (exp) {
+      const { file, format } = exp
       const { id: user } = this.user
       const { test, attempt } = this.attempt
-      const filename = `результат Language Assessment ${this.fioUser} от ${toDDMMYYYY(date.toISOString())}.${format}`
+      const filename = this.parseTemplateString(file)
       const reportFileParams = { format, user, test, attempt, filename }
 
       await this.loadReportFile(reportFileParams)
     },
 
-    async loadFileAs (format) {
+    async exportResults (exp) {
       await this.saveResultReport()
-      await this.loadResultAsFile(format)
+      await this.loadResultAsFile(exp)
     }
+
   },
   computed: {
     vocabularyLevel () {
