@@ -102,7 +102,9 @@ import {
   interactivityOfSpeech,
   usingOfTheRussianLanguageInSpeech,
   talkTestLevels,
-  phoneticAndPronunciation
+  phoneticAndPronunciation,
+  finalTestResultEurope,
+  finalTestResultSVS
 } from './constants'
 import { findMinElementIndex, findMinElement } from '../../../lib/utils'
 
@@ -394,6 +396,13 @@ export default {
           out[`${e.source}_value`] = this[e.source]
         }
       }, this)
+
+      const finalLevelEurope = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
+      const finalLevelSVS = findMinElement(finalTestResultSVS, this.finalLevel, 'value')
+
+      out['finalLevelEurope'] = finalLevelEurope ? finalLevelEurope.level : ''
+      out['finalLevelSVS'] = finalLevelSVS ? finalLevelSVS.level : ''
+
       return out
     },
     showLevels () {

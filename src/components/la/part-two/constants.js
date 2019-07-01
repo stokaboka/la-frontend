@@ -89,6 +89,29 @@ export const categories = {
   }
 }
 
+export const finalTestResultEurope = [
+  { value: 17.1, level: 'A1' },
+  { value: 35.1, level: 'A2' },
+  { value: 54.1, level: 'B1' },
+  { value: 73.1, level: 'B2' },
+  { value: 83.7, level: 'C1' },
+  { value: 100, level: 'C1' }
+]
+
+export const finalTestResultSVS = [
+  { value: 1, level: 'Beginner Absolute' },
+  { value: 8.4, level: 'Beginner False' },
+  { value: 17.1, level: 'Elementary Entry' },
+  { value: 26.5, level: 'Elementary Confident' },
+  { value: 35.1, level: 'Pre-Intermediate Entry' },
+  { value: 44.7, level: 'Pre-Intermediate Confident' },
+  { value: 54.1, level: 'Intermediate Entry' },
+  { value: 63.7, level: 'Intermediate Confident' },
+  { value: 73.1, level: 'Upper-Intermediate Entry' },
+  { value: 83.7, level: 'Upper-Intermediate Confident' },
+  { value: 100, level: 'Advanced Competent' }
+]
+
 /**
  * part I
  */
