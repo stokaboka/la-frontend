@@ -74,7 +74,8 @@
 <script>
 import mixin from './mixin'
 import { findMinElement } from '../../../lib/utils'
-import { categories, selfTestLevels, partTwoCategories, levelTwoByCategoryValues } from './constants'
+import { categories, levelTwoByCategoryValues, partTwoCategories, selfTestLevels } from './constants'
+
 export default {
   name: 'SpeakingTest',
   mixins: [mixin],
@@ -229,25 +230,23 @@ export default {
     },
     calcPartTwoResults () {
       /**
-       * 2 - default category
+       * categoryDefaultValue - default category: 2...3
        * 10 - num questions
        */
-      let out =
-        (this.levelTwoByCategoryID - 1) * 2 * 10 +
-        this.tempTwoResults[this.levelTwoByCategoryID - 1].reduce(
-          (a, e) => a + e.result,
-          0
-        )
-      out /= 10
-      return out
+      let outLeftLevel = (this.levelTwoByCategoryID - 1) * this.partTwoCategoryDefaultValue * this.partTwoQuestionsNum
+      let outLevel = this.tempTwoResults[this.levelTwoByCategoryID - 1].reduce(
+        (a, e) => a + e.result,
+        0
+      )
+      console.log((outLeftLevel + outLevel) / 10)
+      return (outLeftLevel + outLevel) / 10
     },
-    completeTest () {
+    async completeTest () {
       this.partTwoResult = this.calcPartTwoResults()
-      this.saveResults()
+      await this.saveResults()
       this.$emit('part-two-result-saved')
     },
     async saveResults () {
-      // const { id } = this.user
       const { id: idUser } = this.user
       const { test, attempt } = this.attempt
       const part = 2

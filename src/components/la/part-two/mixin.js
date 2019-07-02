@@ -9,7 +9,7 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['test']),
-    ...mapGetters('config', ['config', 'exportFormats']),
+    ...mapGetters('config', ['config', 'exportFormats', 'partTwoCategoryDefaultValue', 'partTwoQuestionsNum']),
     ...mapGetters('users', ['user', 'authUser', 'fioUser', 'fioAuthUser']),
     ...mapGetters('results', ['savedResults']),
     ...mapGetters('attempts', ['attempt']),

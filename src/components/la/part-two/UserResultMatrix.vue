@@ -3,8 +3,6 @@
     <div class="column no-wrap q-table--bordered">
       <div class="row no-wrap q-gutter-x-md q-ma-sm items-center">
         <div>Экспорт результа в:</div>
-<!--        <q-btn label="xlsx" @click="loadFileAs('xlsx')"></q-btn>-->
-<!--        <q-btn label="pdf" @click="loadFileAs('pdf')"></q-btn>-->
         <q-btn v-for="exp in exportFormats" :key="exp.format" :label="exp.format" @click="exportResults(exp)"></q-btn>
       </div>
       <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column no-wrap">
@@ -120,7 +118,6 @@ export default {
       descriptions: null,
       levelOne: 0,
       isInteractiveChangeCellData: false,
-      // objForSave: {},
       matrix: [
         {
           label:
@@ -473,7 +470,7 @@ export default {
     },
 
     setPartPhaseLevel (part, phase, level, recalc = true) {
-      console.log('setPartPhaseLevel', part, phase, level)
+      // console.log('setPartPhaseLevel', part, phase, level)
       if (this.results) {
         const tmp = this.results.map(e => e)
         const idx = tmp.findIndex(
@@ -501,13 +498,13 @@ export default {
       this.isInteractiveChangeCellData = false
     },
     async saveResults (part, phase, level) {
-      const { id } = this.user
+      const { id: idUser } = this.user
       const { test, attempt } = this.attempt
       const answers = ''
       const extra = ''
 
-      await this.save({
-        id,
+      await this.saveResult({
+        idUser,
         attempt,
         test,
         part,

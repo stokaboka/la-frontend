@@ -11,7 +11,7 @@
               narrow-indicator
             >
               <q-tab name="result" label="Результат" />
-              <q-tab name="parttwo" label="Тестирование - устная часть" />
+              <q-tab name="parttwo" label="Устное тестирование" />
               <q-tab name="offer" label="Программа занаятий" />
             </q-tabs>
 
