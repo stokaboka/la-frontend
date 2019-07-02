@@ -27,7 +27,7 @@ export default {
         .replace('{{USER_FIO}}', this.fioUser)
         .replace('{{DATE_NOW}}', toDDMMYYYY(date.toISOString()))
     },
-    ...mapActions('results', { loadResults: 'load', save: 'save' }),
+    ...mapActions('results', { loadResults: 'load', saveResult: 'save' }),
     ...mapActions('description', { loadDescription: 'load' }),
     ...mapActions('questions', {
       loadQuestions: 'load',

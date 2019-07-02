@@ -183,3 +183,10 @@ export const phoneticAndPronunciation = [
 ]
 
 export const partTwoCategories = ['A1', 'A2', 'B1', 'B2']
+
+export const levelTwoByCategoryValues = [
+  { min: 1, max: 9 },
+  { min: 9, max: 15 },
+  { min: 15, max: 21 },
+  { min: 21, max: 100 }
+]

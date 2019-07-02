@@ -343,21 +343,22 @@ export const savePartOne = ({ commit, getters, rootGetters }, params) => {
 }
 
 export const save = ({ commit, getters, rootGetters }, params) => {
-  const { id, attempt, test, part, phase, level, answers, extra } = params
-
-  const postData = {
-    idUser: id,
-    attempt,
-    test,
-    part,
-    phase,
-    level,
-    answers,
-    extra
-  }
+  const { part } = params
+  // const { id, attempt, test, part, phase, level, answers, result } = params
+  //
+  // const postData = {
+  //   idUser: id,
+  //   attempt,
+  //   test,
+  //   part,
+  //   phase,
+  //   level,
+  //   answers,
+  //   result
+  // }
 
   return axios
-    .post('/results/save', postData)
+    .post('/results/save', params)
     .then(response => {
       if (part === 1) {
         Notify.create({

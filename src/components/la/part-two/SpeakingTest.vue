@@ -74,7 +74,7 @@
 <script>
 import mixin from './mixin'
 import { findMinElement } from '../../../lib/utils'
-import { categories, selfTestLevels, partTwoCategories } from './constants'
+import { categories, selfTestLevels, partTwoCategories, levelTwoByCategoryValues } from './constants'
 export default {
   name: 'SpeakingTest',
   mixins: [mixin],
@@ -86,7 +86,7 @@ export default {
   },
   data () {
     return {
-      levelTwoByCategory: 0,
+      // levelTwoByCategory: 0,
       levelTwoByCategoryID: 0,
       savedLevelTwoByCategoryID: 0,
       partTwoQuestions: null,
@@ -97,7 +97,7 @@ export default {
   async mounted () {
     await this.initResults()
     await this.initQuestions()
-    this.initPhaseData()
+    // this.initPhaseData()
     this.initPartTwoQuestions()
   },
   computed: {
@@ -111,10 +111,17 @@ export default {
       const { attempt } = this.attempt
       this.results = await this.loadResults({ id, attempt })
 
-      this.levelTwoByCategory = this.calcLevelTwoByCategory(this.levelOne)
-      this.levelTwoByCategoryID = this.calcLevelTwoByCategoryID(
-        this.levelTwoByCategory
-      )
+      const phaseData = this.results.find(e => e.part === 2 && e.phase === 1)
+      if (phaseData && phaseData.result > 0) {
+        const { answers } = phaseData
+        const phaseDataArr = JSON.parse(answers)
+        this.levelTwoByCategoryID = phaseData.result
+        this.initTempTwoResults(this.levelTwoByCategoryID, phaseDataArr)
+      } else {
+        const levelTwoByCategory = this.calcLevelTwoByCategory(this.levelOne)
+        this.levelTwoByCategoryID = this.calcLevelTwoByCategoryID(levelTwoByCategory)
+      }
+
       this.savedLevelTwoByCategoryID = this.levelTwoByCategoryID
     },
     async initQuestions () {
@@ -127,13 +134,18 @@ export default {
         phase
       })
     },
-    initPhaseData () {
-      const phaseData = this.results.find(e => e.part === 2 && e.phase === 1)
-      if (phaseData) {
-        const { answers } = phaseData
-        const phaseDataArr = JSON.parse(answers)
-        this.initTempTwoResults(this.levelTwoByCategoryID, phaseDataArr)
-      }
+    // initPhaseData () {
+    //   const phaseData = this.results.find(e => e.part === 2 && e.phase === 1)
+    //   if (phaseData) {
+    //     const { answers } = phaseData
+    //     const phaseDataArr = JSON.parse(answers)
+    //     this.initTempTwoResults(this.levelTwoByCategoryID, phaseDataArr)
+    //     return true
+    //   }
+    //   return false
+    // },
+    calcLevelTwoByLevel (levelTwo) {
+
     },
     calcLevelTwoByCategory (levelOne) {
       const obj = findMinElement(selfTestLevels, levelOne)
@@ -141,10 +153,11 @@ export default {
       return 0
     },
     calcLevelTwoByCategoryID (levelTwoByCategory) {
-      if (levelTwoByCategory >= 1 && levelTwoByCategory < 9) return 1
-      if (levelTwoByCategory >= 9 && levelTwoByCategory < 15) return 2
-      if (levelTwoByCategory >= 15 && levelTwoByCategory < 21) return 3
-      return 4
+      return levelTwoByCategoryValues.findIndex(e => e.min <= levelTwoByCategory && levelTwoByCategory < e.max) + 1
+      // if (levelTwoByCategory >= 1 && levelTwoByCategory < 9) return 1
+      // if (levelTwoByCategory >= 9 && levelTwoByCategory < 15) return 2
+      // if (levelTwoByCategory >= 15 && levelTwoByCategory < 21) return 3
+      // return 4
     },
     async restartLevelTwoByCategory () {
       if (this.levelTwoByCategoryID > 1) {
@@ -219,39 +232,43 @@ export default {
        * 2 - default category
        * 10 - num questions
        */
-      this.partTwoResult =
+      let out =
         (this.levelTwoByCategoryID - 1) * 2 * 10 +
         this.tempTwoResults[this.levelTwoByCategoryID - 1].reduce(
           (a, e) => a + e.result,
           0
         )
-      this.partTwoResult /= 10
+      out /= 10
+      return out
     },
     completeTest () {
-      this.calcPartTwoResults()
+      this.partTwoResult = this.calcPartTwoResults()
       this.saveResults()
       this.$emit('part-two-result-saved')
     },
     async saveResults () {
-      const { id } = this.user
+      // const { id } = this.user
+      const { id: idUser } = this.user
       const { test, attempt } = this.attempt
       const part = 2
       const phase = categories.generalCommentOnOralAssessmentBands.phase
       const level = this.partTwoResult
+      const result = this.levelTwoByCategoryID
       const a = this.tempTwoResults[this.levelTwoByCategoryID - 1].map(e => {
         const { part, phase, category, result, extra } = e
         return { part, phase, category, result, extra }
       })
       const answers = JSON.stringify(a)
 
-      await this.save({
-        id,
+      await this.saveResult({
+        idUser,
         attempt,
         test,
         part,
         phase,
         level,
-        answers
+        answers,
+        result
       })
     }
   }
