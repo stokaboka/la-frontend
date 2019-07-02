@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="column q-table--bordered">
-      <div class="row q-gutter-x-md q-ma-sm items-center">
+    <div class="column no-wrap q-table--bordered">
+      <div class="row no-wrap q-gutter-x-md q-ma-sm items-center">
         <div>Экспорт результа в:</div>
 <!--        <q-btn label="xlsx" @click="loadFileAs('xlsx')"></q-btn>-->
 <!--        <q-btn label="pdf" @click="loadFileAs('pdf')"></q-btn>-->
         <q-btn v-for="exp in exportFormats" :key="exp.format" :label="exp.format" @click="exportResults(exp)"></q-btn>
       </div>
-      <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column">
-        <div v-if="r.rows" class="row">
+      <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column no-wrap">
+        <div v-if="r.rows" class="row no-wrap">
           <div
             :class="r.labelClass"
             class="col-3 q-table--bordered items-center matrix-col matrix-col__font"
@@ -16,10 +16,10 @@
             {{ r.label }}
           </div>
 
-          <div class="column col-9" :class="r.labelClass">
+          <div class="column no-wrap col-9" :class="r.labelClass">
             <div
               v-if="r.gadget"
-              class="col row items-center"
+              class="col row no-wrap items-center"
             >
               <q-select
                 v-if="r.gadget.type === 'select'"
@@ -32,13 +32,13 @@
             <div
               v-for="(row, rIndex) in r.rows"
               :key="`c-${rIndex}`"
-              class="col row items-stretch"
+              class="col row no-wrap items-stretch"
             >
               <div
                 v-for="(rowItem, rowItemIndex) in row"
                 :key="`c-${rowItemIndex}`"
                 :class="[r.rowsClass, rowItem.class]"
-                class="column text-center vertical-middle q-table--bordered matrix-col matrix-col__font"
+                class="column no-wrap text-center vertical-middle q-table--bordered matrix-col matrix-col__font"
                 @click="onInteractiveCellClick(r, rowItem)"
                 @touchend="onInteractiveCellClick(r, rowItem)"
               >
@@ -49,7 +49,7 @@
           </div>
         </div>
 
-        <div v-else class="row">
+        <div v-else class="row no-wrap">
           <div
             :class="r.labelClass"
             class="col q-table--bordered text-center matrix-col matrix-col__font"
@@ -62,9 +62,9 @@
         <div
           v-for="description in descriptions"
           :key="description.id"
-          class="column"
+          class="column no-wrap"
         >
-          <div class="column">
+          <div class="column no-wrap">
             <div
               :class="description.labelClass"
               class="col q-table--bordered items-center matrix-col matrix-col__font"
