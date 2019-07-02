@@ -5,9 +5,11 @@
       title="Пользователь"
       :model="usersModel"
       :visible-columns="userVisibleColumns"
+      :show-actions="showUserActions"
+      :show-messages="showUserMessages"
     >
       <template v-slot:actions>
-        <div v-if="isUsersPage && user" class="row q-gutter-md">
+        <div class="row q-gutter-md">
           <q-btn
             :disable="user.closed === 0"
             color="primary"
@@ -32,14 +34,19 @@
         </div>
       </template>
       <template v-slot:message>
-        <q-banner v-if="!user" rounded class="text-grey-10 bg-warning">
+        <q-banner rounded class="text-grey-10 bg-warning">
         Для продолжения нужно выбрать пользователя.<br>Найдите и выберите запись в таблице <strong><q>Пользователи</q></strong></q-banner>
       </template>
     </row-form>
-    <row-form :data="attempt" title="Попытка" :model="attemptModel">
+    <row-form
+      :data="attempt"
+      title="Попытка"
+      :model="attemptModel"
+      :show-actions="showAttemptActions"
+      :show-messages="showAttemptMessages"
+    >
       <template v-slot:actions>
         <q-btn
-          v-if="isUsersPage && attempt"
           color="green"
           label="Результат"
           @click="$router.push({ name: 'part-two-user-results' })"
@@ -50,7 +57,7 @@
         </q-btn>
       </template>
       <template v-slot:message>
-        <q-banner v-if="!attempt" rounded class="text-grey-10 bg-warning">
+        <q-banner rounded class="text-grey-10 bg-warning">
           Для продолжения нужно выбрать попытку.<br>Найдите и выберите запись в таблице <strong><q>Попытки прохождения теста</q></strong>
         </q-banner>
       </template>
@@ -61,6 +68,8 @@
       title="Инструктор"
       :model="usersModel"
       :visible-columns="managerVisibleColumns"
+      :show-actions="authUserControls"
+      :show-messages="authUserControls"
     >
     </row-form>
   </div>
@@ -76,6 +85,8 @@ export default {
   },
   data () {
     return {
+      authUserControls: false,
+
       userVisibleColumns: [
         'login',
         'firstName',
@@ -89,6 +100,18 @@ export default {
     }
   },
   computed: {
+    showUserActions () {
+      return this.isUsersPage && this.user !== null
+    },
+    showUserMessages () {
+      return this.user === null
+    },
+    showAttemptActions () {
+      return this.isUsersPage && this.attempt !== null
+    },
+    showAttemptMessages () {
+      return this.attempt === null
+    },
     isUsersPage () {
       return this.$route.name === 'part-two-users'
     },

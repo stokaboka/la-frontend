@@ -1,6 +1,6 @@
 <template>
     <q-card>
-      <q-card-section class="text-h6 bg-secondary text-white">
+      <q-card-section v-if="title" class="text-h6 bg-secondary text-white">
         {{title}}
       </q-card-section>
       <q-card-section v-if="data" class="row justify-start items-start">
@@ -33,11 +33,11 @@
           </div>
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section v-if="showActions" class="q-mt-md">
         <slot name="actions"></slot>
       </q-card-section>
 
-      <q-card-section>
+      <q-card-section v-if="showMessages" class="q-mt-md">
         <slot name="message"></slot>
       </q-card-section>
 
@@ -68,6 +68,20 @@ export default {
       type: Array,
       default () {
         return null
+      },
+      required: false
+    },
+    showActions: {
+      type: Boolean,
+      default () {
+        return true
+      },
+      required: false
+    },
+    showMessages: {
+      type: Boolean,
+      default () {
+        return true
       },
       required: false
     }
