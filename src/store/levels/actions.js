@@ -30,6 +30,7 @@ export const save = ({ commit, getters, rootGetters }, params) => {
   return axios
     .post('/levels/save', params)
     .then(response => {
+      commit('SET_LEVEL', params)
     })
     .catch(error => {
       errorNotify(error.message)

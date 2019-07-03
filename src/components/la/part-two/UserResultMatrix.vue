@@ -399,9 +399,14 @@ export default {
         }
       }, this)
 
-      out['finalLevelCEF'] = this.finalLevelCEF.level
-      out['finalLevelSVS'] = this.finalLevelSVS.level
-      out['finalLevel'] = this.finalLevel
+      out['finalLevelCEF'] = findMinElementIndex(finalTestResultEurope, this.finalLevel, 'value')
+      out['finalLevelSVS'] = findMinElementIndex(finalTestResultSVS, this.finalLevel, 'value')
+      out['finalLevelSVSDetail'] = findMinElementIndex(finalTestResultSVSDetail, this.finalLevel, 'value')
+
+      out['finalLevelCEF_value'] = this.finalLevelCEF.level
+      out['finalLevelSVS_value'] = this.finalLevelSVS.level
+      out['finalLevel'] = findMinElementIndex(autoTestLevels, this.finalLevel)
+      out['finalLevel_value'] = this.finalLevel
 
       return out
     },
@@ -420,8 +425,8 @@ export default {
                 ...{
                   class:
                     itemIdx === minIdx
-                      ? item.class ? `${selectionClass} ${item.class}` : selectionClass
-                      : item.class ? item.class : ''
+                      ? item.cellClass ? `${selectionClass} ${item.cellClass}` : selectionClass
+                      : item.cellClass ? item.cellClass : ''
                 }
               }
             }, this)
@@ -473,7 +478,7 @@ export default {
     },
 
     setPartPhaseLevel (part, phase, level, recalc = true) {
-      // console.log('setPartPhaseLevel', part, phase, level)
+      console.log('setPartPhaseLevel', part, phase, level)
       if (this.results) {
         const tmp = this.results.map(e => e)
         const idx = tmp.findIndex(
@@ -491,8 +496,8 @@ export default {
       }
 
       if (this.isInteractiveChangeCellData) {
+        console.log('isInteractiveChangeCellData', part, phase, level)
         this.saveResults(part, phase, level)
-        this.saveLevels()
       }
 
       if (recalc) {
@@ -505,7 +510,7 @@ export default {
       const { id: idUser } = this.user
       const { test, attempt } = this.attempt
       const answers = ''
-      const extra = ''
+      // const extra = ''
 
       await this.saveResult({
         idUser,
@@ -514,12 +519,14 @@ export default {
         part,
         phase,
         level,
-        answers,
-        extra
+        answers
+        // extra
       })
     },
 
     async saveLevels () {
+      // await this.$nextTick()
+
       const { id: idUser } = this.user
       const { test, attempt } = this.attempt
       const {
@@ -667,6 +674,11 @@ export default {
     },
     finalLevel () {
       return this.levelOne + this.partTwoResult
+    }
+  },
+  watch: {
+    finalLevel () {
+      this.saveLevels()
     }
   }
 }

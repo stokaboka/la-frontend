@@ -90,12 +90,12 @@ export const categories = {
 }
 
 export const finalTestResultEurope = [
-  { value: 17.1, level: 'A1', class: 'col-3-11' },
-  { value: 35.1, level: 'A2', class: 'col-2-11' },
-  { value: 54.1, level: 'B1', class: 'col-2-11' },
-  { value: 73.1, level: 'B2', class: 'col-2-11' },
-  { value: 83.7, level: 'C1', class: 'col-1-11' },
-  { value: 100, level: 'C2', class: 'col-1-11' }
+  { value: 17.1, level: 'A1', cellClass: 'col-3-11' },
+  { value: 35.1, level: 'A2', cellClass: 'col-2-11' },
+  { value: 54.1, level: 'B1', cellClass: 'col-2-11' },
+  { value: 73.1, level: 'B2', cellClass: 'col-2-11' },
+  { value: 83.7, level: 'C1', cellClass: 'col-1-11' },
+  { value: 100, level: 'C2', cellClass: 'col-1-11' }
 ].map(e => {
   return {
     ...e,
@@ -119,17 +119,11 @@ export const finalTestResultSVS = [
   { value: 54.1, level: 'Intermediate' },
   { value: 73.1, level: 'Upper-Intermediate' },
   { value: 83.7, level: 'Advanced' }
-  // { value: 8.4, level: 'Beginner' },
-  // { value: 26.5, level: 'Elementary' },
-  // { value: 44.7, level: 'Pre-Intermediate' },
-  // { value: 63.7, level: 'Intermediate' },
-  // { value: 83.7, level: 'Upper-Intermediate' },
-  // { value: 100, level: 'Advanced' }
 ].map(e => {
   return {
     ...e,
     label: e.level,
-    class: `${e.level === 'Advanced' ? 'col-1-11' : 'col-2-11'} ${finalTestResultColors[e.level]}`
+    cellClass: `${e.level === 'Advanced' ? 'col-1-11' : 'col-2-11'} ${finalTestResultColors[e.level]}`
   }
 })
 
@@ -149,7 +143,7 @@ export const finalTestResultSVSDetail = [
   return {
     ...e,
     label: e.sublevel,
-    class: `col-1-11 ${finalTestResultColors[e.level]}`
+    cellClass: `col-1-11 ${finalTestResultColors[e.level]}`
   }
 })
 
