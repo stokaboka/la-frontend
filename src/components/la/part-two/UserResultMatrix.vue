@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{finalLevel}}
     <div class="column no-wrap q-table--bordered">
       <div class="row no-wrap q-gutter-x-md q-ma-sm items-center">
         <div>Экспорт результа в:</div>
@@ -40,8 +41,7 @@
                 @click="onInteractiveCellClick(r, rowItem)"
                 @touchend="onInteractiveCellClick(r, rowItem)"
               >
-                <span v-if="rowItem.label">{{ rowItem.label }}</span>
-                <span v-if="rowItem.value">{{ rowItem.value }}</span>
+                <span v-if="rowItem.label || rowItem.value">{{ showItemLabelValue(rowItem) }}</span>
               </div>
             </div>
           </div>
@@ -102,9 +102,13 @@ import {
   talkTestLevels,
   phoneticAndPronunciation,
   finalTestResultEurope,
-  finalTestResultSVS
+  finalTestResultSVS,
+  finalTestResultSVSDetail,
+  finalTestResultSVSComplete
 } from './constants'
 import { findMinElementIndex, findMinElement } from '../../../lib/utils'
+
+const selectionClass = 'bg-deep-orange text-white text-weight-bold shadow-3'
 
 export default {
   name: 'UserResultMatrix',
@@ -124,46 +128,19 @@ export default {
             'Общеевропейская Система Уровней Владения Иностранными Языками (CEF)',
           labelClass: 'bg-orange-1',
           rowsClass: 'bg-orange-1',
+          target: 'finalLevel',
           rows: [
-            [
-              { label: 'A1', class: 'col-3-11' },
-              { label: 'A2', class: 'col-2-11' },
-              { label: 'B1', class: 'col-2-11' },
-              { label: 'B2', class: 'col-2-11' },
-              { label: 'C1', class: 'col-1-11' },
-              { label: 'C2', class: 'col-1-11' }
-            ]
+            finalTestResultEurope
           ]
         },
 
         {
           label: 'Система Уровней Владения Иностранными Языками Свободы Слова',
           labelClass: 'bg-white',
+          target: 'finalLevel',
           rows: [
-            [
-              { label: 'Beginner', class: 'col-2-11 bg-yellow' },
-              { label: 'Elementary', class: 'col-2-11 bg-orange-11' },
-              {
-                label: 'Pre-Intermediate',
-                class: 'col-2-11 bg-light-green-13'
-              },
-              { label: 'Intermediate', class: 'col-2-11 bg-cyan-2' },
-              { label: 'Upper-Intermediate', class: 'col-2-11 bg-indigo-11' },
-              { label: 'Advanced', class: 'col-1-11 bg-blue' }
-            ],
-            [
-              { label: 'Absolute', class: 'col-1-11 bg-yellow' },
-              { label: 'False', class: 'col-1-11 bg-yellow' },
-              { label: 'Entry', class: 'col-1-11 bg-orange-11' },
-              { label: 'Confident', class: 'col-1-11 bg-orange-11' },
-              { label: 'Entry', class: 'col-1-11 bg-light-green-13' },
-              { label: 'Confident', class: 'col-1-11 bg-light-green-13' },
-              { label: 'Entry', class: 'col-1-11 bg-cyan-2' },
-              { label: 'Confident', class: 'col-1-11 bg-cyan-2' },
-              { label: 'Entry', class: 'col-1-11 bg-indigo-11' },
-              { label: 'Confident', class: 'col-1-11 bg-indigo-11' },
-              { label: 'Competent', class: 'col-1-11 bg-blue' }
-            ]
+            finalTestResultSVS,
+            finalTestResultSVSDetail
           ]
         },
 
@@ -370,6 +347,11 @@ export default {
         })
       )
     },
+    showItemLabelValue (rowItem) {
+      if (rowItem.label) return rowItem.label
+      else if (rowItem.value) return rowItem.value
+      return ''
+    },
     getReport () {
       const out = { descriptions: this.descriptions.map(e => {
         const { category, description, label, level, target } = e
@@ -394,11 +376,11 @@ export default {
         }
       }, this)
 
-      const finalLevelEurope = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
-      const finalLevelSVS = findMinElement(finalTestResultSVS, this.finalLevel, 'value')
+      // const finalLevelEurope = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
+      // const finalLevelSVS = findMinElement(finalTestResultSVS, this.finalLevel, 'value')
 
-      out['finalLevelEurope'] = finalLevelEurope ? finalLevelEurope.level : ''
-      out['finalLevelSVS'] = finalLevelSVS ? finalLevelSVS.level : ''
+      out['finalLevelEurope'] = this.finalLevelEurope
+      out['finalLevelSVS'] = this.finalLevelSVS
 
       return out
     },
@@ -417,8 +399,10 @@ export default {
                 ...{
                   class:
                     itemIdx === minIdx
-                      ? 'bg-deep-orange text-white text-weight-bold shadow-3'
-                      : ''
+                      ? item.class ? `${selectionClass} ${item.class}` : selectionClass
+                      : item.class ? item.class : ''
+                      // ? selectionClass
+                      // : item.class ? item.class : ''
                 }
               }
             }, this)
@@ -551,6 +535,14 @@ export default {
 
   },
   computed: {
+    finalLevelEurope () {
+      const out = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
+      return out || ''
+    },
+    finalLevelSVS () {
+      const out = findMinElement(finalTestResultSVSComplete, this.finalLevel, 'value')
+      return out || ''
+    },
     vocabularyLevel () {
       return this.getPartPhaseLevel(1, 1)
     },

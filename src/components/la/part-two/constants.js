@@ -90,15 +90,70 @@ export const categories = {
 }
 
 export const finalTestResultEurope = [
-  { value: 17.1, level: 'A1' },
-  { value: 35.1, level: 'A2' },
-  { value: 54.1, level: 'B1' },
-  { value: 73.1, level: 'B2' },
-  { value: 83.7, level: 'C1' },
-  { value: 100, level: 'C1' }
-]
+  { value: 17.1, level: 'A1', class: 'col-3-11' },
+  { value: 35.1, level: 'A2', class: 'col-2-11' },
+  { value: 54.1, level: 'B1', class: 'col-2-11' },
+  { value: 73.1, level: 'B2', class: 'col-2-11' },
+  { value: 83.7, level: 'C1', class: 'col-1-11' },
+  { value: 100, level: 'C2', class: 'col-1-11' }
+].map(e => {
+  return {
+    ...e,
+    label: e.level
+  }
+})
+
+const finalTestResultColors = {
+  'Beginner': 'bg-yellow',
+  'Elementary': 'bg-orange-11',
+  'Pre-Intermediate': 'bg-light-green-13',
+  'Intermediate': 'bg-cyan-2',
+  'Upper-Intermediate': 'bg-indigo-11',
+  'Advanced': 'bg-blue'
+}
 
 export const finalTestResultSVS = [
+  { value: 1, level: 'Beginner' },
+  { value: 17.1, level: 'Elementary' },
+  { value: 35.1, level: 'Pre-Intermediate' },
+  { value: 54.1, level: 'Intermediate' },
+  { value: 73.1, level: 'Upper-Intermediate' },
+  { value: 83.7, level: 'Advanced' }
+  // { value: 8.4, level: 'Beginner' },
+  // { value: 26.5, level: 'Elementary' },
+  // { value: 44.7, level: 'Pre-Intermediate' },
+  // { value: 63.7, level: 'Intermediate' },
+  // { value: 83.7, level: 'Upper-Intermediate' },
+  // { value: 100, level: 'Advanced' }
+].map(e => {
+  return {
+    ...e,
+    label: e.level,
+    class: `${e.level === 'Advanced' ? 'col-1-11' : 'col-2-11'} ${finalTestResultColors[e.level]}`
+  }
+})
+
+export const finalTestResultSVSDetail = [
+  { value: 1, level: 'Beginner', sublevel: 'Absolute' },
+  { value: 8.4, level: 'Beginner', sublevel: 'False' },
+  { value: 17.1, level: 'Elementary', sublevel: 'Entry' },
+  { value: 26.5, level: 'Elementary', sublevel: 'Confident' },
+  { value: 35.1, level: 'Pre-Intermediate', sublevel: 'Entry' },
+  { value: 44.7, level: 'Pre-Intermediate', sublevel: 'Confident' },
+  { value: 54.1, level: 'Intermediate', sublevel: 'Entry' },
+  { value: 63.7, level: 'Intermediate', sublevel: 'Confident' },
+  { value: 73.1, level: 'Upper-Intermediate', sublevel: 'Entry' },
+  { value: 83.7, level: 'Upper-Intermediate', sublevel: 'Confident' },
+  { value: 100, level: 'Advanced', sublevel: 'Competent' }
+].map(e => {
+  return {
+    ...e,
+    label: e.sublevel,
+    class: `col-1-11 ${finalTestResultColors[e.level]}`
+  }
+})
+
+export const finalTestResultSVSComplete = [
   { value: 1, level: 'Beginner Absolute' },
   { value: 8.4, level: 'Beginner False' },
   { value: 17.1, level: 'Elementary Entry' },
