@@ -2,21 +2,21 @@
   <div>
     <div class="column no-wrap q-table--bordered">
       <div class="row no-wrap q-gutter-x-md q-ma-sm items-center">
-          <q-chip>
+          <q-chip class="shadow-2">
             <q-avatar icon="done" color="orange" text-color="white" />
             <strong>{{finalLevel}}</strong>
             <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
               Набранные баллы
             </q-tooltip>
           </q-chip>
-        <q-chip>
+        <q-chip class="shadow-2">
           <q-avatar icon="euro_symbol" color="secondary" text-color="white" />
-          <strong>{{finalLevelEurope.level}}</strong>
+          <strong>{{finalLevelCEF.level}}</strong>
           <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
             Уровень CEF
           </q-tooltip>
         </q-chip>
-        <q-chip>
+        <q-chip class="shadow-2">
           <q-avatar icon="forum" color="primary" text-color="white" />
           <strong>{{finalLevelSVS.level}}</strong>
           <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
@@ -345,6 +345,7 @@ export default {
       await this.initDescriptions()
       this.calcPartTwoFinalResult()
       this.showLevels()
+      this.saveLevels()
     },
     async initResults () {
       const { id } = this.user
@@ -398,11 +399,9 @@ export default {
         }
       }, this)
 
-      // const finalLevelEurope = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
-      // const finalLevelSVS = findMinElement(finalTestResultSVS, this.finalLevel, 'value')
-
-      out['finalLevelEurope'] = this.finalLevelEurope.level
+      out['finalLevelCEF'] = this.finalLevelCEF.level
       out['finalLevelSVS'] = this.finalLevelSVS.level
+      out['finalLevel'] = this.finalLevel
 
       return out
     },
@@ -423,8 +422,6 @@ export default {
                     itemIdx === minIdx
                       ? item.class ? `${selectionClass} ${item.class}` : selectionClass
                       : item.class ? item.class : ''
-                      // ? selectionClass
-                      // : item.class ? item.class : ''
                 }
               }
             }, this)
@@ -495,6 +492,7 @@ export default {
 
       if (this.isInteractiveChangeCellData) {
         this.saveResults(part, phase, level)
+        this.saveLevels()
       }
 
       if (recalc) {
@@ -521,13 +519,39 @@ export default {
       })
     },
 
+    async saveLevels () {
+      const { id: idUser } = this.user
+      const { test, attempt } = this.attempt
+      const {
+        fioAuthUser: manager,
+        fioAuthUser: trainer,
+        finalLevel: level,
+        finalLevelCEF: levelCEF,
+        finalLevelSVS: levelSVS
+      } = this
+
+      await this.saveLevel({
+        idUser,
+        attempt,
+        test,
+        level,
+        levelCEF: levelCEF.level,
+        levelSVS: levelSVS.level,
+        manager,
+        trainer
+      })
+    },
+
     async saveResultReport () {
       const type = 'result'
 
       const {
         fioUser: student,
         fioAuthUser: manager,
-        fioAuthUser: trainer
+        fioAuthUser: trainer,
+        finalLevel: level,
+        finalLevelCEF: levelCEF,
+        finalLevelSVS: levelSVS
       } = this
 
       const { id: idUser } = this.user
@@ -536,7 +560,7 @@ export default {
       const results = this.getReport()
 
       const data = { student, manager, trainer, date, results }
-      const report = { type, idUser, attempt, test, data }
+      const report = { type, idUser, attempt, test, data, level, levelCEF, levelSVS }
 
       await this.saveReport(report)
     },
@@ -557,7 +581,7 @@ export default {
 
   },
   computed: {
-    finalLevelEurope () {
+    finalLevelCEF () {
       const out = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
       return out || ''
     },

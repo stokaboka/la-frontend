@@ -13,7 +13,7 @@ export default {
         field: 'test',
         label: 'Тест',
         sortable: false,
-        visible: true,
+        visible: false,
         update: false,
         insert: false
       },

@@ -3,30 +3,40 @@
       <q-card-section v-if="title" class="text-h6 bg-secondary text-white">
         {{title}}
       </q-card-section>
-      <q-card-section v-if="data" class="row justify-start items-start">
+      <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start">
           <div v-for="column in columns" :key="column.field">
             <div
-              v-if="data[column.field] != undefined"
+              v-if="data[column.field] != undefined && data[column.field] != null"
               class="column items-start q-pa-sm text-grey-14"
             >
-              <span class="q-mr-md text-subtitle2">{{ column.label }}</span>
+              <span class="q-mr-md row-form__item-label">{{ column.label }}</span>
               <div v-if="column.gadget">
+                <q-chip
+                  v-if="column.gadget.type === 'chip'"
+                  class="shadow-2"
+                >
+                  <q-avatar v-bind="column.gadget.options" />
+                  <strong>{{ format(data[column.field], column) }}</strong>
+                  <q-tooltip v-if="column.gadget.options.tooltip" content-class="bg-gray" content-style="font-size: 1rem">
+                    {{column.gadget.options.tooltip}}
+                  </q-tooltip>
+                </q-chip>
                 <q-icon
                   v-if="column.gadget.type === 'icon'"
                   v-bind="column.gadget.options[data[column.field]]"
                 ></q-icon>
-                <q-chip
-                  v-if="column.gadget.type === 'chip'"
-                  v-bind="column.gadget.options[data[column.field]]"
-                  class="shadow-2"
-                ></q-chip>
+<!--                <q-chip-->
+<!--                  v-if="column.gadget.type === 'chip'"-->
+<!--                  v-bind="column.gadget.options[data[column.field]]"-->
+<!--                  class="shadow-2"-->
+<!--                ></q-chip>-->
                 <q-toggle
                   v-if="column.gadget.type === 'toggle'"
                   v-model="data[column.field]"
                   v-bind="column.gadget.options"
                 ></q-toggle>
               </div>
-              <div v-else class="text-weight-medium">
+              <div v-else class="text-weight-medium row-form__item-box">
                 {{ format(data[column.field], column) }}
               </div>
             </div>
@@ -109,4 +119,14 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+  .row-form__item-label {
+    color: gray;
+    font-size: 0.75rem;
+  }
+
+  .row-form__item-box {
+    min-width: 2rem;
+    border-bottom: 2px solid #027BE3;
+  }
+</style>

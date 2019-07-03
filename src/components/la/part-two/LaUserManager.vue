@@ -63,6 +63,30 @@
       </template>
     </row-form>
     <row-form
+      :data="level"
+      title="Уровень"
+      :model="levelModel"
+      :show-actions="false"
+      :show-messages="false"
+    >
+      <template v-slot:actions>
+        <q-btn
+          color="green"
+          label="Результат"
+          @click="$router.push({ name: 'part-two-user-results' })"
+        >
+          <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+            Перейти к результатам теста
+          </q-tooltip>
+        </q-btn>
+      </template>
+      <template v-slot:message>
+        <q-banner rounded class="text-grey-10 bg-warning">
+          Для продолжения нужно выбрать попытку.<br>Найдите и выберите запись в таблице <strong><q>Попытки прохождения теста</q></strong>
+        </q-banner>
+      </template>
+    </row-form>
+    <row-form
       v-if="authUser"
       :data="authUser"
       title="Инструктор"
@@ -120,10 +144,10 @@ export default {
       authUser: 'authUser',
       usersModel: 'model'
     }),
-    ...mapGetters('attempts', { attempt: 'attempt', attemptModel: 'model' })
+    ...mapGetters('attempts', { attempt: 'attempt', attemptModel: 'model' }),
+    ...mapGetters('levels', { level: 'level', levelModel: 'model' })
   },
   methods: {
-    onUsersTableRowClick (row) {},
     async addNewAttempt () {
       await this.newAttempt(this.user)
       await this.reload({ module: 'users' })
@@ -133,7 +157,16 @@ export default {
       await this.reload({ module: 'users' })
     },
     ...mapActions('users', ['newAttempt', 'fixAttempt']),
-    ...mapActions('editor', ['load', 'reload'])
+    ...mapActions('editor', ['load', 'reload']),
+    ...mapActions('levels', { loadLevels: 'load' })
+  },
+  watch: {
+    async attempt () {
+      const { id: user } = this.user
+      const { test, attempt } = this.attempt
+      const params = { user, test, attempt }
+      await this.loadLevels(params)
+    }
   }
 }
 </script>

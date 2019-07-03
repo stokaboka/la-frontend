@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { Notify } from 'quasar'
 import { objectToParamStr } from '../../lib/utils'
-import FileSaver from 'file-saver'
 
 const errorNotify = function (error) {
   console.warn(error)
@@ -13,28 +12,24 @@ const errorNotify = function (error) {
   })
 }
 
-export const save = ({ getters }, data) => {
+export const load = ({ commit }, params) => {
+  const keys = ['user', 'test', 'attempt']
+  const pStr = objectToParamStr(keys, params)
   return axios
-    .post('/reports/save', data)
+    .get(`/levels/${pStr}`, params)
     .then(response => {
-      // console.log('REPORT SAVE', response.data)
+      console.log(response.data)
+      commit('SET_LEVEL', response.data)
     })
     .catch(error => {
       errorNotify(error.message)
     })
 }
 
-export const load = ({ getters }, params) => {
-  const { filename } = params
-  const keys = ['user', 'test', 'attempt', 'format']
-  const pStr = objectToParamStr(keys, params)
-  return axios({
-    url: `/reports/${pStr}`,
-    method: 'GET',
-    responseType: 'blob' // important
-  })
+export const save = ({ commit, getters, rootGetters }, params) => {
+  return axios
+    .post('/levels/save', params)
     .then(response => {
-      FileSaver.saveAs(new Blob([response.data]), filename)
     })
     .catch(error => {
       errorNotify(error.message)

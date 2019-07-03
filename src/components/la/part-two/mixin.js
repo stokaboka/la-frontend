@@ -13,7 +13,8 @@ export default {
     ...mapGetters('users', ['user', 'authUser', 'fioUser', 'fioAuthUser']),
     ...mapGetters('results', ['savedResults']),
     ...mapGetters('attempts', ['attempt']),
-    ...mapGetters('questions', ['questions'])
+    ...mapGetters('questions', ['questions']),
+    ...mapGetters('levels', ['date', 'test', 'levelScore', 'levelCEF', 'levelSVS', 'manager', 'trainer'])
   },
   methods: {
     calcResultsPart (part) {
@@ -33,6 +34,7 @@ export default {
       loadQuestions: 'load',
       loadCountQuestions: 'count'
     }),
-    ...mapActions('reports', { loadReportFile: 'load', saveReport: 'save' })
+    ...mapActions('reports', { loadReportFile: 'load', saveReport: 'save' }),
+    ...mapActions('levels', { loadLevels: 'load', saveLevel: 'save' })
   }
 }
