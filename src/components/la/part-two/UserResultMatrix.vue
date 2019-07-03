@@ -1,10 +1,32 @@
 <template>
   <div>
-    {{finalLevel}}
     <div class="column no-wrap q-table--bordered">
       <div class="row no-wrap q-gutter-x-md q-ma-sm items-center">
-        <div>Экспорт результа в:</div>
-        <q-btn v-for="exp in exportFormats" :key="exp.format" :label="exp.format" @click="exportResults(exp)"></q-btn>
+          <q-chip>
+            <q-avatar icon="done" color="orange" text-color="white" />
+            <strong>{{finalLevel}}</strong>
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
+              Набранные баллы
+            </q-tooltip>
+          </q-chip>
+        <q-chip>
+          <q-avatar icon="euro_symbol" color="secondary" text-color="white" />
+          <strong>{{finalLevelEurope.level}}</strong>
+          <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
+            Уровень CEF
+          </q-tooltip>
+        </q-chip>
+        <q-chip>
+          <q-avatar icon="forum" color="primary" text-color="white" />
+          <strong>{{finalLevelSVS.level}}</strong>
+          <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
+            Уровень <q>Свобода слова</q>
+          </q-tooltip>
+        </q-chip>
+        <div class="row no-wrap q-gutter-x-md q-ma-sm items-center">
+          <span>Экспорт результа в:</span>
+          <q-btn v-for="exp in exportFormats" :key="exp.format" :label="exp.format" @click="exportResults(exp)"></q-btn>
+        </div>
       </div>
       <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column no-wrap">
         <div v-if="r.rows" class="row no-wrap">
@@ -379,8 +401,8 @@ export default {
       // const finalLevelEurope = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
       // const finalLevelSVS = findMinElement(finalTestResultSVS, this.finalLevel, 'value')
 
-      out['finalLevelEurope'] = this.finalLevelEurope
-      out['finalLevelSVS'] = this.finalLevelSVS
+      out['finalLevelEurope'] = this.finalLevelEurope.level
+      out['finalLevelSVS'] = this.finalLevelSVS.level
 
       return out
     },
