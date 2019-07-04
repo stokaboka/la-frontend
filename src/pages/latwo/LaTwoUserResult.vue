@@ -13,6 +13,7 @@
               <q-tab name="result" label="Результат" />
               <q-tab name="parttwo" label="Устное тестирование" />
               <q-tab name="offer" label="Программа занаятий" />
+              <q-tab name="courses" label="Курсы" />
             </q-tabs>
 
             <q-separator />
@@ -35,7 +36,12 @@
 
               <q-tab-panel name="offer">
                 <div class="text-h6">Программа занаятий</div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <orders></orders>
+              </q-tab-panel>
+
+              <q-tab-panel name="courses">
+                <div class="text-h6">Курсы</div>
+                <courses></courses>
               </q-tab-panel>
 
             </q-tab-panels>
@@ -46,9 +52,11 @@
 <script>
 import UserResultMatrix from '../../components/la/part-two/UserResultMatrix'
 import SpeakingTest from '../../components/la/part-two/SpeakingTest'
+import Orders from '../../components/la/part-two/orders/Orders'
+import Courses from '../../components/la/part-two/orders/Courses'
 export default {
   name: 'LaTwoUserResult',
-  components: { SpeakingTest, UserResultMatrix },
+  components: { Courses, Orders, SpeakingTest, UserResultMatrix },
   data () {
     return {
       tab: 'result',
