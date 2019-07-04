@@ -1,4 +1,5 @@
 <template>
+  <div>
   <q-table
     :loading="loading"
     :separator="separator"
@@ -40,7 +41,7 @@
             ></q-icon>
             <q-chip
               v-if="column.gadget.type === 'chip'"
-              v-bind="column.gadget.options[props.row[column.field]]"
+              v-bind="column.gadget.options"
               dense
               class="shadow-2"
             ></q-chip>
@@ -53,7 +54,7 @@
           </div>
           <span v-else>{{ format(props.row[column.field], column) }}</span>
           <q-popup-edit
-            v-if="edit.update && column.update"
+            v-if="false"
             v-model="props.row[column.field]"
             buttons
             :title="props.row[column.label]"
@@ -63,19 +64,7 @@
               v-model="props.row[column.field]"
               dense
               autofocus
-            ></q-input>
-          </q-popup-edit>
-          <q-popup-edit
-            v-if="edit.insert && column.insert"
-            v-model="props.row[column.field]"
-            buttons
-            :title="props.row[column.label]"
-            @save="onInsertRow(props.row)"
-          >
-            <q-input
-              v-model="props.row[column.field]"
-              dense
-              autofocus
+              :type="column.type"
             ></q-input>
           </q-popup-edit>
         </q-td>
@@ -97,6 +86,24 @@
           <q-icon name="search" />
         </template>
       </q-input>
+
+      <q-space />
+
+      <q-btn v-if="edit.insert" label="Создать" @click="onInsertRowClick">
+        <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+          Создать новую запись
+        </q-tooltip>
+      </q-btn>
+      <q-btn v-if="edit.update" label="Редактировать" @click="onEditRowClick">
+        <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+          Изменить запись
+        </q-tooltip>
+      </q-btn>
+      <q-btn v-if="edit.delete" label="Удалить" @click="editor.delete=true">
+        <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+          Удалить запись
+        </q-tooltip>
+      </q-btn>
 
       <q-space />
 
@@ -127,17 +134,78 @@
         hide-underline
         v-model="separator"
       ></q-select>
+
     </template>
   </q-table>
+
+    <q-dialog
+      v-model="editor.dialog"
+      persistent
+      square
+      transition-show="scale"
+      transition-hide="scale">
+      <row-form
+        class="dialog-form"
+        :data="editor.row"
+        title="Редактор записи"
+        :model="model"
+        :edit="true"
+        :show-actions="true"
+        :show-messages="false"
+      >
+        <template v-slot:actions>
+          <div class="row q-gutter-md">
+            <q-btn
+              color="primary"
+              label="Сохранить"
+              v-close-popup
+              @click="onEditRowAccept"
+            >
+              <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+                Сохранить измененнения
+              </q-tooltip>
+            </q-btn>
+
+            <q-btn
+              color="secondary"
+              label="Отмена"
+              v-close-popup
+              @click="onEditRowReject"
+            >
+              <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+                Отменить измененнения
+              </q-tooltip>
+            </q-btn>
+          </div>
+        </template>
+      </row-form>
+    </q-dialog>
+
+    <q-dialog v-model="editor.delete" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="warning" color="warning" text-color="black" />
+          <span class="q-ml-sm">Вы удаляете запись</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn label="Отмена" color="primary" v-close-popup />
+          <q-btn label="Удалить" v-close-popup @click="onDeleteRowClick"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+  </div>
 </template>
 
 <script>
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { toDDMMYYYY } from '../../../lib/utils'
+import RowForm from './RowForm'
 
 export default {
   name: 'EditableDataTable',
+  components: { RowForm },
   props: {
     selection: {
       type: String,
@@ -197,10 +265,15 @@ export default {
   },
   data () {
     return {
+      editor: {
+        dialog: false,
+        row: null,
+        mode: '',
+        delete: false
+      },
       filter: '',
       separator: 'cell',
       tableVisibleColumns: [],
-      // rows: [],
       paginationControl: {
         sortBy: null,
         descending: false,
@@ -228,9 +301,6 @@ export default {
     }
   },
   computed: {
-    // rows () {
-    //   return this.data.map(e => Object.assign({}, e))
-    // },
     showTopSlot () {
       return !this.hideSearchField || !this.hideGridSelector || !this.hideColumnsSelector
     },
@@ -238,7 +308,13 @@ export default {
       return this.$store.state[this.module].model.title
     },
     columns () {
-      return this.$store.state[this.module].model.columns
+      return this.$store.state[this.module].model.columns.map(e => {
+        if (e.type) {
+          return e
+        } else {
+          return { ...e, type: 'text' }
+        }
+      })
     },
     visibleColumns () {
       return this.$store.state[this.module].model.columns.filter(e => e.visible).map(e => e.name)
@@ -271,7 +347,62 @@ export default {
       this.$emit('table-row-click', row)
       this.selected = [row]
     },
-    onInsertRow (row) {},
+    async onEditRowAccept () {
+      const row = { ...this.editor.row }
+      const { module } = this
+      if (this.editor.mode === 'INSERT') {
+        this.insertRow({ module, row })
+        const result = await this.insertModule({ module, data: row })
+        console.log('result', result)
+        this.rowClick(row)
+      }
+      if (this.editor.mode === 'UPDATE') {
+        this.onEditRow(row)
+      }
+      this.editor.row = null
+      this.editor.mode = ''
+      this.editor.dialog = false
+    },
+    onEditRowReject () {
+      this.editor.dialog = false
+      this.editor.row = null
+      this.editor.mode = ''
+    },
+    async onInsertRowClick () {
+      const { module } = this
+      this.editor.mode = 'INSERT'
+      this.editor.row = await this.createRow({ module })
+      this.editor.dialog = true
+    },
+    onEditRowClick () {
+      if (this.selected.length > 0) {
+        this.editor.mode = 'UPDATE'
+        this.editor.row = this.selected[0]
+        this.editor.dialog = true
+      } else {
+        this.$q.notify({
+          message: 'Для редактирования нужно выбрать запись',
+          color: 'warning',
+          textColor: 'black'
+        })
+      }
+    },
+    async onDeleteRowClick () {
+      if (this.selected.length > 0) {
+        const { module } = this
+        const row = this.selected[0]
+        this.editor.mode = ''
+        this.editor.dialog = false
+        const result = await this.deleteModule({ module, data: row })
+        console.log('result', result)
+      } else {
+        this.$q.notify({
+          message: 'Для удаления нужно выбрать запись',
+          color: 'warning',
+          textColor: 'black'
+        })
+      }
+    },
     rowMark () {
       if (this.selected.length > 0) {
         this.$emit('table-row-click', this.selected[0])
@@ -337,11 +468,13 @@ export default {
 
       this.paginationControl = pagination
     },
+    ...mapMutations('editor', { insertRow: 'INSERT_ROW' }),
     ...mapActions('editor', {
       loadModule: 'load',
       insertModule: 'insert',
       updateModule: 'update',
-      deleteModule: 'remove'
+      deleteModule: 'remove',
+      createRow: 'createRow'
     })
   },
   watch: {
@@ -354,9 +487,7 @@ export default {
         filter: this.filter
       })
     },
-    // data (val) {
-    //   this.rows = val.map(e => Object.assign({}, e))
-    // },
+
     selectedRow (val) {
       this.selected = val === null ? [] : [val]
     }
@@ -374,4 +505,9 @@ export default {
 .q-table td {
   padding: 6px 12px;
 }
+
+  .dialog-form {
+    max-width: 60vw;
+    max-height: 90vh;
+  }
 </style>

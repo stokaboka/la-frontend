@@ -38,11 +38,13 @@ module.exports = function (ctx) {
         'QLayout',
         'QHeader',
         'QDrawer',
+        'QDialog',
         'QFooter',
         'QPageSticky',
         'QPageScroller',
         'QPageContainer',
         'QPage',
+        'QPopupEdit',
         'QTable',
         'QTabPanels',
         'QTabPanel',
@@ -75,7 +77,8 @@ module.exports = function (ctx) {
 
       directives: [
         'Ripple',
-        'Scroll'
+        'Scroll',
+        'ClosePopup'
       ],
 
       // Quasar plugins

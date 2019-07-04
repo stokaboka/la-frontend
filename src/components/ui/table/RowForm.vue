@@ -1,14 +1,25 @@
 <template>
     <q-card>
-      <q-card-section v-if="title" class="text-h6 bg-secondary text-white">
-        {{title}}
+      <q-card-section v-if="title" class="row items-center text-h6 bg-secondary text-white">
+        <span>{{title}}</span>
+        <q-space />
+        <q-btn v-if="edit" icon="close" flat round dense v-close-popup />
       </q-card-section>
-      <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start">
+      <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
           <div v-for="column in columns" :key="column.field">
+            <div v-if="edit">
+              <q-input
+                v-model="data[column.field]"
+                :label="column.label"
+                dense
+                autofocus
+                autogrow
+                :type="column.type"
+              ></q-input>
+            </div>
             <div
-              v-if="data[column.field] != undefined && data[column.field] != null"
-              class="column items-start q-pa-sm text-grey-14"
-            >
+              v-else-if="data[column.field] !== undefined && data[column.field] !== null"
+              class="column items-start q-pa-sm text-grey-14">
               <span class="q-mr-md row-form__item-label">{{ column.label }}</span>
               <div v-if="column.gadget">
                 <q-chip
@@ -25,11 +36,6 @@
                   v-if="column.gadget.type === 'icon'"
                   v-bind="column.gadget.options[data[column.field]]"
                 ></q-icon>
-<!--                <q-chip-->
-<!--                  v-if="column.gadget.type === 'chip'"-->
-<!--                  v-bind="column.gadget.options[data[column.field]]"-->
-<!--                  class="shadow-2"-->
-<!--                ></q-chip>-->
                 <q-toggle
                   v-if="column.gadget.type === 'toggle'"
                   v-model="data[column.field]"
@@ -39,6 +45,9 @@
               <div v-else class="text-weight-medium row-form__item-box">
                 {{ format(data[column.field], column) }}
               </div>
+            </div>
+            <div v-else>
+              ???
             </div>
           </div>
       </q-card-section>
@@ -94,12 +103,22 @@ export default {
         return true
       },
       required: false
+    },
+    edit: {
+      type: Boolean,
+      default () {
+        return false
+      },
+      required: false
     }
   },
   computed: {
     columns () {
       if (this.visibleColumns) return this.model.columns.filter(e => this.visibleColumns.includes(e.field))
       else return this.model.columns.filter(e => e.visible)
+    },
+    editableColumns () {
+      return this.columns.filter(e => e.insert || e.update)
     }
   },
   methods: {

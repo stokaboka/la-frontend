@@ -75,3 +75,10 @@ export const SET_MODULE_DATA = (state, playload) => {
 
   state.modules[playload.module] = playload
 }
+
+export const INSERT_ROW = (state, playload) => {
+  if (!Array.isArray(store.state[playload.module].model.data)) {
+    store.state[playload.module].model.data = []
+  }
+  store.state[playload.module].model.data.push(playload.row)
+}

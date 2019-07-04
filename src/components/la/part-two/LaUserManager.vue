@@ -69,17 +69,6 @@
       :show-actions="false"
       :show-messages="false"
     >
-      <template v-slot:actions>
-        <q-btn
-          color="green"
-          label="Результат"
-          @click="$router.push({ name: 'part-two-user-results' })"
-        >
-          <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-            Перейти к результатам теста
-          </q-tooltip>
-        </q-btn>
-      </template>
       <template v-slot:message>
         <q-banner rounded class="text-grey-10 bg-warning">
           Для продолжения нужно выбрать попытку.<br>Найдите и выберите запись в таблице <strong><q>Попытки прохождения теста</q></strong>

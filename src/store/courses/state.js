@@ -25,7 +25,8 @@ export default {
         sortable: true,
         visible: true,
         update: true,
-        insert: true
+        insert: true,
+        type: 'text'
       },
       {
         name: 'hours',
@@ -34,7 +35,8 @@ export default {
         sortable: true,
         visible: true,
         update: true,
-        insert: true
+        insert: true,
+        type: 'number'
       },
       {
         name: 'timing',
@@ -44,7 +46,8 @@ export default {
         sortable: true,
         visible: true,
         update: true,
-        insert: true
+        insert: true,
+        type: 'text'
       },
       {
         name: 'price',
@@ -54,7 +57,8 @@ export default {
         sortable: true,
         visible: true,
         update: true,
-        insert: true
+        insert: true,
+        type: 'number'
       },
       {
         name: 'rem',
@@ -64,20 +68,21 @@ export default {
         sortable: true,
         visible: true,
         update: true,
-        insert: true
+        insert: true,
+        type: 'text'
       }
 
     ],
     edit: {
-      insert: false,
-      update: false,
-      delete: false
+      insert: true,
+      update: true,
+      delete: true
     },
 
     rowsNumber: 0,
     filter: '',
 
-    params: true,
-    query: false
+    params: false,
+    query: true
   }
 }
