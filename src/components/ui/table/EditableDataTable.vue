@@ -88,23 +88,23 @@
       </q-input>
 
       <q-space />
-
-      <q-btn v-if="edit.insert" label="Создать" @click="onInsertRowClick">
-        <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-          Создать новую запись
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="edit.update" label="Редактировать" @click="onEditRowClick">
-        <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-          Изменить запись
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="edit.delete" label="Удалить" @click="editor.delete=true">
-        <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-          Удалить запись
-        </q-tooltip>
-      </q-btn>
-
+      <div class="row q-gutter-md">
+        <q-btn v-if="edit.insert" label="Создать" @click="onInsertRowClick">
+          <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+            Создать новую запись
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="edit.update" :disabled="selected.length === 0" label="Редактировать" @click="onEditRowClick">
+          <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+            Изменить запись
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="edit.delete" :disabled="selected.length === 0" label="Удалить" @click="onStartDeleteRowClick">
+          <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+            Удалить запись
+          </q-tooltip>
+        </q-btn>
+      </div>
       <q-space />
 
       <q-select
@@ -181,16 +181,16 @@
       </row-form>
     </q-dialog>
 
-    <q-dialog v-model="editor.delete" persistent>
+    <q-dialog v-model="editor.delete">
       <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="warning" color="warning" text-color="black" />
+        <q-card-section class="row items-center bg-warning">
+          <q-avatar icon="warning" color="red" text-color="white" class="shadow-2"/>
           <span class="q-ml-sm">Вы удаляете запись</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn label="Отмена" color="primary" v-close-popup />
-          <q-btn label="Удалить" v-close-popup @click="onDeleteRowClick"/>
+          <q-btn color="white" text-color="black" label="Удалить" v-close-popup @click="onDeleteRowClick"/>
+          <q-btn color="warning" text-color="black" label="Отмена" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -200,7 +200,7 @@
 <script>
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { toDDMMYYYY } from '../../../lib/utils'
+import { toDDMMYYYY, equalsObjects } from '../../../lib/utils'
 import RowForm from './RowForm'
 
 export default {
@@ -298,6 +298,8 @@ export default {
         pagination: this.paginationControl,
         filter: this.filter
       })
+    } else {
+      this.initSelectedRow()
     }
   },
   computed: {
@@ -343,6 +345,15 @@ export default {
     init () {
       this.tableVisibleColumns = this.visibleColumns
     },
+    initSelectedRow () {
+      const { selectedRow } = this
+      if (selectedRow) {
+        const idx = this.data.findIndex(e => equalsObjects(selectedRow, e), this)
+        this.selected = idx >= 0 ? [selectedRow] : []
+      } else {
+        this.selected = []
+      }
+    },
     rowClick (row) {
       this.$emit('table-row-click', row)
       this.selected = [row]
@@ -387,6 +398,17 @@ export default {
         })
       }
     },
+    onStartDeleteRowClick () {
+      if (this.selected.length > 0) {
+        this.editor.delete = true
+      } else {
+        this.$q.notify({
+          message: 'Для удаления нужно выбрать запись',
+          color: 'warning',
+          textColor: 'black'
+        })
+      }
+    },
     async onDeleteRowClick () {
       if (this.selected.length > 0) {
         const { module } = this
@@ -394,6 +416,7 @@ export default {
         this.editor.mode = ''
         this.editor.dialog = false
         const result = await this.deleteModule({ module, data: row })
+        this.selected = []
         console.log('result', result)
       } else {
         this.$q.notify({
@@ -467,6 +490,8 @@ export default {
       pagination.rowsNumber = this.rowsNumber
 
       this.paginationControl = pagination
+
+      this.initSelectedRow()
     },
     ...mapMutations('editor', { insertRow: 'INSERT_ROW' }),
     ...mapActions('editor', {
@@ -486,11 +511,11 @@ export default {
         pagination: this.paginationControl,
         filter: this.filter
       })
-    },
-
-    selectedRow (val) {
-      this.selected = val === null ? [] : [val]
     }
+
+    // selectedRow (val) {
+    //   this.selected = val === null ? [] : [val]
+    // }
   }
 }
 </script>

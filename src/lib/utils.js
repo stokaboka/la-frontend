@@ -91,3 +91,14 @@ export const oget = (obj, path, def) => {
     ? def
     : res
 }
+
+export const equalsObjects = (a, b) => {
+  for (let prop in a) {
+    if (!prop.startsWith('__') && b[prop]) {
+      if (a[prop] !== b[prop]) {
+        return false
+      }
+    }
+  }
+  return true
+}
