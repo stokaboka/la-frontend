@@ -35,12 +35,10 @@
               </q-tab-panel>
 
               <q-tab-panel name="offer">
-                <div class="text-h6">Программа занаятий</div>
                 <orders></orders>
               </q-tab-panel>
 
               <q-tab-panel name="courses">
-                <div class="text-h6">Курсы</div>
                 <courses></courses>
               </q-tab-panel>
 

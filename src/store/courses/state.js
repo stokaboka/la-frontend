@@ -1,5 +1,6 @@
 export default {
   data: null,
+  course: null,
 
   model: {
     key: 'id',
@@ -20,6 +21,7 @@ export default {
         name: 'course',
         field: 'course',
         label: 'Курс',
+        align: 'left',
         sortable: true,
         visible: true,
         update: true,
@@ -29,7 +31,6 @@ export default {
         name: 'hours',
         field: 'hours',
         label: 'Часы',
-        align: 'left',
         sortable: true,
         visible: true,
         update: true,
@@ -39,6 +40,7 @@ export default {
         name: 'timing',
         field: 'timing',
         label: 'Время',
+        align: 'left',
         sortable: true,
         visible: true,
         update: true,
@@ -58,6 +60,7 @@ export default {
         name: 'rem',
         field: 'rem',
         label: 'Примечание',
+        align: 'left',
         sortable: true,
         visible: true,
         update: true,

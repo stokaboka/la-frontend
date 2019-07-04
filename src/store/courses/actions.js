@@ -15,7 +15,7 @@ export const load = ({ commit, rootGetters }, params) => {
   return axios
     .get('/courses', params)
     .then(response => {
-      commit('SET_COURSE', response.data)
+      commit('SET_DATA', response.data)
       return response.data
     })
     .catch(error => {
@@ -24,7 +24,7 @@ export const load = ({ commit, rootGetters }, params) => {
     })
 }
 
-export const save = ({ }, params) => {
+export const save = ({ commit }, params) => {
   return axios
     .post('/courses', params)
     .then(response => {
