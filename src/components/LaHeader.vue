@@ -17,11 +17,17 @@
         </div>
       </q-toolbar-title>
 
-      <span v-if="authUser"
-      >{{ authUser.firstName }} {{ authUser.secondName }} {{ authUser.lastName }}</span
-      >
+      <q-chip v-if="authUser" class="shadow-2">
+        <q-avatar icon="person" color="primary" />
+        <strong>
+          <span>{{ authUser.firstName }} {{ authUser.secondName }} {{ authUser.lastName }}</span>
+        </strong>
+        <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
+          Имя пользователя, выполнившего вход
+        </q-tooltip>
+      </q-chip>
 
-      <q-tabs v-model="selectedTab" active-color="primary">
+      <q-tabs v-model="selectedTab" inline-label active-color="primary">
         <q-route-tab
           :to="{ name: 'home' }"
           default
