@@ -15,6 +15,7 @@
                   v-model="data[column.field]"
                   :options="column.editor.options"
                   :label="column.label"
+                  :rules="[val => testRequired(val, column, 'Поле должно быть заполнено')]"
               ></q-select>
               <q-input
                 v-else-if="column.type === 'date'"
@@ -25,7 +26,8 @@
                 dense
                 v-model="data[column.field]"
                 mask="##.##.####"
-                :rules="[data[column.field]]">
+                :rules="[val => testRequired(val, column, 'Поле должно быть заполнено')]"
+                >
                 <template v-slot:append>
                   <q-icon name="event"/>
                 </template>
@@ -39,6 +41,7 @@
                 autofocus
                 autogrow
                 :type="column.type"
+                :rules="[val => testRequired(val, column, 'Поле должно быть заполнено')]"
               ></q-input>
             </div>
             <div v-else-if="fieldNotEmpty(column)"
@@ -150,6 +153,22 @@ export default {
     }
   },
   methods: {
+    validate () {
+      for (const column of this.columns) {
+        if (column.required) {
+          if (!this.data[column.field]) {
+            return false
+          }
+        }
+      }
+      return true
+    },
+    testRequired (val, column, message) {
+      if (column.required) {
+        return !!val || message
+      }
+      return true
+    },
     fieldNotEmpty (column) {
       const val = this.data[column.field]
       return !(val === undefined || val === null) && val

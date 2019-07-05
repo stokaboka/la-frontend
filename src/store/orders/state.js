@@ -7,7 +7,7 @@ export default {
 
   model: {
     key: 'id',
-    title: 'Курсы',
+    title: 'Занятия',
     data: [],
     columns: [
       {
@@ -42,6 +42,7 @@ export default {
         visible: true,
         update: true,
         insert: true,
+        required: true,
         mask: 'DD-MM-YYYY',
         default: () => {
           return dateToString(new Date().toISOString(), 'DD.MM.YYYY')
@@ -56,6 +57,7 @@ export default {
         visible: true,
         update: true,
         insert: true,
+        required: true,
         align: 'left',
         source: {
           module: 'levels',
@@ -72,6 +74,7 @@ export default {
         visible: true,
         update: true,
         insert: true,
+        required: true,
         align: 'left',
         source: {
           module: 'levels',
@@ -88,6 +91,7 @@ export default {
         visible: true,
         update: true,
         insert: true,
+        required: true,
         align: 'left',
         editor: {
           type: 'combobox',
@@ -104,6 +108,7 @@ export default {
         visible: true,
         update: true,
         insert: true,
+        required: true,
         align: 'left',
         editor: {
           type: 'combobox',
@@ -120,6 +125,7 @@ export default {
         visible: true,
         update: true,
         insert: true,
+        required: true,
         align: 'left',
         source: {
           module: 'users',
@@ -134,6 +140,7 @@ export default {
         visible: true,
         update: true,
         insert: true,
+        required: true,
         align: 'left',
         source: {
           module: 'users',
@@ -148,6 +155,7 @@ export default {
         visible: true,
         update: true,
         insert: true,
+        required: true,
         align: 'left',
         source: {
           module: 'levels',

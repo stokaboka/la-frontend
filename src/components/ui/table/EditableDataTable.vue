@@ -146,6 +146,7 @@
       transition-show="scale"
       transition-hide="scale">
       <row-form
+        ref="rowForm"
         class="dialog-form"
         :data="editor.row"
         title="Редактор записи"
@@ -159,7 +160,6 @@
             <q-btn
               color="primary"
               label="Сохранить"
-              v-close-popup
               @click="onEditRowAccept"
             >
               <q-tooltip transition-show="flip-right" transition-hide="flip-left">
@@ -360,6 +360,10 @@ export default {
       this.selected = [row]
     },
     async onEditRowAccept () {
+      if (!this.$refs.rowForm.validate()) {
+        return
+      }
+
       const row = { ...this.editor.row }
       const { module } = this
       if (this.editor.mode === 'INSERT') {

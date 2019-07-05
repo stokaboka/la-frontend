@@ -1,11 +1,9 @@
 import axios from 'axios'
-// import store from '../index'
 import store from '../../store'
 
 const getModuleDataRowValue = (options, playload) => {
   const { module, column, row, getter, property } = playload
   let out = null
-  console.dir(store)
   if (column) {
     const { data } = store.state[module].model
     if (data) {
