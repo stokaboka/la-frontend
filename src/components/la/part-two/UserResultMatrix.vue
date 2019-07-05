@@ -343,7 +343,6 @@ export default {
     this.refresh()
     if (!this.nameTrainer) {
       this.nameTrainer = this.trainer
-      // this.nameTrainer = this.trainer || this.fioAuthUser
     }
 
     this.lifeCycleState = 'MOUNTED'
@@ -706,6 +705,9 @@ export default {
   watch: {
     finalLevel () {
       this.saveLevels()
+    },
+    trainer (val) {
+      if (val) { this.nameTrainer = val }
     }
   }
 }
