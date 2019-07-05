@@ -12,8 +12,8 @@
 </template>
 
 <script>
-  import { mapGetters, mapMutations } from 'vuex'
-  import Editor from '../../../ui/table/Editor'
+import { mapGetters, mapMutations } from 'vuex'
+import Editor from '../../../ui/table/Editor'
 export default {
   name: 'Orders',
   components: { Editor },
@@ -31,7 +31,6 @@ export default {
     },
     ...mapMutations('courses', ['SET_COURSE'])
   }
-}
 }
 </script>
 

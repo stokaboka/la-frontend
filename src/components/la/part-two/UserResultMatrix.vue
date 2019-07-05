@@ -133,6 +133,7 @@ import {
 } from './constants'
 import { findMinElementIndex, findMinElement } from '../../../lib/utils'
 
+let currentNotify = null
 const selectionClass = 'bg-deep-orange text-white text-weight-bold shadow-3'
 
 export default {
@@ -140,6 +141,7 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      lifeCycleState: 'INIT',
       nameTrainer: '',
       phoneticAndPronunciation: {
         options: phoneticAndPronunciation,
@@ -343,6 +345,8 @@ export default {
       this.nameTrainer = this.trainer
       // this.nameTrainer = this.trainer || this.fioAuthUser
     }
+
+    this.lifeCycleState = 'MOUNTED'
   },
   methods: {
     refresh () {
@@ -534,7 +538,10 @@ export default {
 
     checkTrainerName () {
       if (!this.nameTrainer) {
-        this.$q.notify({
+        if (currentNotify) {
+          currentNotify()
+        }
+        currentNotify = this.$q.notify({
           message: 'Вы не указали имя тренера',
           color: 'warning',
           textColor: 'black'
