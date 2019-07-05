@@ -43,9 +43,9 @@
           replace
         ></q-route-tab>
 
-        <q-btn-dropdown auto-close stretch flat icon="build" label="Инструменты">
+        <q-btn-dropdown v-if="adminMode" auto-close stretch flat icon="build" label="Инструменты">
           <q-list link>
-            <q-item v-if="adminMode" clickable :to="{ name: 'part-one-home' }">
+            <q-item clickable :to="{ name: 'part-one-home' }">
               <q-item-section avatar>
                 <q-icon name="play_circle_outline" />
               </q-item-section>
@@ -57,7 +57,7 @@
 <!--              </q-item-section>-->
 <!--              <q-item-section>Результат пользователя</q-item-section>-->
 <!--            </q-item>-->
-            <q-item v-if="adminMode" clickable :to="{ name: 'admin-courses' }">
+            <q-item clickable :to="{ name: 'admin-courses' }">
               <q-item-section avatar>
                 <q-icon name="ballot" />
               </q-item-section>

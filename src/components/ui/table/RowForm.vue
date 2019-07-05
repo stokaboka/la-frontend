@@ -46,9 +46,7 @@
                 {{ format(data[column.field], column) }}
               </div>
             </div>
-            <div v-else>
-              ???
-            </div>
+            <div v-else></div>
           </div>
       </q-card-section>
 
