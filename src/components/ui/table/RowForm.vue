@@ -8,7 +8,31 @@
       <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
           <div v-for="column in columns" :key="column.field">
             <div v-if="edit">
+              <q-select
+                  v-if="column.editor && column.editor.type === 'combobox'"
+                  class="row-form__item-input"
+                  filled
+                  v-model="data[column.field]"
+                  :options="column.editor.options"
+                  :label="column.label"
+              ></q-select>
               <q-input
+                v-else-if="column.type === 'date'"
+                class="row-form__item-input"
+                :label="column.label"
+                autofocus
+                autogrow
+                dense
+                v-model="data[column.field]"
+                mask="##.##.####"
+                :rules="[data[column.field]]">
+                <template v-slot:append>
+                  <q-icon name="event"/>
+                </template>
+              </q-input>
+              <q-input
+                v-else
+                class="row-form__item-input"
                 v-model="data[column.field]"
                 :label="column.label"
                 dense
@@ -21,6 +45,13 @@
               class="column items-start q-pa-sm text-grey-14">
               <span class="q-mr-md row-form__item-label">{{ column.label }}</span>
               <div v-if="column.gadget">
+                <q-select
+                  v-if="column.gadget.type === 'combobox'"
+                  filled
+                  v-model="data[column.field]"
+                  :options="column.gadget.options"
+                  label="Filled"
+                ></q-select>
                 <q-chip
                   v-if="column.gadget.type === 'chip'"
                   class="shadow-2"
@@ -143,6 +174,11 @@ export default {
   .row-form__item-label {
     color: gray;
     font-size: 0.75rem;
+  }
+
+  .row-form__item-input {
+    min-width: 20rem;
+    width: 100%;
   }
 
   .row-form__item-box {

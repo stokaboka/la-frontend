@@ -1,12 +1,12 @@
 <template>
   <div>
     <editor
-      module="courses"
+      module="orders"
       :selection="selection"
-      :selected-row="course"
+      :selected-row="order"
       hide-columns-selector
       hide-grid-selector
-      @table-row-click="onTableRowClick"
+      @table-row-click="onOrdersTableRowClick"
     ></editor>
   </div>
 </template>
@@ -23,13 +23,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('courses', ['course'])
+    ...mapGetters('orders', ['order'])
   },
   methods: {
-    onTableRowClick (row) {
-      this.SET_COURSE(row)
+    onOrdersTableRowClick (row) {
+      this.SET_ORDER(row)
     },
-    ...mapMutations('courses', ['SET_COURSE'])
+    ...mapMutations('orders', ['SET_ORDER'])
   }
 }
 </script>

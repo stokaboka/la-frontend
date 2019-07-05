@@ -2,6 +2,30 @@ import axios from 'axios'
 // import store from '../index'
 import store from '../../store'
 
+const getModuleDataRowValue = (options, playload) => {
+  const { module, column, row, getter, property } = playload
+  let out = null
+  console.dir(store)
+  if (column) {
+    const { data } = store.state[module].model
+    if (data) {
+      if (data.length > row) {
+        const rowData = data[row]
+        if (rowData[column]) {
+          out = rowData[column]
+        }
+      }
+    }
+  }
+  if (getter) {
+    out = options.rootGetters[`${module}/${getter}`]
+    if (property) {
+      out = out[property]
+    }
+  }
+  return out
+}
+
 export const load = ({ commit, getters, rootGetters }, playload) => {
   const api = rootGetters['app/api']
   const { module, query } = playload
@@ -84,11 +108,26 @@ export const remove = ({ commit, getters, rootGetters }, playload) => {
     })
 }
 
-export const createRow = ({ commit, getters }, playload) => {
+export const createRow = ({ commit, getters, rootGetters }, playload) => {
   const row = { __state: 'NEW' }
-  for (let column of store.state[playload.module].model.columns) {
-    row[column.name] = null
+  const { columns } = store.state[playload.module].model
+  for (let column of columns) {
+    let val = null
+    if (column.source) {
+      val = getModuleDataRowValue({ commit, getters, rootGetters }, column.source)
+    }
+    if (column.default) {
+      if (typeof column.default === 'function') {
+        val = column.default()
+      } else {
+        val = column.default
+      }
+    }
+    row[column.name] = val
   }
-  // commit('INSERT_ROW', { ...playload, row })
   return row
+}
+
+export const getValue = ({ commit, getters, rootGetters }, playload) => {
+  return getModuleDataRowValue({ commit, getters, rootGetters }, playload)
 }

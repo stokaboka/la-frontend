@@ -39,6 +39,7 @@ module.exports = function (ctx) {
         'QLayout',
         'QHeader',
         'QDrawer',
+        'QDate',
         'QDialog',
         'QFooter',
         'QPageSticky',

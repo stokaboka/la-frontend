@@ -34,6 +34,7 @@
           />
         </q-td>
         <q-td v-for="column in columns" :key="column.field" :props="props">
+
           <div v-if="column.gadget">
             <q-icon
               v-if="column.gadget.type === 'icon'"
