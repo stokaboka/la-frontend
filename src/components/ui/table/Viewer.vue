@@ -7,7 +7,7 @@
         </component>
       </div>
       <div v-if="model">
-        <editable-data-table
+        <view-data-table
           :model="model"
           :module="module"
           :params="params"
@@ -18,21 +18,20 @@
           :hide-grid-selector="hideGridSelector"
           @table-row-click="onTableRowClick"
         >
-        </editable-data-table>
+        </view-data-table>
       </div>
   </div>
 </template>
 
 <script>
 
-import EditableDataTable from './EditableDataTable'
-
 import FilterUsers from './filters/FilterUsers'
+import ViewDataTable from './ViewDataTable'
 
 export default {
-  name: 'Editor',
+  name: 'Viewer',
   components: {
-    EditableDataTable,
+    ViewDataTable,
     FilterUsers
   },
   props: {
@@ -79,27 +78,6 @@ export default {
         return ''
       },
       required: false
-    },
-    allowInsert: {
-      type: Boolean,
-      default () {
-        return true
-      },
-      required: false
-    },
-    allowUpdate: {
-      type: Boolean,
-      default () {
-        return true
-      },
-      required: false
-    },
-    allowDelete: {
-      type: Boolean,
-      default () {
-        return true
-      },
-      required: false
     }
   },
   data () {
@@ -114,12 +92,13 @@ export default {
   },
   computed: {
     model () {
-      // return this.$store.getters[`${this.module}/model`]
-      return this.$store.state[this.module].model
+      console.log(this.module)
+      if (this.module) return this.$store.state[this.module].model
+      return null
     },
     filterComponent () {
-      // return this.$store.getters[`${this.module}/filter`]
-      return this.$store.state[this.module].model.filter
+      if (this.model) return this.model.filter
+      return null
     }
   },
   methods: {

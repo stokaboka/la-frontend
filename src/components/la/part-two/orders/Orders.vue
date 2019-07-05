@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="column q-gutter-md">
     <editor
       module="orders"
       :selection="selection"
@@ -7,6 +7,17 @@
       hide-columns-selector
       hide-grid-selector
       @table-row-click="onOrdersTableRowClick"
+    ></editor>
+    <editor
+      module="orderdetails"
+      :selection="selection"
+      :selected-row="orderDetail"
+      :filter="orderParams"
+      :allow-insert="allowOrderDetailsInsert"
+      hide-search-field
+      hide-columns-selector
+      hide-grid-selector
+      @table-row-click="onOrderDetailsTableRowClick"
     ></editor>
   </div>
 </template>
@@ -19,17 +30,35 @@ export default {
   components: { Editor },
   data () {
     return {
-      selection: 'single'
+      selection: 'single',
+      orderParams: ''
     }
   },
   computed: {
-    ...mapGetters('orders', ['order'])
+    allowOrderDetailsInsert () {
+      return !!this.order
+    },
+    ...mapGetters('orders', ['order']),
+    ...mapGetters('orderdetails', ['orderDetail'])
+  },
+  mounted () {
+    this.setOrderFilterParams(this.order)
   },
   methods: {
     onOrdersTableRowClick (row) {
       this.SET_ORDER(row)
+      this.setOrderFilterParams(row)
     },
-    ...mapMutations('orders', ['SET_ORDER'])
+    onOrderDetailsTableRowClick (row) {
+      this.SET_ORDER_DETAIL(row)
+    },
+    setOrderFilterParams (order) {
+      if (order) this.orderParams = `/order/${order.id}`
+      else this.orderParams = '/order/0'
+    },
+    ...mapMutations('orders', ['SET_ORDER']),
+    ...mapMutations('orderdetails', ['SET_ORDER_DETAIL'])
+
   }
 }
 </script>

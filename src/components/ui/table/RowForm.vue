@@ -1,4 +1,5 @@
 <template>
+  <div>
     <q-card>
       <q-card-section v-if="title" class="row items-center text-h6 bg-secondary text-white">
         <span>{{title}}</span>
@@ -8,22 +9,28 @@
       <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
           <div v-for="column in columns" :key="column.field">
             <div v-if="edit">
-              <q-select
-                  v-if="column.editor && column.editor.type === 'combobox'"
+              <div v-if="column.editor && column.editor.type === 'lov'" class="row q-gutter-sm">
+                <div class="text-weight-medium row-form__item-box">
+                  {{ format(data[column.field], column) }}
+                </div>
+                <q-btn label="..." @click="openLov(column)"/>
+              </div>
+              <q-select v-else-if="column.editor && column.editor.type === 'combobox'"
                   class="row-form__item-input"
                   filled
                   v-model="data[column.field]"
+                  @input="fieldChanged"
                   :options="column.editor.options"
                   :label="column.label"
                   :rules="[val => testRequired(val, column, 'Поле должно быть заполнено')]"
               ></q-select>
-              <q-input
-                v-else-if="column.type === 'date'"
+              <q-input v-else-if="column.type === 'date'"
                 class="row-form__item-input"
                 :label="column.label"
                 autofocus
                 autogrow
                 dense
+                @input="fieldChanged"
                 v-model="data[column.field]"
                 mask="##.##.####"
                 :rules="[val => testRequired(val, column, 'Поле должно быть заполнено')]"
@@ -32,10 +39,10 @@
                   <q-icon name="event"/>
                 </template>
               </q-input>
-              <q-input
-                v-else
+              <q-input v-else
                 class="row-form__item-input"
                 v-model="data[column.field]"
+                @input="fieldChanged"
                 :label="column.label"
                 dense
                 autofocus
@@ -92,12 +99,40 @@
       </q-card-section>
 
     </q-card>
+
+    <q-dialog v-model="lov.dialog" full-width persistent transition-show="scale" transition-hide="scale">
+      <q-card>
+        <q-card-section class="row items-center text-h6 bg-primary text-white">
+          <span v-if="lov.column">Список значений для <strong>{{lov.column.label}}</strong></span>
+        </q-card-section>
+        <q-card-section>
+          <viewer
+            v-if="lov.module"
+            :module="lov.module"
+            :selection="lov.selection"
+            :selected-row="lov.row"
+            hide-columns-selector
+            hide-grid-selector
+            @table-row-click="onLovRowClick"
+          ></viewer>
+        </q-card-section>
+      <q-card-actions align="right" class="row q-gutter-md">
+        <q-btn label="OK" @click="onLovBtnClick(true)" :disabled="!lov.row" color="primary"  v-close-popup ></q-btn>
+        <q-btn label="Отмена" @click="onLovBtnClick(false)"  v-close-popup ></q-btn>
+      </q-card-actions>
+      </q-card>
+    </q-dialog>
+
+  </div>
 </template>
 
 <script>
 import { toDDMMYYYY } from '../../../lib/utils'
+import Viewer from './Viewer'
+
 export default {
   name: 'RowForm',
+  components: { Viewer },
   props: {
     data: {
       type: Object,
@@ -143,6 +178,17 @@ export default {
       required: false
     }
   },
+  data () {
+    return {
+      lov: {
+        dialog: false,
+        module: '',
+        selection: 'single',
+        row: null,
+        column: null
+      }
+    }
+  },
   computed: {
     columns () {
       if (this.visibleColumns) return this.model.columns.filter(e => this.visibleColumns.includes(e.field))
@@ -153,6 +199,30 @@ export default {
     }
   },
   methods: {
+    fieldChanged (event) {
+      this.calculate()
+    },
+    openLov (column) {
+      this.lov.module = column.editor.module
+      this.lov.column = column
+      this.lov.dialog = true
+    },
+    onLovRowClick (row) {
+      this.lov.row = row
+    },
+    onLovBtnClick (action) {
+      if (action) {
+        const { bind } = this.lov.column.editor
+        for (const bnd of bind) {
+          this.data[bnd.to] = this.lov.row[bnd.from]
+        }
+        this.fieldChanged()
+      }
+      this.lov.dialog = false
+      this.lov.module = ''
+      this.lov.row = null
+      this.lov.column = null
+    },
     validate () {
       for (const column of this.columns) {
         if (column.required) {
@@ -162,6 +232,22 @@ export default {
         }
       }
       return true
+    },
+    calculate () {
+      for (const column of this.columns) {
+        if (column.calculate) {
+          const expr = column.calculate.split(' ')
+          const a = this.data[expr[0]]
+          const x = expr[1]
+          const b = this.data[expr[2]]
+          try {
+            // eslint-disable-next-line no-eval
+            this.data[column.field] = eval(`${a} ${x} ${b}`)
+          } catch (e) {
+            console.warn(e.message())
+          }
+        }
+      }
     },
     testRequired (val, column, message) {
       if (column.required) {

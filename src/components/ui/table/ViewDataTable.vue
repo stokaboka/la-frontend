@@ -54,20 +54,6 @@
             ></q-toggle>
           </div>
           <span v-else>{{ format(props.row[column.field], column) }}</span>
-          <q-popup-edit
-            v-if="false"
-            v-model="props.row[column.field]"
-            buttons
-            :title="props.row[column.label]"
-            @save="onEditRow(props.row)"
-          >
-            <q-input
-              v-model="props.row[column.field]"
-              dense
-              autofocus
-              :type="column.type"
-            ></q-input>
-          </q-popup-edit>
         </q-td>
       </q-tr>
     </template>
@@ -88,24 +74,6 @@
         </template>
       </q-input>
 
-      <q-space />
-      <div class="row q-gutter-md">
-        <q-btn v-if="edit.insert" label="Создать" :disabled="!allowInsert" @click="onInsertRowClick">
-          <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-            Создать новую запись
-          </q-tooltip>
-        </q-btn>
-        <q-btn v-if="edit.update" :disabled="!allowUpdate || selected.length === 0" label="Редактировать" @click="onEditRowClick">
-          <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-            Изменить запись
-          </q-tooltip>
-        </q-btn>
-        <q-btn v-if="edit.delete" :disabled="!allowDelete || selected.length === 0" label="Удалить" @click="onStartDeleteRowClick">
-          <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-            Удалить запись
-          </q-tooltip>
-        </q-btn>
-      </div>
       <q-space />
 
       <q-select
@@ -138,63 +106,6 @@
 
     </template>
   </q-table>
-
-    <q-dialog
-      v-model="editor.dialog"
-      persistent
-      square
-      transition-show="scale"
-      transition-hide="scale">
-      <row-form
-        ref="rowForm"
-        class="dialog-form"
-        :data="editor.row"
-        title="Редактор записи"
-        :model="model"
-        :edit="true"
-        :show-actions="true"
-        :show-messages="false"
-      >
-        <template v-slot:actions>
-          <div class="row q-gutter-md">
-            <q-btn
-              color="primary"
-              label="Сохранить"
-              @click="onEditRowAccept"
-            >
-              <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-                Сохранить измененнения
-              </q-tooltip>
-            </q-btn>
-
-            <q-btn
-              color="secondary"
-              label="Отмена"
-              v-close-popup
-              @click="onEditRowReject"
-            >
-              <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-                Отменить измененнения
-              </q-tooltip>
-            </q-btn>
-          </div>
-        </template>
-      </row-form>
-    </q-dialog>
-
-    <q-dialog v-model="editor.delete">
-      <q-card>
-        <q-card-section class="row items-center bg-warning">
-          <q-avatar icon="warning" color="red" text-color="white" class="shadow-2"/>
-          <span class="q-ml-sm">Вы удаляете запись</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn color="white" text-color="black" label="Удалить" v-close-popup @click="onDeleteRowClick"/>
-          <q-btn color="warning" text-color="black" label="Отмена" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
@@ -202,11 +113,9 @@
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { toDDMMYYYY, equalsObjects } from '../../../lib/utils'
-import RowForm from './RowForm'
 
 export default {
-  name: 'EditableDataTable',
-  components: { RowForm },
+  name: 'ViewDataTable',
   props: {
     selection: {
       type: String,
@@ -260,27 +169,6 @@ export default {
       type: Boolean,
       default () {
         return false
-      },
-      required: false
-    },
-    allowInsert: {
-      type: Boolean,
-      default () {
-        return true
-      },
-      required: false
-    },
-    allowUpdate: {
-      type: Boolean,
-      default () {
-        return true
-      },
-      required: false
-    },
-    allowDelete: {
-      type: Boolean,
-      default () {
-        return true
       },
       required: false
     }
@@ -379,78 +267,6 @@ export default {
     rowClick (row) {
       this.$emit('table-row-click', row)
       this.selected = [row]
-    },
-    async onEditRowAccept () {
-      if (!this.$refs.rowForm.validate()) {
-        return
-      }
-
-      const row = { ...this.editor.row }
-      const { module } = this
-      if (this.editor.mode === 'INSERT') {
-        this.insertRow({ module, row })
-        const result = await this.insertModule({ module, data: row })
-        console.log('result', result)
-        this.rowClick(row)
-      }
-      if (this.editor.mode === 'UPDATE') {
-        this.onEditRow(row)
-      }
-      this.editor.row = null
-      this.editor.mode = ''
-      this.editor.dialog = false
-    },
-    onEditRowReject () {
-      this.editor.dialog = false
-      this.editor.row = null
-      this.editor.mode = ''
-    },
-    async onInsertRowClick () {
-      const { module } = this
-      this.editor.mode = 'INSERT'
-      this.editor.row = await this.createRow({ module })
-      this.editor.dialog = true
-    },
-    onEditRowClick () {
-      if (this.selected.length > 0) {
-        this.editor.mode = 'UPDATE'
-        this.editor.row = this.selected[0]
-        this.editor.dialog = true
-      } else {
-        this.$q.notify({
-          message: 'Для редактирования нужно выбрать запись',
-          color: 'warning',
-          textColor: 'black'
-        })
-      }
-    },
-    onStartDeleteRowClick () {
-      if (this.selected.length > 0) {
-        this.editor.delete = true
-      } else {
-        this.$q.notify({
-          message: 'Для удаления нужно выбрать запись',
-          color: 'warning',
-          textColor: 'black'
-        })
-      }
-    },
-    async onDeleteRowClick () {
-      if (this.selected.length > 0) {
-        const { module } = this
-        const row = this.selected[0]
-        this.editor.mode = ''
-        this.editor.dialog = false
-        const result = await this.deleteModule({ module, data: row })
-        this.selected = []
-        console.log('result', result)
-      } else {
-        this.$q.notify({
-          message: 'Для удаления нужно выбрать запись',
-          color: 'warning',
-          textColor: 'black'
-        })
-      }
     },
     rowMark () {
       if (this.selected.length > 0) {
