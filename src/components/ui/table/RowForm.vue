@@ -17,8 +17,7 @@
                 :type="column.type"
               ></q-input>
             </div>
-            <div
-              v-else-if="data[column.field] !== undefined && data[column.field] !== null"
+            <div v-else-if="fieldNotEmpty(column)"
               class="column items-start q-pa-sm text-grey-14">
               <span class="q-mr-md row-form__item-label">{{ column.label }}</span>
               <div v-if="column.gadget">
@@ -120,6 +119,10 @@ export default {
     }
   },
   methods: {
+    fieldNotEmpty (column) {
+      const val = this.data[column.field]
+      return !(val === undefined || val === null) && val
+    },
     format (value, column) {
       if (column.mask) {
         switch (column.mask) {
