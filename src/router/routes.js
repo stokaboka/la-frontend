@@ -51,6 +51,29 @@ const routes = [
           },
           { path: 'signout', name: 'auth-signout' }
         ]
+      },
+      {
+        path: 'admin',
+        name: 'admin',
+        component: () => import('layouts/LaLayout.vue'),
+        beforeEnter (to, from, next) {
+          store.commit('app/SET_MODE', 'admin')
+          const isLogged = store.getters['users/isLogged']
+          const isAdmin = store.getters['users/isAdmin']
+          const isOperator = store.getters['users/isOperator']
+          if (isLogged && (isAdmin || isOperator)) {
+            next()
+          } else {
+            next({ name: 'home' })
+          }
+        },
+        children: [
+          {
+            path: 'courses',
+            name: 'admin-courses',
+            component: () => import('pages/admin/CoursesPage')
+          }
+        ]
       }
     ]
   },

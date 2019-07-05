@@ -3,17 +3,13 @@
           <q-card>
             <q-tabs
               v-model="tab"
-              dense
-              class="text-grey"
+              inline-label
               active-color="primary"
-              indicator-color="primary"
               align="justify"
-              narrow-indicator
             >
-              <q-tab name="result" label="Результат" />
-              <q-tab name="parttwo" label="Устное тестирование" />
-              <q-tab name="offer" label="Программа занаятий" />
-              <q-tab name="courses" label="Курсы" />
+              <q-tab name="result" label="Результат" icon="ballot" />
+              <q-tab name="parttwo" label="Устное тестирование" icon="face"/>
+              <q-tab name="offer" label="Программа занаятий" icon="list"/>
             </q-tabs>
 
             <q-separator />
@@ -38,10 +34,6 @@
                 <orders></orders>
               </q-tab-panel>
 
-              <q-tab-panel name="courses">
-                <courses></courses>
-              </q-tab-panel>
-
             </q-tab-panels>
           </q-card>
   </q-page>
@@ -51,10 +43,10 @@
 import UserResultMatrix from '../../components/la/part-two/UserResultMatrix'
 import SpeakingTest from '../../components/la/part-two/SpeakingTest'
 import Orders from '../../components/la/part-two/orders/Orders'
-import Courses from '../../components/la/part-two/orders/Courses'
+
 export default {
   name: 'LaTwoUserResult',
-  components: { Courses, Orders, SpeakingTest, UserResultMatrix },
+  components: { Orders, SpeakingTest, UserResultMatrix },
   data () {
     return {
       tab: 'result',

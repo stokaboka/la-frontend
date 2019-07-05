@@ -29,6 +29,7 @@ module.exports = function (ctx) {
         'QAvatar',
         'QBanner',
         'QBadge',
+        'QBtnDropdown',
         'QCard',
         'QCardSection',
         'QCardActions',
