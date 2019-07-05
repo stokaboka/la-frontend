@@ -2,6 +2,9 @@
   <div>
     <div class="column no-wrap q-table--bordered">
       <div class="row no-wrap q-gutter-x-md q-ma-sm items-center">
+
+          <q-input type="text" v-model="nameTrainer" label="Тренер" :rules="[val => !!val || 'Вы не указали имя тренера']"/>
+
           <q-chip class="shadow-2">
             <q-avatar icon="done" color="orange" text-color="white" />
             <strong>{{finalLevel}}</strong>
@@ -137,6 +140,7 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      nameTrainer: '',
       phoneticAndPronunciation: {
         options: phoneticAndPronunciation,
         model: null
@@ -335,6 +339,9 @@ export default {
   },
   mounted () {
     this.refresh()
+    if (!this.nameTrainer) {
+      this.nameTrainer = this.trainer || this.fioAuthUser
+    }
   },
   methods: {
     refresh () {
@@ -524,14 +531,24 @@ export default {
       })
     },
 
+    checkTrainerName () {
+      if (!this.nameTrainer) {
+        this.$q.notify({
+          message: 'Вы не указали имя тренера',
+          color: 'warning',
+          textColor: 'black'
+        })
+      }
+    },
+
     async saveLevels () {
-      // await this.$nextTick()
+      this.checkTrainerName()
 
       const { id: idUser } = this.user
       const { test, attempt } = this.attempt
       const {
         fioAuthUser: manager,
-        fioAuthUser: trainer,
+        nameTrainer: trainer,
         finalLevel: level,
         finalLevelCEF: levelCEF,
         finalLevelSVS: levelSVS
@@ -550,12 +567,14 @@ export default {
     },
 
     async saveResultReport () {
+      this.checkTrainerName()
+
       const type = 'result'
 
       const {
         fioUser: student,
         fioAuthUser: manager,
-        fioAuthUser: trainer,
+        nameTrainer: trainer,
         finalLevel: level,
         finalLevelCEF: levelCEF,
         finalLevelSVS: levelSVS
