@@ -340,7 +340,8 @@ export default {
   mounted () {
     this.refresh()
     if (!this.nameTrainer) {
-      this.nameTrainer = this.trainer || this.fioAuthUser
+      this.nameTrainer = this.trainer
+      // this.nameTrainer = this.trainer || this.fioAuthUser
     }
   },
   methods: {
