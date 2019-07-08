@@ -14,6 +14,10 @@ export const formatter = (options) => {
   return value
 }
 
+const isValidDate = (date) => {
+  return date && Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date)
+}
+
 /**
  *
  * @param options
@@ -24,7 +28,15 @@ export const dateToString = (options) => {
   let out = ''
   if (value && format) {
     // 2019-07-01T11:37:57.930Z
-    const parts = value.split('T')
+    let parts = []
+    if (typeof value === 'string') {
+      parts = value.split('T')
+    } else if (isValidDate(value)) {
+      parts = value.toISOString().split('T')
+    } else {
+      return value.toString()
+    }
+
     const dateParts = getElement(parts, 0).split('-')
     const timeParts = getElement(parts, 1).split(':')
 

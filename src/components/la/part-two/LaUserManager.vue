@@ -1,7 +1,7 @@
 <template>
   <div class="row q-gutter-md no-wrap">
     <row-form
-      :data="user"
+      :row="user"
       title="Пользователь"
       :model="usersModel"
       :visible-columns="userVisibleColumns"
@@ -39,7 +39,7 @@
       </template>
     </row-form>
     <row-form
-      :data="attempt"
+      :row="attempt"
       title="Попытка"
       :model="attemptModel"
       :show-actions="showAttemptActions"
@@ -63,21 +63,17 @@
       </template>
     </row-form>
     <row-form
-      :data="level"
+      v-if="user && attempt"
+      :row="level"
       title="Уровень"
       :model="levelModel"
       :show-actions="false"
       :show-messages="false"
     >
-      <template v-slot:message>
-        <q-banner rounded class="text-grey-10 bg-warning">
-          Для продолжения нужно выбрать попытку.<br>Найдите и выберите запись в таблице <strong><q>Попытки прохождения теста</q></strong>
-        </q-banner>
-      </template>
     </row-form>
     <row-form
       v-if="authUser"
-      :data="authUser"
+      :row="authUser"
       title="Инструктор"
       :model="usersModel"
       :visible-columns="managerVisibleColumns"

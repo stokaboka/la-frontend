@@ -10,7 +10,7 @@
         <q-btn v-if="edit" icon="close" flat round dense v-close-popup />
       </q-card-section>
       <q-card-section
-        v-if="rowData"
+        v-if="ready"
         class="row q-gutter-sm justify-start items-start"
         :class="{ column: edit }"
       >
@@ -44,7 +44,7 @@
               :rules="[val => testRequired(val, column)]"
             ></q-select>
             <q-input
-              v-else-if="column.type === 'date'"
+              v-else-if="column.type === 'date1'"
               class="row-form__item-input"
               :label="column.label"
               autofocus
@@ -52,11 +52,22 @@
               dense
               @blur="fieldChanged"
               v-model="rowData[column.field]"
-              mask="##.##.####"
+              type="date"
               :rules="[val => testRequired(val, column)]"
             >
               <template v-slot:append>
                 <q-icon name="event" />
+              </template>
+            </q-input>
+            <q-input
+              v-else-if="column.type === 'date'"
+              filled v-model="rowData[column.field]" mask="date">
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                    <q-date v-model="rowData[column.field]" @input="onDateInputDialog" />
+                  </q-popup-proxy>
+                </q-icon>
               </template>
             </q-input>
             <q-input
@@ -180,7 +191,7 @@ export default {
   name: 'RowForm',
   components: { Viewer },
   props: {
-    data: {
+    row: {
       type: Object,
       required: false
     },
@@ -226,7 +237,7 @@ export default {
   },
   data () {
     return {
-      rowData: { ...this.data },
+      rowData: { ...this.row },
       lov: {
         dialog: false,
         module: '',
@@ -237,9 +248,15 @@ export default {
     }
   },
   mounted () {
-    this.rowData = { ...this.data }
+    this.rowData = { ...this.row }
   },
   computed: {
+    ready () {
+      if (this.rowData === undefined || this.rowData === null) {
+        return false
+      }
+      return true
+    },
     columns () {
       if (this.visibleColumns) {
         return this.model.columns.filter(e =>
@@ -252,6 +269,16 @@ export default {
     }
   },
   methods: {
+    onDateInputDialog (event) {
+      this.$refs.qDateProxy[0].hide()
+    },
+    onInput (event, column) {
+      if (column.type === 'date') {
+        this.rowData[column.field] = new Date(event)
+      } else {
+        this.rowData[column.field] = event
+      }
+    },
     fieldChanged (event) {
       this.calculate()
     },
@@ -291,7 +318,7 @@ export default {
       return true
     },
     fieldNotEmpty (column) {
-      const val = this.data[column.field]
+      const val = this.rowData[column.field]
       return !(val === undefined || val === null) && val
     },
     format (value, column) {
@@ -303,7 +330,7 @@ export default {
     }
   },
   watch: {
-    data (val) {
+    row (val) {
       this.rowData = { ...val }
       this.calculate()
     }

@@ -135,7 +135,7 @@
       <row-form
         ref="rowForm"
         class="dialog-form"
-        :data="editor.row"
+        :row="editor.row"
         title="Редактор записи"
         :model="model"
         :edit="true"
