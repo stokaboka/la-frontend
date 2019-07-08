@@ -110,11 +110,31 @@ export const getElement = (arr, idx) => {
   return ''
 }
 
-export const dateToString = (date, format) => {
+/**
+ *
+ * @param options
+ * @returns {string|*}
+ */
+export const formatter = (options) => {
+  const { type, value } = options
+  switch (type.toUpperCase()) {
+    case 'DATE' :
+      return dateToString(options)
+  }
+  return value
+}
+
+/**
+ *
+ * @param options
+ * @returns {string}
+ */
+export const dateToString = (options) => {
+  const { value, format } = options
   let out = ''
-  if (date) {
+  if (value && format) {
     // 2019-07-01T11:37:57.930Z
-    const parts = date.split('T')
+    const parts = value.split('T')
     const dateParts = getElement(parts, 0).split('-')
     const timeParts = getElement(parts, 1).split(':')
 

@@ -1,4 +1,5 @@
 import store from '../../store'
+import { initMethodsData } from '../../lib/calculator'
 
 export const SET_LOADING = (state, loading) => {
   state.loading = true
@@ -72,6 +73,9 @@ export const SET_MODULE_DATA = (state, playload) => {
     store.state[playload.module].model.data = playload.data.rows
     store.state[playload.module].model.rowsNumber = playload.data.rowsNumber
   }
+
+  const { model } = store.state[playload.module].model
+  initMethodsData(model)
 
   state.modules[playload.module] = playload
 }

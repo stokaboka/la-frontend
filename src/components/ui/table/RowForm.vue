@@ -6,19 +6,19 @@
         <q-space />
         <q-btn v-if="edit" icon="close" flat round dense v-close-popup />
       </q-card-section>
-      <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
+      <q-card-section v-if="row" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
           <div v-for="column in columns" :key="column.field">
             <div v-if="edit">
               <div v-if="column.editor && column.editor.type === 'lov'" class="row q-gutter-sm">
                 <div class="text-weight-medium row-form__item-box">
-                  {{ format(data[column.field], column) }}
+                  {{ format(row[column.field], column) }}
                 </div>
                 <q-btn label="..." @click="openLov(column)"/>
               </div>
               <q-select v-else-if="column.editor && column.editor.type === 'combobox'"
                   class="row-form__item-input"
                   filled
-                  v-model="data[column.field]"
+                  v-model="row[column.field]"
                   @input="fieldChanged"
                   :options="column.editor.options"
                   :label="column.label"
@@ -31,9 +31,9 @@
                 autogrow
                 dense
                 @input="fieldChanged"
-                v-model="data[column.field]"
+                v-model="row[column.field]"
                 mask="##.##.####"
-                :rules="[val => testRequired(val, column, 'Поле должно быть заполнено')]"
+                :rules="[val => testRequired(val, column)]"
                 >
                 <template v-slot:append>
                   <q-icon name="event"/>
@@ -41,14 +41,14 @@
               </q-input>
               <q-input v-else
                 class="row-form__item-input"
-                v-model="data[column.field]"
+                v-model="row[column.field]"
                 @input="fieldChanged"
                 :label="column.label"
                 dense
                 autofocus
                 autogrow
                 :type="column.type"
-                :rules="[val => testRequired(val, column, 'Поле должно быть заполнено')]"
+                :rules="[val => testRequired(val, column)]"
               ></q-input>
             </div>
             <div v-else-if="fieldNotEmpty(column)"
@@ -58,7 +58,7 @@
                 <q-select
                   v-if="column.gadget.type === 'combobox'"
                   filled
-                  v-model="data[column.field]"
+                  v-model="row[column.field]"
                   :options="column.gadget.options"
                   label="Filled"
                 ></q-select>
@@ -67,23 +67,23 @@
                   class="shadow-2"
                 >
                   <q-avatar v-bind="column.gadget.options" />
-                  <strong>{{ format(data[column.field], column) }}</strong>
+                  <strong>{{ format(row[column.field], column) }}</strong>
                   <q-tooltip v-if="column.gadget.options.tooltip" content-class="bg-gray" content-style="font-size: 1rem">
                     {{column.gadget.options.tooltip}}
                   </q-tooltip>
                 </q-chip>
                 <q-icon
                   v-if="column.gadget.type === 'icon'"
-                  v-bind="column.gadget.options[data[column.field]]"
+                  v-bind="column.gadget.options[row[column.field]]"
                 ></q-icon>
                 <q-toggle
                   v-if="column.gadget.type === 'toggle'"
-                  v-model="data[column.field]"
+                  v-model="row[column.field]"
                   v-bind="column.gadget.options"
                 ></q-toggle>
               </div>
               <div v-else class="text-weight-medium row-form__item-box">
-                {{ format(data[column.field], column) }}
+                {{ format(row[column.field], column) }}
               </div>
             </div>
             <div v-else></div>
@@ -127,8 +127,14 @@
 </template>
 
 <script>
-import { toDDMMYYYY } from '../../../lib/utils'
+import { formatter } from '../../../lib/utils'
 import Viewer from './Viewer'
+import { validate } from '../../../lib/validator'
+import { calculate } from '../../../lib/calculator'
+
+const MESSAGES = {
+  required: 'Поле должно быть заполнено'
+}
 
 export default {
   name: 'RowForm',
@@ -180,6 +186,7 @@ export default {
   },
   data () {
     return {
+      row: null,
       lov: {
         dialog: false,
         module: '',
@@ -189,6 +196,9 @@ export default {
       }
     }
   },
+  // mounted () {
+  //   this.row = { ...this.data }
+  // },
   computed: {
     columns () {
       if (this.visibleColumns) return this.model.columns.filter(e => this.visibleColumns.includes(e.field))
@@ -214,7 +224,7 @@ export default {
       if (action) {
         const { bind } = this.lov.column.editor
         for (const bnd of bind) {
-          this.data[bnd.to] = this.lov.row[bnd.from]
+          this.row[bnd.to] = this.lov.row[bnd.from]
         }
         this.fieldChanged()
       }
@@ -223,53 +233,57 @@ export default {
       this.lov.row = null
       this.lov.column = null
     },
-    validate () {
-      for (const column of this.columns) {
-        if (column.required) {
-          if (!this.data[column.field]) {
-            return false
-          }
-        }
-      }
-      return true
+    async validate () {
+      const { row, columns } = this
+      return validate({ row, columns })
+      // for (const column of this.columns) {
+      //   if (column.required) {
+      //     if (!this.row[column.field]) {
+      //       return false
+      //     }
+      //   }
+      // }
+      // return true
     },
     calculate () {
-      for (const column of this.columns) {
-        if (column.calculate) {
-          const expr = column.calculate.split(' ')
-          const a = this.data[expr[0]]
-          const x = expr[1]
-          const b = this.data[expr[2]]
-          try {
-            // eslint-disable-next-line no-eval
-            this.data[column.field] = eval(`${a} ${x} ${b}`)
-          } catch (e) {
-            console.warn(e.message())
-          }
-        }
-      }
+      const { row, columns } = this
+      calculate({ row, columns })
+      // for (const column of this.columns) {
+      //   if (column.calculate) {
+      //     const expr = column.calculate.split(' ')
+      //     const a = this.row[expr[0]]
+      //     const x = expr[1]
+      //     const b = this.row[expr[2]]
+      //     try {
+      //       // eslint-disable-next-line no-eval
+      //       this.row[column.field] = eval(`${a} ${x} ${b}`)
+      //     } catch (e) {
+      //       console.warn(e.message())
+      //     }
+      //   }
+      // }
     },
-    testRequired (val, column, message) {
+    testRequired (val, column) {
       if (column.required) {
-        return !!val || message
+        return !!val || MESSAGES.required
       }
       return true
     },
     fieldNotEmpty (column) {
-      const val = this.data[column.field]
+      const val = this.row[column.field]
       return !(val === undefined || val === null) && val
     },
     format (value, column) {
       if (column.mask) {
-        switch (column.mask) {
-          case 'DD-MM-YYYY':
-            return toDDMMYYYY(value)
-          default:
-            return value
-        }
-      } else {
-        return value
+        const { type, mask: format } = column
+        return formatter({ type, value, format })
       }
+      return value
+    }
+  },
+  watch: {
+    data (val) {
+      this.row = { ...val }
     }
   }
 }
