@@ -32,8 +32,11 @@ export const load = ({ commit, getters, rootGetters }, playload) => {
   return axios.get(url)
     .then(response => {
       const data = response.data
+      const initData = { ...playload, data }
       commit('SET_RESULT', 'OK')
-      commit('SET_MODULE_DATA', { ...playload, data })
+      commit('SET_MODULE_DATA', initData)
+      commit('INIT_METHODS_DATA', initData)
+      commit('CALCULATE_SUMMARY', initData)
       return data
     })
     .catch(error => {
@@ -59,6 +62,8 @@ export const insert = ({ commit, getters, rootGetters }, playload) => {
   return axios.post(url, data)
     .then(response => {
       commit('SET_MODULE_DATA_BY_ID', playload)
+      commit('INIT_METHODS_DATA', playload)
+      commit('CALCULATE_SUMMARY', playload)
       commit('SET_RESULT', 'OK')
       return true
     })
@@ -78,6 +83,8 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
   return axios.put(url, data)
     .then(response => {
       commit('SET_MODULE_DATA_BY_ID', playload)
+      commit('INIT_METHODS_DATA', playload)
+      commit('CALCULATE_SUMMARY', playload)
       commit('SET_RESULT', 'OK')
       return true
     })
@@ -98,6 +105,8 @@ export const remove = ({ commit, getters, rootGetters }, playload) => {
   return axios.delete(url, { data })
     .then(response => {
       commit('REMOVE_MODULE_DATA_BY_ID', playload)
+      commit('INIT_METHODS_DATA', playload)
+      commit('CALCULATE_SUMMARY', playload)
       commit('SET_RESULT', 'OK')
       return true
     })
@@ -130,34 +139,3 @@ export const createRow = ({ commit, getters, rootGetters }, playload) => {
 export const getValue = ({ commit, getters, rootGetters }, playload) => {
   return getModuleDataRowValue({ commit, getters, rootGetters }, playload)
 }
-
-// export const validateRowFields = (options) => {
-//   const { data, columns } = options
-//   for (const column of columns) {
-//     if (column.required) {
-//       if (!data[column.field]) {
-//         return false
-//       }
-//     }
-//   }
-//   return true
-// }
-
-// export const calculateRowFields = (options) => {
-//   const { row, columns } = options
-//   for (const column of columns) {
-//     if (column.calculate) {
-//       const expr = column.calculate.split(' ')
-//       const a = row[expr[0]]
-//       const x = expr[1]
-//       const b = row[expr[2]]
-//       try {
-//         // eslint-disable-next-line no-eval
-//         row[column.field] = eval(`${a} ${x} ${b}`)
-//       } catch (e) {
-//         console.warn(e.message())
-//       }
-//     }
-//   }
-//   return row
-// }
