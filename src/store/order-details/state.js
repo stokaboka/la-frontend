@@ -40,7 +40,8 @@ export default {
         sortable: true,
         visible: true,
         update: true,
-        insert: true
+        insert: true,
+        calculate: 'AUTO_INCREMENT'
       },
       {
         name: 'course',

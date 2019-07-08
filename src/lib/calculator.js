@@ -5,41 +5,24 @@ export const calculate = (options) => {
   for (const column of columns) {
     const { calculate } = column
     if (calculate) {
+      const { field } = column
       if (isMethod(calculate)) {
-        row[column.field] = calcMethod({ row, column })
+        row[field] = calcMethod({ row, column })
       } else {
-        row[column.field] = calcExpression({ row, column })
+        row[field] = calcExpression({ row, column })
       }
-
-      // const expr = column.calculate.split(' ')
-      //
-      // if (expr.length === 1) {
-      //   row[column.field] = calcAutoIncrement({})
-      // } else if (expr.length === 3) {
-      //   const a = row[expr[0]]
-      //   const x = expr[1]
-      //   const b = row[expr[2]]
-      //   const def = row[column.field]
-      //   row[column.field] = calcExpression({ a, x, b, def })
-      // }
-
-      // const a = row[expr[0]]
-      // const x = expr[1]
-      // const b = row[expr[2]]
-      // try {
-      //   // eslint-disable-next-line no-eval
-      //   row[column.field] = eval(`${a} ${x} ${b}`)
-      // } catch (e) {
-      //   console.warn(e.message())
-      // }
     }
   }
   return row
 }
 
+const isEmpty = (val) => {
+  return val === undefined || val === null || !`${val}`
+}
+
 const calcMethod = (options) => {
   const { column } = options
-  const func = methods[column.calculate]
+  const func = methods[column.calculate].method
   return func(options)
 }
 
@@ -85,14 +68,18 @@ const initAutoIncrement = (options) => {
 }
 
 const calcAutoIncrement = (options) => {
-  const { column } = options
+  const { row, column } = options
+  const { field } = column
   const { key } = methods.AUTO_INCREMENT
-  if (column[key]) {
-    column[key] = column[key] + 1
-  } else {
-    column[key] = 1
+  if (isEmpty(row[field])) {
+    if (column[key]) {
+      column[key] = column[key] + 1
+    } else {
+      column[key] = 1
+    }
+    return column[key]
   }
-  return column[key]
+  return row[field]
 }
 
 /**

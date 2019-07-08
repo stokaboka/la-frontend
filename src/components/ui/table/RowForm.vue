@@ -9,20 +9,27 @@
       <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
           <div v-for="column in columns" :key="column.field">
             <div v-if="edit">
-              <div v-if="column.editor && column.editor.type === 'lov'" class="row q-gutter-sm">
-                <div class="text-weight-medium row-form__item-box">
-                  {{ format(data[column.field], column) }}
-                </div>
+              <div v-if="column.editor && column.editor.type === 'lov'" class="row no-wrap q-gutter-sm">
+                <q-input class="row-form__item-input"
+                         v-model="data[column.field]"
+                         :label="column.label"
+                         dense
+                         disabled
+                         autofocus
+                         autogrow
+                         :type="column.type"
+                         :rules="[val => testRequired(val, column)]"
+                ></q-input>
                 <q-btn label="..." @click="openLov(column)"/>
               </div>
               <q-select v-else-if="column.editor && column.editor.type === 'combobox'"
                   class="row-form__item-input"
                   filled
                   v-model="data[column.field]"
-                  @input="fieldChanged"
+                  @blur="fieldChanged"
                   :options="column.editor.options"
                   :label="column.label"
-                  :rules="[val => testRequired(val, column, 'Поле должно быть заполнено')]"
+                  :rules="[val => testRequired(val, column)]"
               ></q-select>
               <q-input v-else-if="column.type === 'date'"
                 class="row-form__item-input"
@@ -30,7 +37,7 @@
                 autofocus
                 autogrow
                 dense
-                @input="fieldChanged"
+                @blur="fieldChanged"
                 v-model="data[column.field]"
                 mask="##.##.####"
                 :rules="[val => testRequired(val, column)]"
@@ -42,7 +49,7 @@
               <q-input v-else
                 class="row-form__item-input"
                 v-model="data[column.field]"
-                @input="fieldChanged"
+                @blur="fieldChanged"
                 :label="column.label"
                 dense
                 autofocus
@@ -234,34 +241,12 @@ export default {
       this.lov.column = null
     },
     async validate () {
-      const { row, columns } = this
+      const { data: row, columns } = this
       return validate({ row, columns })
-      // for (const column of this.columns) {
-      //   if (column.required) {
-      //     if (!this.data[column.field]) {
-      //       return false
-      //     }
-      //   }
-      // }
-      // return true
     },
     calculate () {
-      const { row, columns } = this
+      const { data: row, columns } = this
       calculate({ row, columns })
-      // for (const column of this.columns) {
-      //   if (column.calculate) {
-      //     const expr = column.calculate.split(' ')
-      //     const a = this.data[expr[0]]
-      //     const x = expr[1]
-      //     const b = this.data[expr[2]]
-      //     try {
-      //       // eslint-disable-next-line no-eval
-      //       this.data[column.field] = eval(`${a} ${x} ${b}`)
-      //     } catch (e) {
-      //       console.warn(e.message())
-      //     }
-      //   }
-      // }
     },
     testRequired (val, column) {
       if (column.required) {
@@ -280,12 +265,13 @@ export default {
       }
       return value
     }
+  },
+  watch: {
+    data (val) {
+      // this.row = { ...val }
+      this.calculate()
+    }
   }
-  // watch: {
-  //   data (val) {
-  //     this.data = { ...val }
-  //   }
-  // }
 }
 </script>
 

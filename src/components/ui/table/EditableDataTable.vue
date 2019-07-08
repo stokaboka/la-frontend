@@ -381,6 +381,8 @@ export default {
       this.selected = [row]
     },
     async onEditRowAccept () {
+      this.$refs.rowForm.calculate()
+
       if (!this.$refs.rowForm.validate()) {
         return
       }
