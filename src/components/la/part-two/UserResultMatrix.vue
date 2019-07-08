@@ -489,7 +489,7 @@ export default {
     },
 
     setPartPhaseLevel (part, phase, level, recalc = true) {
-      console.log('setPartPhaseLevel', part, phase, level)
+      // console.log('setPartPhaseLevel', part, phase, level)
       if (this.results) {
         const tmp = this.results.map(e => e)
         const idx = tmp.findIndex(

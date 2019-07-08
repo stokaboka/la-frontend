@@ -27,9 +27,12 @@ const calcMethod = (options) => {
 }
 
 const isMethod = (expr) => {
-  return Object
-    .entries(methods)
-    .findIndex(([key]) => key === expr) >= 0
+  if (expr) {
+    return Object
+      .entries(methods)
+      .findIndex(([key]) => key === expr) >= 0
+  }
+  return false
 }
 
 const calcExpression = (options) => {
@@ -59,12 +62,11 @@ const calcExpression = (options) => {
 const initAutoIncrement = (options) => {
   const { column, rows } = options
   const { field } = column
-  const { key } = methods.AUTO_INCREMENT
   let out = 0
   for (const row of rows) {
     out = row[field] > out ? row[field] : out
   }
-  column[key] = out
+  return out
 }
 
 const calcAutoIncrement = (options) => {
@@ -87,12 +89,12 @@ const calcAutoIncrement = (options) => {
  * @param options - is model !!!
  */
 export const initMethodsData = (options) => {
-  const { data: rows, columns } = options
+  const { rows, columns } = options
   for (const column of columns) {
     const { calculate } = column
     if (isMethod(calculate)) {
       const { init, key } = methods[calculate]
-      column[key] = init({ rows, columns })
+      column[key] = init({ rows, column })
     }
   }
 }
@@ -101,6 +103,6 @@ const methods = {
   AUTO_INCREMENT: {
     method: calcAutoIncrement,
     init: initAutoIncrement,
-    key: 'autoincrement'
+    key: '__autoincrement'
   }
 }

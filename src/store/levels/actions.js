@@ -18,7 +18,7 @@ export const load = ({ commit }, params) => {
   return axios
     .get(`/levels/${pStr}`, params)
     .then(response => {
-      console.log(response.data)
+      // console.log(response.data)
       commit('SET_LEVEL', response.data)
     })
     .catch(error => {

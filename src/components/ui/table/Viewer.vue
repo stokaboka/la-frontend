@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     model () {
-      console.log(this.module)
+      // console.log(this.module)
       if (this.module) return this.$store.state[this.module].model
       return null
     },
