@@ -31,11 +31,12 @@ export default {
         name: 'dt',
         field: 'dt',
         label: 'Дата',
+        type: 'date',
         sortable: true,
         visible: true,
         update: false,
         insert: false,
-        mask: 'DD-MM-YYYY'
+        mask: 'DD.MM.YYYY'
       }
     ],
     edit: {

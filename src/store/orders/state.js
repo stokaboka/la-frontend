@@ -1,5 +1,5 @@
 import { finalTestResultEurope, finalTestResultSVSComplete } from '../../components/la/part-two/constants'
-import { formatter } from '../../lib/utils'
+import { formatter } from '../../lib/formatter'
 
 export default {
   data: null,

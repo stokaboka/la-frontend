@@ -6,19 +6,19 @@
         <q-space />
         <q-btn v-if="edit" icon="close" flat round dense v-close-popup />
       </q-card-section>
-      <q-card-section v-if="row" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
+      <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
           <div v-for="column in columns" :key="column.field">
             <div v-if="edit">
               <div v-if="column.editor && column.editor.type === 'lov'" class="row q-gutter-sm">
                 <div class="text-weight-medium row-form__item-box">
-                  {{ format(row[column.field], column) }}
+                  {{ format(data[column.field], column) }}
                 </div>
                 <q-btn label="..." @click="openLov(column)"/>
               </div>
               <q-select v-else-if="column.editor && column.editor.type === 'combobox'"
                   class="row-form__item-input"
                   filled
-                  v-model="row[column.field]"
+                  v-model="data[column.field]"
                   @input="fieldChanged"
                   :options="column.editor.options"
                   :label="column.label"
@@ -31,7 +31,7 @@
                 autogrow
                 dense
                 @input="fieldChanged"
-                v-model="row[column.field]"
+                v-model="data[column.field]"
                 mask="##.##.####"
                 :rules="[val => testRequired(val, column)]"
                 >
@@ -41,7 +41,7 @@
               </q-input>
               <q-input v-else
                 class="row-form__item-input"
-                v-model="row[column.field]"
+                v-model="data[column.field]"
                 @input="fieldChanged"
                 :label="column.label"
                 dense
@@ -58,7 +58,7 @@
                 <q-select
                   v-if="column.gadget.type === 'combobox'"
                   filled
-                  v-model="row[column.field]"
+                  v-model="data[column.field]"
                   :options="column.gadget.options"
                   label="Filled"
                 ></q-select>
@@ -67,23 +67,23 @@
                   class="shadow-2"
                 >
                   <q-avatar v-bind="column.gadget.options" />
-                  <strong>{{ format(row[column.field], column) }}</strong>
+                  <strong>{{ format(data[column.field], column) }}</strong>
                   <q-tooltip v-if="column.gadget.options.tooltip" content-class="bg-gray" content-style="font-size: 1rem">
                     {{column.gadget.options.tooltip}}
                   </q-tooltip>
                 </q-chip>
                 <q-icon
                   v-if="column.gadget.type === 'icon'"
-                  v-bind="column.gadget.options[row[column.field]]"
+                  v-bind="column.gadget.options[data[column.field]]"
                 ></q-icon>
                 <q-toggle
                   v-if="column.gadget.type === 'toggle'"
-                  v-model="row[column.field]"
+                  v-model="data[column.field]"
                   v-bind="column.gadget.options"
                 ></q-toggle>
               </div>
               <div v-else class="text-weight-medium row-form__item-box">
-                {{ format(row[column.field], column) }}
+                {{ format(data[column.field], column) }}
               </div>
             </div>
             <div v-else></div>
@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { formatter } from '../../../lib/utils'
+import { formatter } from '../../../lib/formatter'
 import Viewer from './Viewer'
 import { validate } from '../../../lib/validator'
 import { calculate } from '../../../lib/calculator'
@@ -186,7 +186,7 @@ export default {
   },
   data () {
     return {
-      row: null,
+      // row: null,
       lov: {
         dialog: false,
         module: '',
@@ -224,7 +224,7 @@ export default {
       if (action) {
         const { bind } = this.lov.column.editor
         for (const bnd of bind) {
-          this.row[bnd.to] = this.lov.row[bnd.from]
+          this.data[bnd.to] = this.lov.row[bnd.from]
         }
         this.fieldChanged()
       }
@@ -238,7 +238,7 @@ export default {
       return validate({ row, columns })
       // for (const column of this.columns) {
       //   if (column.required) {
-      //     if (!this.row[column.field]) {
+      //     if (!this.data[column.field]) {
       //       return false
       //     }
       //   }
@@ -251,12 +251,12 @@ export default {
       // for (const column of this.columns) {
       //   if (column.calculate) {
       //     const expr = column.calculate.split(' ')
-      //     const a = this.row[expr[0]]
+      //     const a = this.data[expr[0]]
       //     const x = expr[1]
-      //     const b = this.row[expr[2]]
+      //     const b = this.data[expr[2]]
       //     try {
       //       // eslint-disable-next-line no-eval
-      //       this.row[column.field] = eval(`${a} ${x} ${b}`)
+      //       this.data[column.field] = eval(`${a} ${x} ${b}`)
       //     } catch (e) {
       //       console.warn(e.message())
       //     }
@@ -270,7 +270,7 @@ export default {
       return true
     },
     fieldNotEmpty (column) {
-      const val = this.row[column.field]
+      const val = this.data[column.field]
       return !(val === undefined || val === null) && val
     },
     format (value, column) {
@@ -280,12 +280,12 @@ export default {
       }
       return value
     }
-  },
-  watch: {
-    data (val) {
-      this.row = { ...val }
-    }
   }
+  // watch: {
+  //   data (val) {
+  //     this.data = { ...val }
+  //   }
+  // }
 }
 </script>
 

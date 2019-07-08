@@ -40,12 +40,13 @@ export default {
       {
         name: 'dt',
         field: 'dt',
+        type: 'date',
         label: 'Дата',
         sortable: true,
         visible: true,
         update: false,
         insert: false,
-        mask: 'DD-MM-YYYY'
+        mask: 'DD.MM.YYYY'
       },
       {
         name: 'test',

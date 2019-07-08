@@ -71,12 +71,13 @@ export default {
         name: 'lastDate',
         field: 'lastDate',
         label: 'Дата',
+        type: 'date',
         align: 'left',
         sortable: true,
         visible: true,
         update: false,
         insert: false,
-        mask: 'DD-MM-YYYY'
+        mask: 'DD.MM.YYYY'
       },
       {
         name: 'closed',
@@ -120,12 +121,13 @@ export default {
         name: 'birthday',
         field: 'birthday',
         label: 'Дата рождения',
+        type: 'date',
         align: 'left',
         sortable: true,
         visible: true,
         update: false,
         insert: false,
-        mask: 'DD-MM-YYYY'
+        mask: 'DD.MM.YYYY'
       },
       {
         name: 'role',
