@@ -65,7 +65,11 @@
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                    <q-date v-model="rowData[column.field]" @input="onDateInputDialog" />
+                    <q-date
+                      v-model="rowData[column.field]"
+                      mask="DD-MM-YYYY"
+                      :locale="locale"
+                      @input="onDateInputDialog" />
                   </q-popup-proxy>
                 </q-icon>
               </template>
@@ -187,6 +191,11 @@ const MESSAGES = {
   required: 'Поле должно быть заполнено'
 }
 
+const locale = {
+  days: 'Воскресенье_Понедельник_Вторник_Среда_Четверг_Пятница_Суббота',
+  months: 'Январь_Февраль_Март_Апрель_Май_Июнь_Июль_Август_Сентябрь_Октябрь_Ноябрь_Декабрь'
+}
+
 export default {
   name: 'RowForm',
   components: { Viewer },
@@ -244,6 +253,13 @@ export default {
         selection: 'single',
         row: null,
         column: null
+      },
+      locale: {
+        /* starting with Sunday */
+        days: locale.days.split('_'),
+        daysShort: locale.days.split('_').map(e => e.substr(1, 3)),
+        months: locale.months.split('_'),
+        monthsShort: locale.months.split('_').map(e => e.substr(1, 3))
       }
     }
   },
@@ -270,6 +286,7 @@ export default {
   },
   methods: {
     onDateInputDialog (event) {
+      console.log(event)
       this.$refs.qDateProxy[0].hide()
     },
     onInput (event, column) {
