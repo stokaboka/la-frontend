@@ -1,5 +1,6 @@
 import store from '../../store'
-import { initMethodsData } from '../../lib/calculator'
+import Vue from 'vue'
+import { initMethodsData, initSummaryRow } from '../../lib/calculator'
 
 export const SET_LOADING = (state, loading) => {
   state.loading = true
@@ -31,12 +32,33 @@ export const SET_ERROR = (state, error) => {
 export const SET_MODULE_DATA_BY_ID = (state, playload) => {
   if (state.modules[playload.module]) {
     const moduleObject = state.modules[playload.module]
-    const idx = moduleObject.data.findIndex(e => e.id === playload.data.id)
+    const rows = Array.isArray(moduleObject.data) ? moduleObject.data : moduleObject.data.rows
+    const idx = rows.findIndex(e => e.id === playload.data.id)
     if (idx >= 0) {
-      moduleObject.data.splice(idx, 1, playload.data)
+      rows.splice(idx, 1, playload.data)
     } else {
-      moduleObject.data.push(playload.data)
+      rows.push(playload.data)
     }
+    if (Array.isArray(moduleObject.data)) {
+      moduleObject.data = rows
+    } else {
+      moduleObject.data.rows = rows
+    }
+    // if (Array.isArray(moduleObject.data)) {
+    //   const idx = moduleObject.data.findIndex(e => e.id === playload.data.id)
+    //   if (idx >= 0) {
+    //     moduleObject.data.splice(idx, 1, playload.data)
+    //   } else {
+    //     moduleObject.data.push(playload.data)
+    //   }
+    // } else {
+    //   const idx = moduleObject.data.rows.findIndex(e => e.id === playload.data.id)
+    //   if (idx >= 0) {
+    //     moduleObject.data.rows.splice(idx, 1, playload.data)
+    //   } else {
+    //     moduleObject.data.rows.push(playload.data)
+    //   }
+    // }
     state.modules[playload.module] = moduleObject
   } else {
     state.modules[playload.module] = playload
@@ -79,6 +101,12 @@ export const SET_MODULE_DATA = (state, playload) => {
 
   if (store.state[playload.module].model.columns.find(e => e.calculate)) {
     initMethodsData({ rows, columns })
+  }
+
+  if (store.state[playload.module].model.columns.find(e => e.summary)) {
+    const summary = initSummaryRow({ rows, columns })
+    Vue.set(store.state[playload.module].model, 'summary', summary)
+    // console.log(store.state[playload.module].model)
   }
 
   state.modules[playload.module] = playload

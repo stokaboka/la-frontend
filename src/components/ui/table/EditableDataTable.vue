@@ -23,17 +23,7 @@
             @input="rowMark()"
           ></q-checkbox>
         </q-td>
-        <q-td key="desc" :props="props">
-          {{ props.row.name }}
-          <q-btn
-            dense
-            round
-            flat
-            :icon="props.expand ? 'arrow_drop_up' : 'arrow_drop_down'"
-            @click="props.expand = !props.expand"
-          />
-        </q-td>
-        <q-td v-for="column in columns" :key="column.field" :props="props">
+        <q-td v-for="column in props.cols" :key="column.field" :props="props">
 
           <div v-if="column.gadget">
             <q-icon
@@ -54,20 +44,6 @@
             ></q-toggle>
           </div>
           <span v-else>{{ format(props.row[column.field], column) }}</span>
-          <q-popup-edit
-            v-if="false"
-            v-model="props.row[column.field]"
-            buttons
-            :title="props.row[column.label]"
-            @save="onEditRow(props.row)"
-          >
-            <q-input
-              v-model="props.row[column.field]"
-              dense
-              autofocus
-              :type="column.type"
-            ></q-input>
-          </q-popup-edit>
         </q-td>
       </q-tr>
     </template>
@@ -137,6 +113,17 @@
       ></q-select>
 
     </template>
+
+    <template v-slot:bottom-row="props">
+      <q-tr v-if="summary" :props="props">
+        <q-td auto-width key="selected">
+          <strong>Итого:</strong>
+        </q-td>
+        <q-td v-for="column in props.cols" :key="column.field" class="text-right" :class="{ 'text-left': column.align === 'left', 'text-center': column.align === 'center' }">
+          <span><strong>{{ format(summary[column.field], column) }}</strong></span>
+        </q-td>
+      </q-tr>
+    </template>
   </q-table>
 
     <q-dialog
@@ -201,7 +188,8 @@
 <script>
 
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { toDDMMYYYY, equalsObjects } from '../../../lib/utils'
+import { equalsObjects } from '../../../lib/utils'
+import { formatter } from '../../../lib/formatter'
 import RowForm from './RowForm'
 
 export default {
@@ -340,6 +328,12 @@ export default {
         }
       })
     },
+    summary () {
+      if (this.$store.state[this.module].model.summary !== undefined) {
+        return this.$store.state[this.module].model.summary
+      }
+      return false
+    },
     visibleColumns () {
       return this.$store.state[this.module].model.columns.filter(e => e.visible).map(e => e.name)
     },
@@ -470,15 +464,10 @@ export default {
     },
     format (value, column) {
       if (column.mask) {
-        switch (column.mask) {
-          case 'DD-MM-YYYY':
-            return toDDMMYYYY(value)
-          default:
-            return value
-        }
-      } else {
-        return value
+        const { type, mask: format } = column
+        return formatter({ type, value, format })
       }
+      return value
     },
 
     async request ({ pagination, filter }) {

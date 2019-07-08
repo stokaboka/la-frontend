@@ -7,7 +7,7 @@ export default {
 
   model: {
     key: 'id',
-    title: 'Занятия',
+    title: 'Планы обучения',
     data: [],
     columns: [
       {

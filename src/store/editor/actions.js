@@ -83,6 +83,7 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
     })
     .catch(error => {
       commit('SET_ERROR', error)
+      console.log(error)
       return false
     })
 }

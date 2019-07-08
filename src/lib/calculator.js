@@ -16,6 +16,33 @@ export const calculate = (options) => {
   return row
 }
 
+const summaryReducers = {
+  sum: function (f) {
+    const field = f
+    return (a, e) => {
+      return a + e[field]
+    }
+  }
+}
+
+export const initSummaryRow = (options) => {
+  const { rows, columns } = options
+  const out = {}
+  for (const column of columns) {
+    const { field, summary } = column
+    let val = null
+    if (summaryReducers[column.summary]) {
+      const reduceProxy = summaryReducers[summary]
+      const reducer = reduceProxy(field)
+      val = rows.reduce((a, e) => {
+        return reducer(a, e)
+      }, 0)
+    }
+    out[field] = val
+  }
+  return out
+}
+
 const isEmpty = (val) => {
   return val === undefined || val === null || !`${val}`
 }
