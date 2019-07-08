@@ -381,7 +381,8 @@ export default {
         return
       }
 
-      const row = { ...this.editor.row }
+      const row = this.$refs.rowForm.rowData
+      // const row = { ...this.editor.row }
       const { module } = this
       if (this.editor.mode === 'INSERT') {
         this.insertRow({ module, row })

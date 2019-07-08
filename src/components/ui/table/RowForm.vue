@@ -1,100 +1,117 @@
 <template>
   <div>
     <q-card>
-      <q-card-section v-if="title" class="row items-center text-h6 bg-secondary text-white">
-        <span>{{title}}</span>
+      <q-card-section
+        v-if="title"
+        class="row items-center text-h6 bg-secondary text-white"
+      >
+        <span>{{ title }}</span>
         <q-space />
         <q-btn v-if="edit" icon="close" flat round dense v-close-popup />
       </q-card-section>
-      <q-card-section v-if="data" class="row q-gutter-sm justify-start items-start" :class="{'column': edit}">
-          <div v-for="column in columns" :key="column.field">
-            <div v-if="edit">
-              <div v-if="column.editor && column.editor.type === 'lov'" class="row no-wrap q-gutter-sm">
-                <q-input class="row-form__item-input"
-                         v-model="data[column.field]"
-                         :label="column.label"
-                         dense
-                         disabled
-                         autofocus
-                         autogrow
-                         :type="column.type"
-                         :rules="[val => testRequired(val, column)]"
-                ></q-input>
-                <q-btn label="..." @click="openLov(column)"/>
-              </div>
-              <q-select v-else-if="column.editor && column.editor.type === 'combobox'"
-                  class="row-form__item-input"
-                  filled
-                  v-model="data[column.field]"
-                  @blur="fieldChanged"
-                  :options="column.editor.options"
-                  :label="column.label"
-                  :rules="[val => testRequired(val, column)]"
-              ></q-select>
-              <q-input v-else-if="column.type === 'date'"
+      <q-card-section
+        v-if="rowData"
+        class="row q-gutter-sm justify-start items-start"
+        :class="{ column: edit }"
+      >
+        <div v-for="column in columns" :key="column.field">
+          <div v-if="edit">
+            <div
+              v-if="column.editor && column.editor.type === 'lov'"
+              class="row no-wrap q-gutter-sm"
+            >
+              <q-input
                 class="row-form__item-input"
+                v-model="rowData[column.field]"
                 :label="column.label"
-                autofocus
-                autogrow
-                dense
-                @blur="fieldChanged"
-                v-model="data[column.field]"
-                mask="##.##.####"
-                :rules="[val => testRequired(val, column)]"
-                >
-                <template v-slot:append>
-                  <q-icon name="event"/>
-                </template>
-              </q-input>
-              <q-input v-else
-                class="row-form__item-input"
-                v-model="data[column.field]"
-                @blur="fieldChanged"
-                :label="column.label"
-                dense
-                autofocus
-                autogrow
                 :type="column.type"
                 :rules="[val => testRequired(val, column)]"
+                dense
+                disabled
+                autofocus
+                autogrow
               ></q-input>
+              <q-btn label="..." @click="openLov(column)" />
             </div>
-            <div v-else-if="fieldNotEmpty(column)"
-              class="column items-start q-pa-sm text-grey-14">
-              <span class="q-mr-md row-form__item-label">{{ column.label }}</span>
-              <div v-if="column.gadget">
-                <q-select
-                  v-if="column.gadget.type === 'combobox'"
-                  filled
-                  v-model="data[column.field]"
-                  :options="column.gadget.options"
-                  label="Filled"
-                ></q-select>
-                <q-chip
-                  v-if="column.gadget.type === 'chip'"
-                  class="shadow-2"
-                >
-                  <q-avatar v-bind="column.gadget.options" />
-                  <strong>{{ format(data[column.field], column) }}</strong>
-                  <q-tooltip v-if="column.gadget.options.tooltip" content-class="bg-gray" content-style="font-size: 1rem">
-                    {{column.gadget.options.tooltip}}
-                  </q-tooltip>
-                </q-chip>
-                <q-icon
-                  v-if="column.gadget.type === 'icon'"
-                  v-bind="column.gadget.options[data[column.field]]"
-                ></q-icon>
-                <q-toggle
-                  v-if="column.gadget.type === 'toggle'"
-                  v-model="data[column.field]"
-                  v-bind="column.gadget.options"
-                ></q-toggle>
-              </div>
-              <div v-else class="text-weight-medium row-form__item-box">
-                {{ format(data[column.field], column) }}
-              </div>
-            </div>
-            <div v-else></div>
+            <q-select
+              v-else-if="column.editor && column.editor.type === 'combobox'"
+              class="row-form__item-input"
+              filled
+              v-model="rowData[column.field]"
+              @blur="fieldChanged"
+              :options="column.editor.options"
+              :label="column.label"
+              :rules="[val => testRequired(val, column)]"
+            ></q-select>
+            <q-input
+              v-else-if="column.type === 'date'"
+              class="row-form__item-input"
+              :label="column.label"
+              autofocus
+              autogrow
+              dense
+              @blur="fieldChanged"
+              v-model="rowData[column.field]"
+              mask="##.##.####"
+              :rules="[val => testRequired(val, column)]"
+            >
+              <template v-slot:append>
+                <q-icon name="event" />
+              </template>
+            </q-input>
+            <q-input
+              v-else
+              class="row-form__item-input"
+              v-model="rowData[column.field]"
+              @blur="fieldChanged"
+              :label="column.label"
+              dense
+              autofocus
+              autogrow
+              :type="column.type"
+              :rules="[val => testRequired(val, column)]"
+            ></q-input>
           </div>
+          <div
+            v-else-if="fieldNotEmpty(column)"
+            class="column items-start q-pa-sm text-grey-14"
+          >
+            <span class="q-mr-md row-form__item-label">{{ column.label }}</span>
+            <div v-if="column.gadget">
+              <q-select
+                v-if="column.gadget.type === 'combobox'"
+                filled
+                v-model="rowData[column.field]"
+                :options="column.gadget.options"
+                label="Filled"
+              ></q-select>
+              <q-chip v-if="column.gadget.type === 'chip'" class="shadow-2">
+                <q-avatar v-bind="column.gadget.options" />
+                <strong>{{ format(rowData[column.field], column) }}</strong>
+                <q-tooltip
+                  v-if="column.gadget.options.tooltip"
+                  content-class="bg-gray"
+                  content-style="font-size: 1rem"
+                >
+                  {{ column.gadget.options.tooltip }}
+                </q-tooltip>
+              </q-chip>
+              <q-icon
+                v-if="column.gadget.type === 'icon'"
+                v-bind="column.gadget.options[rowData[column.field]]"
+              ></q-icon>
+              <q-toggle
+                v-if="column.gadget.type === 'toggle'"
+                v-model="rowData[column.field]"
+                v-bind="column.gadget.options"
+              ></q-toggle>
+            </div>
+            <div v-else class="text-weight-medium row-form__item-box">
+              {{ format(rowData[column.field], column) }}
+            </div>
+          </div>
+          <div v-else></div>
+        </div>
       </q-card-section>
 
       <q-card-section v-if="showActions" class="q-mt-md">
@@ -104,13 +121,20 @@
       <q-card-section v-if="showMessages" class="q-mt-md">
         <slot name="message"></slot>
       </q-card-section>
-
     </q-card>
 
-    <q-dialog v-model="lov.dialog" full-width persistent transition-show="scale" transition-hide="scale">
+    <q-dialog
+      v-model="lov.dialog"
+      full-width
+      persistent
+      transition-show="scale"
+      transition-hide="scale"
+    >
       <q-card>
         <q-card-section class="row items-center text-h6 bg-primary text-white">
-          <span v-if="lov.column">Список значений для <strong>{{lov.column.label}}</strong></span>
+          <span v-if="lov.column"
+            >Список значений для <strong>{{ lov.column.label }}</strong></span
+          >
         </q-card-section>
         <q-card-section>
           <viewer
@@ -123,13 +147,22 @@
             @table-row-click="onLovRowClick"
           ></viewer>
         </q-card-section>
-      <q-card-actions align="right" class="row q-gutter-md">
-        <q-btn label="OK" @click="onLovBtnClick(true)" :disabled="!lov.row" color="primary"  v-close-popup ></q-btn>
-        <q-btn label="Отмена" @click="onLovBtnClick(false)"  v-close-popup ></q-btn>
-      </q-card-actions>
+        <q-card-actions align="right" class="row q-gutter-md">
+          <q-btn
+            label="OK"
+            @click="onLovBtnClick(true)"
+            :disabled="!lov.row"
+            color="primary"
+            v-close-popup
+          ></q-btn>
+          <q-btn
+            label="Отмена"
+            @click="onLovBtnClick(false)"
+            v-close-popup
+          ></q-btn>
+        </q-card-actions>
       </q-card>
     </q-dialog>
-
   </div>
 </template>
 
@@ -193,7 +226,7 @@ export default {
   },
   data () {
     return {
-      // row: null,
+      rowData: { ...this.data },
       lov: {
         dialog: false,
         module: '',
@@ -203,13 +236,16 @@ export default {
       }
     }
   },
-  // mounted () {
-  //   this.row = { ...this.data }
-  // },
+  mounted () {
+    this.rowData = { ...this.data }
+  },
   computed: {
     columns () {
-      if (this.visibleColumns) return this.model.columns.filter(e => this.visibleColumns.includes(e.field))
-      else return this.model.columns.filter(e => e.visible)
+      if (this.visibleColumns) {
+        return this.model.columns.filter(e =>
+          this.visibleColumns.includes(e.field)
+        )
+      } else return this.model.columns.filter(e => e.visible)
     },
     editableColumns () {
       return this.columns.filter(e => e.insert || e.update)
@@ -231,7 +267,7 @@ export default {
       if (action) {
         const { bind } = this.lov.column.editor
         for (const bnd of bind) {
-          this.data[bnd.to] = this.lov.row[bnd.from]
+          this.rowData[bnd.to] = this.lov.row[bnd.from]
         }
         this.fieldChanged()
       }
@@ -241,11 +277,11 @@ export default {
       this.lov.column = null
     },
     async validate () {
-      const { data: row, columns } = this
+      const { rowData: row, columns } = this
       return validate({ row, columns })
     },
     calculate () {
-      const { data: row, columns } = this
+      const { rowData: row, columns } = this
       calculate({ row, columns })
     },
     testRequired (val, column) {
@@ -268,7 +304,7 @@ export default {
   },
   watch: {
     data (val) {
-      // this.row = { ...val }
+      this.rowData = { ...val }
       this.calculate()
     }
   }
@@ -276,18 +312,18 @@ export default {
 </script>
 
 <style scoped>
-  .row-form__item-label {
-    color: gray;
-    font-size: 0.75rem;
-  }
+.row-form__item-label {
+  color: gray;
+  font-size: 0.75rem;
+}
 
-  .row-form__item-input {
-    min-width: 20rem;
-    width: 100%;
-  }
+.row-form__item-input {
+  min-width: 20rem;
+  width: 100%;
+}
 
-  .row-form__item-box {
-    min-width: 2rem;
-    border-bottom: 2px solid #027BE3;
-  }
+.row-form__item-box {
+  min-width: 2rem;
+  border-bottom: 2px solid #027be3;
+}
 </style>
