@@ -19,6 +19,7 @@
 
 import authMixin from './auth.mixin'
 import BaseForm from '../../components/ui/form/BaseForm'
+import { date } from 'quasar'
 
 export default {
   name: 'Register',
@@ -160,9 +161,12 @@ export default {
           name: 'birthday',
           label: 'Дата рождения',
           value: '',
-          type: 'date',
+          type: 'text',
+          mask: '##.##.####',
           autofocus: false,
-          validations: [],
+          validations: [
+            val => (date.isValid(val)) || 'Неверный формат даты рождения'
+          ],
           icons: [
             {
               name: 'date_range',

@@ -9,6 +9,7 @@
              square
              :name="item.name"
              :type="item.type"
+             :mask="item.mask"
              :ref="item.name"
              :rules="item.validations"
              :autofocus="item.autofocus"
