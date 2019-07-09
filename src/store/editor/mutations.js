@@ -113,14 +113,14 @@ export const CALCULATE_SUMMARY = (state, playload) => {
 }
 
 export const PREPARE_DATA = (state, playload) => {
-  const rows = store.state[playload.module].model.data
-  const columns = store.state[playload.module].model.columns
-  for (const column of columns) {
-    if (column.type === 'date') {
-      const field = column
-      for (const row of rows) {
-        row[field] = new Date(row[field])
-      }
-    }
-  }
+  // const rows = store.state[playload.module].model.data
+  // const columns = store.state[playload.module].model.columns
+  // for (const column of columns) {
+  //   if (column.type === 'date') {
+  //     const field = column
+  //     for (const row of rows) {
+  //       row[field] = new Date(row[field]).toISOString()
+  //     }
+  //   }
+  // }
 }

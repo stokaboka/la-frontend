@@ -1,5 +1,4 @@
 import { finalTestResultEurope, finalTestResultSVSComplete } from '../../components/la/part-two/constants'
-import { formatter } from '../../lib/formatter'
 
 export default {
   data: null,
@@ -45,7 +44,7 @@ export default {
         required: true,
         mask: 'DD.MM.YYYY',
         default: () => {
-          return formatter('date', new Date().toISOString(), 'DD.MM.YYYY')
+          return new Date().toISOString()
         }
       },
 

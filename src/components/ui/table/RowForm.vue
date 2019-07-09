@@ -11,7 +11,7 @@
       </q-card-section>
       <q-card-section
         v-if="ready"
-        class="row q-gutter-sm justify-start items-start"
+        class="row q-gutter-sm q-mt-md justify-start items-start"
         :class="{ column: edit }"
       >
         <div v-for="column in columns" :key="column.field">
@@ -61,15 +61,31 @@
             </q-input>
             <q-input
               v-else-if="column.type === 'date'"
-              filled v-model="rowData[column.field]" mask="date">
+              class="row-form__item-input"
+              filled
+              autofocus
+              autogrow
+              :label="column.label"
+              :value="format(rowData[column.field], column)"
+              @input="e => onDateInputDialog(e, column)"
+              type="text"
+              :mask="dateMask"
+              @blur="fieldChanged"
+            >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                  <q-popup-proxy
+                    ref="qDateProxy"
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
                     <q-date
-                      v-model="rowData[column.field]"
-                      mask="DD-MM-YYYY"
+                      first-day-of-week="1"
+                      dark
+                      :value="rowData[column.field]"
                       :locale="locale"
-                      @input="onDateInputDialog" />
+                      @input="e => onDateInputDialog(e, column)"
+                    />
                   </q-popup-proxy>
                 </q-icon>
               </template>
@@ -183,6 +199,7 @@
 
 <script>
 import { formatter } from '../../../lib/formatter'
+import { date } from 'quasar'
 import Viewer from './Viewer'
 import { validate } from '../../../lib/validator'
 import { calculate } from '../../../lib/calculator'
@@ -254,17 +271,19 @@ export default {
         row: null,
         column: null
       },
+      dateMask: '##.##.####',
       locale: {
         /* starting with Sunday */
         days: locale.days.split('_'),
-        daysShort: locale.days.split('_').map(e => e.substr(1, 3)),
+        daysShort: locale.days.split('_').map(e => e.substr(0, 3)),
         months: locale.months.split('_'),
-        monthsShort: locale.months.split('_').map(e => e.substr(1, 3))
+        monthsShort: locale.months.split('_').map(e => e.substr(0, 3))
       }
     }
   },
   mounted () {
     this.rowData = { ...this.row }
+    console.log(this.$q.lang.getLocale())
   },
   computed: {
     ready () {
@@ -285,8 +304,11 @@ export default {
     }
   },
   methods: {
-    onDateInputDialog (event) {
+    onDateInputDialog (event, column) {
       console.log(event)
+      if (date.isValid(event)) {
+        this.rowData[column.field] = new Date(event).toISOString()
+      }
       this.$refs.qDateProxy[0].hide()
     },
     onInput (event, column) {
