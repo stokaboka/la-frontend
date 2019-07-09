@@ -1,10 +1,10 @@
 <template>
   <div class="column q-gutter-md">
     <div class="row q-gutter-md justify-start items-center">
-      <span>Экспорт результа в:</span>
+      <span>Экспорт в:</span>
       <q-btn label="PDF" @click="saveAsFormat('pdf')">
         <q-tooltip transition-show="flip-right" transition-hide="flip-left">
-          Сохранить как PDF
+          Сохранить выбранный план обучения в формате PDF
         </q-tooltip>
       </q-btn>
     </div>

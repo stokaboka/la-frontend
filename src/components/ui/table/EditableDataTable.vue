@@ -66,17 +66,17 @@
 
       <q-space />
       <div class="row q-gutter-md">
-        <q-btn v-if="edit.insert" label="Создать" :disabled="!allowInsert" @click="onInsertRowClick">
+        <q-btn v-if="edit.insert" color="primary" label="Создать" :disabled="!allowInsert" @click="onInsertRowClick">
           <q-tooltip transition-show="flip-right" transition-hide="flip-left">
             Создать новую запись
           </q-tooltip>
         </q-btn>
-        <q-btn v-if="edit.update" :disabled="!allowUpdate || selected.length === 0" label="Редактировать" @click="onEditRowClick">
+        <q-btn v-if="edit.update" color="secondary" :disabled="!allowUpdate || selected.length === 0" label="Редактировать" @click="onEditRowClick">
           <q-tooltip transition-show="flip-right" transition-hide="flip-left">
             Изменить запись
           </q-tooltip>
         </q-btn>
-        <q-btn v-if="edit.delete" :disabled="!allowDelete || selected.length === 0" label="Удалить" @click="onStartDeleteRowClick">
+        <q-btn v-if="edit.delete" color="orange" :disabled="!allowDelete || selected.length === 0" label="Удалить" @click="onStartDeleteRowClick">
           <q-tooltip transition-show="flip-right" transition-hide="flip-left">
             Удалить запись
           </q-tooltip>
