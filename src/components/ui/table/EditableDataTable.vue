@@ -81,6 +81,7 @@
             Удалить запись
           </q-tooltip>
         </q-btn>
+
       </div>
       <q-space />
 
@@ -126,8 +127,7 @@
     </template>
   </q-table>
 
-    <q-dialog
-      v-model="editor.dialog"
+    <q-dialog v-model="editor.dialog"
       persistent
       square
       transition-show="scale"

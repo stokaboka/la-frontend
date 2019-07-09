@@ -1,5 +1,12 @@
 <template>
   <div class="column q-gutter-md">
+    <div class="row q-gutter-md">
+      <q-btn label="PDF" @click="saveAsFormat('pdf')">
+        <q-tooltip transition-show="flip-right" transition-hide="flip-left">
+          Сохранить как PDF
+        </q-tooltip>
+      </q-btn>
+    </div>
     <editor
       module="orders"
       :selection="selection"
@@ -23,8 +30,10 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Editor from '../../../ui/table/Editor'
+import { formatter } from '../../../../lib/formatter'
+
 export default {
   name: 'Orders',
   components: { Editor },
@@ -38,13 +47,26 @@ export default {
     allowOrderDetailsInsert () {
       return !!this.order
     },
-    ...mapGetters('orders', ['order']),
+    ...mapGetters('users', ['fioUser']),
+    ...mapGetters('orders', { order: 'order', orderModel: 'model' }),
     ...mapGetters('orderdetails', ['orderDetail'])
   },
   mounted () {
     this.setOrderFilterParams(this.order)
   },
   methods: {
+    async saveAsFormat (format) {
+      const { id, dt } = this.order
+      const dtf = formatter({
+        type: 'date',
+        value: dt,
+        format: 'DD.MM.YYYY'
+      })
+
+      const filename = `${this.orderModel.title} ${this.fioUser} от ${dtf}.${format}`
+
+      await this.orderSaveAs({ id, format, filename })
+    },
     onOrdersTableRowClick (row) {
       this.SET_ORDER(row)
       this.setOrderFilterParams(row)
@@ -57,7 +79,8 @@ export default {
       else this.orderParams = '/order/0'
     },
     ...mapMutations('orders', ['SET_ORDER']),
-    ...mapMutations('orderdetails', ['SET_ORDER_DETAIL'])
+    ...mapMutations('orderdetails', ['SET_ORDER_DETAIL']),
+    ...mapActions('orders', { orderSaveAs: 'saveAs' })
 
   }
 }
