@@ -1,5 +1,5 @@
 <template>
-  <div class="column justify-start items-center">
+  <div class="column justify-start items-start">
       <div v-if="filterComponent">
         <component
           :is="filterComponent"
