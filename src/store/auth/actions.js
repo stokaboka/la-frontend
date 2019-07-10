@@ -104,6 +104,10 @@ export const signout = ({ commit, getters, rootGetters }) => {
 }
 
 export const register = ({ commit, getters, rootGetters }, playload) => {
+  if (playload.repeatPassword) {
+    delete playload.repeatPassword
+  }
+
   const data = Object.assign(
     {
       login: '-',
