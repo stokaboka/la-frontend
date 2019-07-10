@@ -1,14 +1,16 @@
 <template>
   <div class="column justify-start items-center q-gutter-md q-pa-md">
-    <q-avatar size="6rem" color="green" text-color="white">{{result}}</q-avatar>
+    <digital-animation-tablo size="6rem" color="green" text-color="white" :value="result"></digital-animation-tablo>
     <div>из {{phaseQuestionsTotal}} ({{category}}: {{questionIndex+1}}/{{questionsCount}})</div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import DigitalAnimationTablo from './ui/elements/digital/DigitalAnimationTablo'
 export default {
   name: 'LeftInfoPanel',
+  components: { DigitalAnimationTablo },
   props: {
     module: {
       type: Object,
