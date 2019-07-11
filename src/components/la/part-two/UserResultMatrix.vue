@@ -27,8 +27,17 @@
           </q-tooltip>
         </q-chip>
         <div class="row no-wrap q-gutter-x-md q-ma-sm items-center">
-          <span>Экспорт результа в:</span>
-          <q-btn v-for="exp in exportFormats" :key="exp.format" :label="exp.format" @click="exportResults(exp)"></q-btn>
+          <q-btn label="Сохранить" @click="onSaveResultsClick">
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
+              Сохранить результат
+            </q-tooltip>
+          </q-btn>
+          <span>Экспорт в:</span>
+          <q-btn v-for="exp in exportFormats" :key="exp.format" :label="exp.format" @click="onExportResultsClick(exp)">
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
+              Сохранить результат и экспортировать в формат <strong>{{exp.format}}</strong>
+            </q-tooltip>
+          </q-btn>
         </div>
       </div>
       <div v-for="(r, rIndex) in matrix" :key="`r-${rIndex}`" class="column no-wrap">
@@ -607,7 +616,13 @@ export default {
       await this.loadReportFile(reportFileParams)
     },
 
-    async exportResults (exp) {
+    async onSaveResultsClick () {
+      await this.saveLevels()
+      await this.saveResultReport()
+    },
+
+    async onExportResultsClick (exp) {
+      await this.saveLevels()
       await this.saveResultReport()
       await this.loadResultAsFile(exp)
     }

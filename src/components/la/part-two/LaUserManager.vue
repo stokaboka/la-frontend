@@ -147,10 +147,12 @@ export default {
   },
   watch: {
     async attempt () {
-      const { id: user } = this.user
-      const { test, attempt } = this.attempt
-      const params = { user, test, attempt }
-      await this.loadLevels(params)
+      if (this.user && this.attempt) {
+        const { id: user } = this.user
+        const { test, attempt } = this.attempt
+        const params = { user, test, attempt }
+        await this.loadLevels(params)
+      }
     }
   }
 }
