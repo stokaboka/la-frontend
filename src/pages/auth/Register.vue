@@ -1,4 +1,34 @@
 <template>
+
+  <q-card>
+
+    <q-card-section class="column justify-center items-center auth-title__background">
+      <q-avatar size="5rem">
+        <q-icon name="person_add" size="4rem" color="white" class="auth-title__title-icon"></q-icon>
+      </q-avatar>
+    </q-card-section>
+
+    <q-card-section>
+      <base-form :form="form"
+                 ref="form"
+                 @on-form-input="onFormInput"
+      ></base-form>
+    </q-card-section>
+
+    <q-separator />
+
+    <q-card-actions align="right">
+      <q-btn @click="submit" color="primary" class="q-mx-md">Регистрация</q-btn>
+      <q-btn @click="onCancel" class="q-mx-md">Отмена</q-btn>
+    </q-card-actions>
+
+  </q-card>
+
+</template>
+
+<script>
+
+/*
   <div class="q-pa-md column justify-center items-center">
     <q-icon name="person_outline" size="5rem" color="secondary"></q-icon>
 
@@ -13,9 +43,7 @@
     </div>
 
   </div>
-</template>
-
-<script>
+ */
 
 import authMixin from './auth.mixin'
 import BaseForm from '../../components/ui/form/BaseForm'
@@ -180,5 +208,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  .auth-title__title-icon {
+    text-shadow: 3px 3px 3px #666666;
+  }
+
+  .auth-title__background {
+    background: radial-gradient(circle, #21ba45 0%, #247a42 100%)
+  }
 </style>

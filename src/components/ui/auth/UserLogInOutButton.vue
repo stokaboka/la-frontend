@@ -36,7 +36,7 @@ export default {
     },
 
     userLabel () {
-      return this.isLogged ? 'Выход' : 'Войти'
+      return this.isLogged ? 'Выход' : 'Вход'
     },
 
     userRoute () {

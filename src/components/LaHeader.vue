@@ -18,7 +18,7 @@
       </q-toolbar-title>
 
       <q-chip v-if="authUser" class="shadow-2">
-        <q-avatar icon="person" color="primary" />
+        <q-avatar icon="person" color="blue-grey" text-color="white" />
         <strong>
           <span>{{ authUser.firstName }} {{ authUser.secondName }} {{ authUser.lastName }}</span>
         </strong>
