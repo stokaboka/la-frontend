@@ -5,7 +5,22 @@
 
       <div class="q=mt-lg column justify-start items-start">
 
-        <div class="text-body1 text-grey-14">
+        <q-btn
+          label="Продолжить"
+          color="primary"
+          class="q-ma-md"
+          @click="$router.push({ name: 'part-two-users' })"
+        />
+      </div>
+
+    </div>
+  </q-page>
+</template>
+
+<script>
+
+/*
+<div class="text-body1 text-grey-14">
           Порядок работы с клиентом:
           <ol>
             <li>Выбрать пользователя в разделе <q>Пользователи</q>
@@ -28,20 +43,8 @@
             </li>
           </ol>
         </div>
+ */
 
-        <q-btn
-          label="Продолжить"
-          color="primary"
-          class="q-ma-md"
-          @click="$router.push({ name: 'part-two-users' })"
-        />
-      </div>
-
-    </div>
-  </q-page>
-</template>
-
-<script>
 import LaAbout from '../components/LaAbout'
 export default {
   name: 'PhaseTwo',
