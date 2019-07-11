@@ -8,6 +8,9 @@
       </div>
       <div v-if="model">
         <editable-data-table
+          :allow-insert="allowInsert"
+          :allow-update="allowUpdate"
+          :allow-delete="allowDelete"
           :model="model"
           :module="module"
           :params="params"

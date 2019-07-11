@@ -30,27 +30,32 @@ export const SET_ERROR = (state, error) => {
  * @constructor
  */
 export const SET_MODULE_DATA_BY_ID = (state, playload) => {
-  if (state.modules[playload.module]) {
-    const moduleObject = state.modules[playload.module]
-    const rows = Array.isArray(moduleObject.data) ? moduleObject.data : moduleObject.data.rows
-    const idx = rows.findIndex(e => e.id === playload.data.id)
-    if (idx >= 0) {
-      rows.splice(idx, 1, playload.data)
-    } else {
-      rows.push(playload.data)
-    }
-    if (Array.isArray(moduleObject.data)) {
-      moduleObject.data = rows
-    } else {
-      moduleObject.data.rows = rows
-    }
+  const rowId = playload.mode === 'UPDATE' ? playload.data.id : null
+  // if (state.modules[playload.module]) {
+  //   const moduleObject = state.modules[playload.module]
+  //   const rows = Array.isArray(moduleObject.data) ? moduleObject.data : moduleObject.data.rows
+  //
+  //   // rowId = playload.mode === 'UPDATE' ? playload.data.id : null
+  //
+  //   const idx = rows.findIndex(e => e.id === rowId)
+  //   if (idx >= 0) {
+  //     rows.splice(idx, 1, playload.data)
+  //   } else {
+  //     rows.push(playload.data)
+  //   }
+  //
+  //   if (Array.isArray(moduleObject.data)) {
+  //     moduleObject.data = rows
+  //   } else {
+  //     moduleObject.data.rows = rows
+  //   }
+  //
+  //   state.modules[playload.module] = moduleObject
+  // } else {
+  //   state.modules[playload.module] = playload
+  // }
 
-    state.modules[playload.module] = moduleObject
-  } else {
-    state.modules[playload.module] = playload
-  }
-
-  const idx = store.state[playload.module].model.data.findIndex(e => e.id === playload.data.id)
+  const idx = store.state[playload.module].model.data.findIndex(e => e.id === rowId)
   if (idx >= 0) {
     store.state[playload.module].model.data.splice(idx, 1, playload.data)
   } else {
@@ -113,14 +118,4 @@ export const CALCULATE_SUMMARY = (state, playload) => {
 }
 
 export const PREPARE_DATA = (state, playload) => {
-  // const rows = store.state[playload.module].model.data
-  // const columns = store.state[playload.module].model.columns
-  // for (const column of columns) {
-  //   if (column.type === 'date') {
-  //     const field = column
-  //     for (const row of rows) {
-  //       row[field] = new Date(row[field]).toISOString()
-  //     }
-  //   }
-  // }
 }

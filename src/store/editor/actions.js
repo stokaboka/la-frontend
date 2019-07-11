@@ -61,7 +61,8 @@ export const insert = ({ commit, getters, rootGetters }, playload) => {
   commit('SET_LOADING')
   return axios.post(url, data)
     .then(response => {
-      commit('SET_MODULE_DATA_BY_ID', playload)
+      const { data } = response
+      commit('SET_MODULE_DATA_BY_ID', { ...playload, data, mode: 'INSERT' })
       commit('INIT_METHODS_DATA', playload)
       commit('CALCULATE_SUMMARY', playload)
       commit('SET_RESULT', 'OK')
@@ -82,7 +83,8 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
   commit('SET_LOADING')
   return axios.put(url, data)
     .then(response => {
-      commit('SET_MODULE_DATA_BY_ID', playload)
+      const { data } = response
+      commit('SET_MODULE_DATA_BY_ID', { ...playload, data, mode: 'UPDATE' })
       commit('INIT_METHODS_DATA', playload)
       commit('CALCULATE_SUMMARY', playload)
       commit('SET_RESULT', 'OK')
