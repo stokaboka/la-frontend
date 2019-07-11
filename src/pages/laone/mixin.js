@@ -82,10 +82,10 @@ export default {
     },
 
     async saveResults () {
-      const { id, attempt } = this.authUser
+      const { id: idUser, attempt } = this.authUser
       const { test, part, phase, level } = this
       await this.save({
-        id,
+        idUser,
         attempt,
         test,
         part,

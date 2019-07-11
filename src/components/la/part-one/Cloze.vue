@@ -40,6 +40,7 @@ export default {
   },
   data () {
     return {
+      debug: false,
       questionStrings: []
     }
   },
@@ -57,7 +58,7 @@ export default {
                 data: a[1].replace('=', '').split('~'),
                 type: 'array',
                 // model: '\u200C',
-                model: ans,
+                model: this.debug ? ans : '\u200C',
                 answer: ans
               }
             }
@@ -67,7 +68,7 @@ export default {
             type: 'string',
             data: e.replace(/(?:\r\n|\r|\n\n|\n)/g, '<br>')
           }
-        })
+        }, this)
         return qst
       }
     },

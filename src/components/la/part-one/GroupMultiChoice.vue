@@ -48,6 +48,7 @@ export default {
   },
   data () {
     return {
+      debug: true,
       answers: [],
       state: 1
     }
@@ -146,8 +147,11 @@ export default {
               this.SET_TIMER_TOTAL(Math.round(event.duration))
             }
             this.SET_TIMER_TIME(Math.round(event.currentTime))
-            this.SET_SHOW_NEXT(event.currentTime > event.duration / 2)
-            this.SET_SHOW_NEXT(true)
+            if (this.debug) {
+              this.SET_SHOW_NEXT(true)
+            } else {
+              this.SET_SHOW_NEXT(event.currentTime > event.duration / 2)
+            }
           }
           break
         case 'COMPLETE' :
