@@ -6,7 +6,7 @@
       leave-active-class="animated slideOutDownDigit"
       mode="out-in"
     >
-      <div v-bind:key="valueDigit">
+      <div v-bind:key="valueDigit" class="digit-vertical-anim__symbol">
         {{valueDigit}}
       </div>
     </transition>
@@ -40,6 +40,10 @@ export default {
 
 <style scoped>
   .digit-vertical-anim {
+  }
+
+  .digit-vertical-anim__symbol {
+    text-shadow: 0 3px 3px #666666;
   }
 
   @-webkit-keyframes slideInDownDigit {

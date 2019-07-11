@@ -1,7 +1,7 @@
 <template>
   <div class="column justify-start items-center q-gutter-md q-pa-md">
     <digital-animation-tablo size="6rem" color="green" text-color="white" :value="result"></digital-animation-tablo>
-    <div>из {{phaseQuestionsTotal}} ({{category}}: {{questionIndex+1}}/{{questionsCount}})</div>
+    <div class="text-grey-14">из <strong>{{phaseQuestionsTotal}}</strong> ({{category}}: {{questionIndex+1}}/{{questionsCount}})</div>
   </div>
 </template>
 

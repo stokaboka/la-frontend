@@ -7,9 +7,9 @@
       class="text-grey-14"
       :value="value"
       size="7rem"
-      :thickness="0.25"
+      :thickness="0.3"
       :color="colorTime"
-      track-color="grey-3"
+      track-color="grey-4"
     >
       <q-icon name="access_time" size="2rem" class="q-mr-xs" :color="colorTime"/>
       {{ timerText }}
