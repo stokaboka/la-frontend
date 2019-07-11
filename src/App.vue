@@ -6,6 +6,12 @@
 
 <script>
 
+/**
+   * TODO прервать тест - 404
+   * TODO старт теста - слишком рано таймер и счетчик
+   * TODO в результате не сразу отображается descriptions
+   */
+
 import { mapGetters, mapActions } from 'vuex'
 
 export default {

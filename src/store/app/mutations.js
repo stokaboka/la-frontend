@@ -59,6 +59,8 @@ export const RESET_MODULES = (state) => {
       level: 0
     }
   })
+
+  state.module = ''
 }
 
 export const ADD_SECOND_TO_TIMER = state => {
