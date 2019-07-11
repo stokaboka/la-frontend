@@ -1,8 +1,16 @@
 <template>
-  <div class="column justify-start items-center q-gutter-md q-pa-md">
-    <digital-animation-tablo size="6rem" color="green" text-color="white" :value="result"></digital-animation-tablo>
-    <div class="text-grey-14">из <strong>{{phaseQuestionsTotal}}</strong> ({{category}}: {{questionIndex+1}}/{{questionsCount}})</div>
-  </div>
+    <div class="column justify-start items-center q-gutter-md q-pa-md">
+      <digital-animation-tablo
+        size="6rem"
+        color="green"
+        text-color="white"
+        :value="result"
+      ></digital-animation-tablo>
+      <div class="text-grey-14">
+        из <strong>{{ phaseQuestionsTotal }}</strong> ({{ category }}:
+        {{ questionIndex + 1 }}/{{ questionsCount }})
+      </div>
+    </div>
 </template>
 
 <script>
@@ -21,12 +29,21 @@ export default {
     return {}
   },
   computed: {
-    ...mapGetters('questions', ['category', 'questionIndex', 'questionsCount', 'phaseQuestionsTotal']),
+    resultPercent () {
+      if (this.questionsCount !== 0) {
+        return (this.result * 100) / this.questionsCount
+      }
+      return 0
+    },
+    ...mapGetters('questions', [
+      'category',
+      'questionIndex',
+      'questionsCount',
+      'phaseQuestionsTotal'
+    ]),
     ...mapGetters('app', ['description', 'result'])
   }
-
 }
 </script>
 
-<style>
-</style>
+<style></style>

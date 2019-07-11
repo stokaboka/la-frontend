@@ -50,6 +50,17 @@ export const SET_LEVEL = (state, playload) => {
   }
 }
 
+export const RESET_MODULES = (state) => {
+  state.modules = state.modules.map(e => {
+    return {
+      ...e,
+      answers: [],
+      results: [],
+      level: 0
+    }
+  })
+}
+
 export const ADD_SECOND_TO_TIMER = state => {
   state.timer.time++
 }

@@ -71,6 +71,7 @@ export const signin = (
     .then(response => {
       commit('SET_TOKEN', response.data.token)
       commit('users/SET_AUTH_USER', response.data.user, { root: true })
+      commit('app/RESET_MODULES', null, { root: true })
       showUserNotify(rootGetters['users/authUser'], 'signin')
     })
     .catch(error => {
@@ -92,6 +93,7 @@ export const signout = ({ commit, getters, rootGetters }) => {
     .post('/auth/signout', rootGetters['users/authUser'])
     .then(response => {
       commit('users/CLEAR_AUTH_USER', null, { root: true })
+      commit('app/RESET_MODULES', null, { root: true })
       showUserNotify(null, 'signout')
     })
     .catch(error => {
@@ -133,6 +135,7 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
       } else {
         commit('SET_TOKEN', response.data.token)
         commit('users/SET_AUTH_USER', response.data.user, { root: true })
+        commit('app/RESET_MODULES', null, { root: true })
         showUserNotify(rootGetters['users/authUser'], 'register')
       }
     })
