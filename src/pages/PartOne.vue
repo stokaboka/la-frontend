@@ -47,14 +47,21 @@ export default {
         }
       }
 
-      name = 'part-one-phase-one'
-      // name = 'part-one-phase-two'
-      // name = 'part-one-phase-tree'
+      /**
+       * TODO for debug
+       * @type {string}
+       */
+      if (this.partOneDebug) {
+        name = 'part-one-phase-one'
+        // name = 'part-one-phase-two'
+        // name = 'part-one-phase-tree'
+      }
       this.$router.push({ name })
     },
     ...mapActions('results', { loadResults: 'load' })
   },
   computed: {
+    ...mapGetters('config', { partOneDebug: 'debug' }),
     ...mapGetters('users', [
       'isLogged',
       'isClosed',
