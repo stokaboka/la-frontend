@@ -377,18 +377,24 @@ export default {
       this.$emit('set-level-one', this.levelOne)
     },
     async initDescriptions () {
-      this.descriptions = await this.loadDescription({
+      const { test } = this.attempt
+      const results = this.results.filter(e => e.phase < 7)
+      /*
+{
         test: this.attempt.test,
         results: this.results.filter(e => e.phase < 7)
-      }).then(data =>
-        data.map(e => {
-          const category = Object.values(categories).find(
-            ee => ee.part === e.part && ee.phase === e.phase
-          )
-          if (category) return { ...e, ...category }
-          return e
-        })
-      )
+      }
+ */
+      this.descriptions = await this.loadDescription({ test, results })
+        .then(data =>
+          data.map(e => {
+            const category = Object.values(categories).find(
+              ee => ee.part === e.part && ee.phase === e.phase
+            )
+            if (category) return { ...e, ...category }
+            return e
+          })
+        )
     },
     showItemLabelValue (rowItem) {
       if (rowItem.label) return rowItem.label

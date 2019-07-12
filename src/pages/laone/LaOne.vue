@@ -75,6 +75,7 @@ export default {
     this.SET_MODULE('one')
     this.SET_SHOW_NEXT(true)
     this.CLEAR_QUESTIONS()
+    this.resetState()
   }
 }
 </script>

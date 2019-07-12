@@ -35,6 +35,11 @@ export default {
       this.$router.push({ name: 'home' })
     },
 
+    resetState () {
+      this.state = 'start'
+      this.initStartState()
+    },
+
     nextState () {
       this.state = nextState[this.state]
     },

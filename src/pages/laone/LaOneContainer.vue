@@ -25,7 +25,7 @@
       <div v-if="showBreak" class="q-my-md text-grey-14 text-body1">
         <p>
           Вы можете
-          <router-link :to="{ path: 'home' }">прервать</router-link> тест в
+          <router-link :to="{ name: 'part-one-home' }">прервать</router-link> тест в
           любой момент.<br>Текущий тест будет прерван, но Вы сможете продолжить
           тестирование в следующий раз.
         </p>
