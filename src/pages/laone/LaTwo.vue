@@ -1,9 +1,6 @@
 <template>
   <div>
     <section v-if="state === 'start'">
-<!--      <div class="q-my-lg text-h4 text-weight-medium">-->
-<!--        Часть № 2 - Грамматика-->
-<!--      </div>-->
       <div class="q-pl-lg text-body1">
         <p>Вторая часть теста займет у Вас около 20 минут.</p>
         <p>
@@ -75,6 +72,7 @@ export default {
     this.SET_MODULE('two')
     this.SET_SHOW_NEXT(true)
     this.CLEAR_QUESTIONS()
+    this.resetState()
   }
 }
 </script>

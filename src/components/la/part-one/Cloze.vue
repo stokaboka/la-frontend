@@ -27,6 +27,9 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex'
+
 const clozeRegExp = /({.*?})/gim
 const multichoiseRegExp = /{1:MULTICHOICE:(.*?)}/gim
 
@@ -40,9 +43,11 @@ export default {
   },
   data () {
     return {
-      debug: false,
       questionStrings: []
     }
+  },
+  computed: {
+    ...mapGetters('config', { partOneDebug: 'debug' })
   },
   methods: {
     parseQuestion () {

@@ -84,6 +84,7 @@ export default {
     this.SET_MODULE('tree')
     this.SET_SHOW_NEXT(false)
     this.CLEAR_QUESTIONS()
+    this.resetState()
   }
 }
 </script>

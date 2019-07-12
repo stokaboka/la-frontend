@@ -7,10 +7,13 @@ export default {
       }
     },
     'part': {
-      'one': {},
+      'one': {
+        'debug': true
+      },
       'two': {
         'categoryDefaultValue': 3,
-        'questionsNum': 10
+        'questionsNum': 10,
+        'debug': true
       }
     }
   }

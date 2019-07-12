@@ -6,13 +6,10 @@ export const exportFormats = s => {
   return Object.entries(exp).map(([format, file]) => {
     return { format, file }
   })
+}
 
-  // if (s.config.result.export) {
-  //   return Object.entries(s.config.result.export).map(([format, file]) => {
-  //     return { format, file }
-  //   })
-  // }
-  // return []
+export const partOneDebug = s => {
+  return oget(s.config, 'part.one.debug', false)
 }
 
 export const partTwoCategoryDefaultValue = s => {

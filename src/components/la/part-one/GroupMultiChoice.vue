@@ -48,7 +48,6 @@ export default {
   },
   data () {
     return {
-      debug: true,
       answers: [],
       state: 1
     }
@@ -83,7 +82,8 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['api', 'volume']),
-    ...mapGetters('app', ['time', 'timer', 'showNext'])
+    ...mapGetters('app', ['time', 'timer', 'showNext']),
+    ...mapGetters('config', { partOneDebug: 'debug' })
   },
   methods: {
     onInput (answer) {
