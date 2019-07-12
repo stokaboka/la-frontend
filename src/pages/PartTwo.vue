@@ -3,8 +3,11 @@
     <div class="wrapper">
       <la-about/>
 
-      <div class="q=mt-lg column justify-start items-start">
+      <q-video
+        src="https://www.youtube.com/embed/k3_tw44QsZQ?rel=0"
+      />
 
+      <div class="q=mt-lg column justify-start items-start">
         <q-btn
           label="Продолжить"
           color="primary"
@@ -67,15 +70,5 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-  .mini-slot
-    transition background-color .28s
-    &:hover
-      background-color rgba(0, 0, 0, .04)
-
-  .mini-icon
-    font-size 1.718em
-
-    & + &
-      margin-top 18px
+<style scoped>
 </style>

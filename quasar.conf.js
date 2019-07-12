@@ -75,7 +75,8 @@ module.exports = function (ctx) {
         'QTab',
         'QParallax',
         'QRouteTab',
-        'QScrollArea'
+        'QScrollArea',
+        'QVideo'
       ],
 
       directives: [
