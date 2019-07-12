@@ -20,21 +20,29 @@ const rules = {
     [
       {
         limit: 0,
+        limit1: 0,
+        limit2: 40,
         level: 0,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 40,
+        limit1: 40,
+        limit2: 80,
         level: 1,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 80,
+        limit1: 80,
+        limit2: 100,
         level: 2,
-        next: { state: true, category: false, question: false }
+        next: { state: false, category: true, question: false }
       },
       {
         limit: 100,
+        limit1: 100,
+        limit2: 100,
         level: 2,
         next: { state: false, category: true, question: false }
       }
@@ -44,21 +52,29 @@ const rules = {
     [
       {
         limit: 0,
+        limit1: 0,
+        limit2: 40,
         level: 2,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 40,
+        limit1: 40,
+        limit2: 80,
         level: 3,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 80,
+        limit1: 80,
+        limit2: 100,
         level: 4,
-        next: { state: true, category: false, question: false }
+        next: { state: false, category: true, question: false }
       },
       {
         limit: 100,
+        limit1: 100,
+        limit2: 100,
         level: 4,
         next: { state: false, category: true, question: false }
       }
@@ -68,21 +84,29 @@ const rules = {
     [
       {
         limit: 0,
+        limit1: 0,
+        limit2: 40,
         level: 4,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 40,
+        limit1: 40,
+        limit2: 80,
         level: 5,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 80,
+        limit1: 80,
+        limit2: 100,
         level: 6,
-        next: { state: true, category: false, question: false }
+        next: { state: false, category: true, question: false }
       },
       {
         limit: 100,
+        limit1: 100,
+        limit2: 100,
         level: 6,
         next: { state: false, category: true, question: false }
       }
@@ -92,21 +116,29 @@ const rules = {
     [
       {
         limit: 0,
+        limit1: 0,
+        limit2: 40,
         level: 6,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 40,
+        limit1: 40,
+        limit2: 80,
         level: 7,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 80,
+        limit1: 80,
+        limit2: 100,
         level: 8,
         next: { state: true, category: false, question: false }
       },
       {
         limit: 100,
+        limit1: 100,
+        limit2: 100,
         level: 9,
         next: { state: true, category: false, question: false }
       }
@@ -240,7 +272,8 @@ const calculate = {
       }
 
       const rule = rules.two[_category - 1]
-      const out = rule.find(e => percent <= e.limit)
+      // const out = rule.find(e => percent <= e.limit)
+      const out = rule.find(e => e.limit1 <= percent && percent <= e.limit2)
       return out
     }
     return { limit: 0, level: _category, next: false }

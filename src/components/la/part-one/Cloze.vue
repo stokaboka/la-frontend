@@ -78,11 +78,15 @@ export default {
       }
     },
     onNext () {
-      const questions = this.questionStrings.filter(e => e.type === 'array')
+      const questions = this.questionStrings
+        .filter(e => e.type === 'array')
         .length
+
       const answers = this.questionStrings
         .filter(e => e.type === 'array')
-        .filter(e => e.model === e.answer).length
+        .filter(e => e.model === e.answer)
+        .length
+
       const out = {
         q: questions,
         a: answers
