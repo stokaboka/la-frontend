@@ -3,9 +3,7 @@
     <div class="wrapper">
       <la-about/>
 
-      <q-video
-        src="https://www.youtube.com/embed/k3_tw44QsZQ?rel=0"
-      />
+      <q-video class="part-two__video" :src="help.video"/>
 
       <div class="q=mt-lg column justify-start items-start">
         <q-btn
@@ -55,7 +53,10 @@ export default {
   data () {
     return {
       drawer: true,
-      miniState: true
+      miniState: true,
+      help: {
+        video: 'https://www.youtube.com/embed/IT_eaD7Q6iM'
+      }
     }
   },
 
@@ -71,4 +72,8 @@ export default {
 </script>
 
 <style scoped>
+  .part-two__video {
+    width: 50vw;
+    height: auto;
+  }
 </style>
