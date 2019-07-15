@@ -386,8 +386,7 @@ export default {
       const { module } = this
       if (this.editor.mode === 'INSERT') {
         this.insertRow({ module, row })
-        const result = await this.insertModule({ module, data: row })
-        console.log('result', result)
+        await this.insertModule({ module, data: row })
         this.rowClick(row)
       }
       if (this.editor.mode === 'UPDATE') {
@@ -438,9 +437,8 @@ export default {
         const row = this.selected[0]
         this.editor.mode = ''
         this.editor.dialog = false
-        const result = await this.deleteModule({ module, data: row })
+        await this.deleteModule({ module, data: row })
         this.selected = []
-        console.log('result', result)
       } else {
         this.$q.notify({
           message: 'Для удаления нужно выбрать запись',
@@ -459,9 +457,7 @@ export default {
     async onEditRow (row) {
       const data = Object.assign({}, row)
       const { module } = this
-      console.log('data', data)
-      const result = await this.updateModule({ module, data })
-      console.log('result', result)
+      await this.updateModule({ module, data })
     },
     format (value, column) {
       if (column.mask) {

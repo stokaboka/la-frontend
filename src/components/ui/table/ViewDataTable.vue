@@ -278,9 +278,7 @@ export default {
     async onEditRow (row) {
       const data = Object.assign({}, row)
       const { module } = this
-      console.log('data', data)
-      const result = await this.updateModule({ module, data })
-      console.log('result', result)
+      await this.updateModule({ module, data })
     },
     format (value, column) {
       if (column.mask) {

@@ -283,7 +283,6 @@ export default {
   },
   mounted () {
     this.rowData = { ...this.row }
-    console.log(this.$q.lang.getLocale())
   },
   computed: {
     ready () {
@@ -305,7 +304,6 @@ export default {
   },
   methods: {
     onDateInputDialog (event, column) {
-      console.log(event)
       if (date.isValid(event)) {
         this.rowData[column.field] = new Date(event).toISOString()
       }

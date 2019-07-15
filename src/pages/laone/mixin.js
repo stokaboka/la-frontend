@@ -102,6 +102,7 @@ export default {
     },
 
     async fixUserAttempt () {
+      // eslint-disable-next-line no-console
       console.log('fixUserAttempt')
       await this.fixAttempt(this.authUser)
     },

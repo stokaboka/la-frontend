@@ -476,7 +476,6 @@ export default {
       }
     },
     onGadgetInput (val) {
-      console.log(val)
       if (val.gadgetInput && this[val.gadgetInput] !== undefined) {
         this.isInteractiveChangeCellData = true
         this[val.gadgetInput] = val.gadget.model.value
@@ -504,7 +503,6 @@ export default {
     },
 
     setPartPhaseLevel (part, phase, level, recalc = true) {
-      // console.log('setPartPhaseLevel', part, phase, level)
       if (this.results) {
         const tmp = this.results.map(e => e)
         const idx = tmp.findIndex(
@@ -522,7 +520,6 @@ export default {
       }
 
       if (this.isInteractiveChangeCellData) {
-        console.log('isInteractiveChangeCellData', part, phase, level)
         this.saveResults(part, phase, level)
       }
 

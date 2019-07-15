@@ -4,6 +4,7 @@ import { objectToParamStr } from '../../lib/utils'
 import FileSaver from 'file-saver'
 
 const errorNotify = function (error) {
+  // eslint-disable-next-line no-console
   console.warn(error)
   Notify.create({
     message: `Что-то пошло не так...: ${error}`,

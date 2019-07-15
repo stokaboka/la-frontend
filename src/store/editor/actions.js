@@ -92,6 +92,7 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
     })
     .catch(error => {
       commit('SET_ERROR', error)
+      // eslint-disable-next-line no-console
       console.log(error)
       return false
     })

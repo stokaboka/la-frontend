@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Notify } from 'quasar'
 
 const errorNotify = function (error) {
+  // eslint-disable-next-line no-console
   console.warn(error)
   Notify.create({
     message: `Что-то пошло не так...: ${error}`,

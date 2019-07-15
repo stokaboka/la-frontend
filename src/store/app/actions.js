@@ -2,6 +2,7 @@ export function checkLockResume ({ commit, getters }) {
   const lockDate = localStorage.getItem('LOCK_RESUME_DATE')
   const now = new Date()
 
+  // eslint-disable-next-line no-console
   console.log('lockDate', lockDate)
   let lock = false
   if (lockDate) {

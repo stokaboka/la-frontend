@@ -81,6 +81,7 @@ const calcExpression = (options) => {
     // eslint-disable-next-line no-eval
     return eval(expr)
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.warn(e.message())
   }
   return def

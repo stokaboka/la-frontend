@@ -146,6 +146,7 @@ export default class AudioHelper {
       this.playing = true
       this.paused = false
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e)
     }
   }

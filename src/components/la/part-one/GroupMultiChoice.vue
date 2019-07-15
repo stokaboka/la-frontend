@@ -87,7 +87,6 @@ export default {
   },
   methods: {
     onInput (answer) {
-      console.dir(answer)
       const idx = this.answers.findIndex(e => e.q === answer.q)
       if (idx > -1) {
         this.answers.splice(idx, 1)
@@ -137,7 +136,6 @@ export default {
     },
 
     onAudioFired (event) {
-      // console.log(event)
       switch (event.event) {
         case 'START' :
           break
@@ -161,7 +159,6 @@ export default {
     },
 
     onTimerFired (event) {
-      // console.log(event)
       switch (event.event) {
         case 'START':
           this.RESET_TIMER()

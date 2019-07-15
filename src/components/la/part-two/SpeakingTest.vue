@@ -238,7 +238,6 @@ export default {
         (a, e) => a + e.result,
         0
       )
-      console.log((outLeftLevel + outLevel) / 10)
       return (outLeftLevel + outLevel) / 10
     },
     async completeTest () {
