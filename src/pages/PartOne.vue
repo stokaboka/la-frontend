@@ -42,8 +42,14 @@ export default {
       if (this.isLogged) {
         await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
         if (this.savedResults.length > 0) {
-          const lastResult = this.savedResults[this.savedResults.length - 1]
-          name = this.modules[lastResult.phase - 1].next
+          // const lastResult = this.savedResults[this.savedResults.length - 1]
+          const lastResultList = this.savedResults
+            .filter(e => e.part === 1)
+            .sort((a, b) => b.phase - a.phase)
+          if (lastResultList.length > 0) {
+            const lastResult = lastResultList[0]
+            name = this.modules[lastResult.phase - 1].next
+          }
         }
       }
 
@@ -52,9 +58,9 @@ export default {
        * @type {string}
        */
       if (this.partOneDebug) {
-        // name = 'part-one-phase-one'
+        name = 'part-one-phase-one'
         // name = 'part-one-phase-two'
-        name = 'part-one-phase-tree'
+        // name = 'part-one-phase-tree'
       }
       this.$router.push({ name })
     },
