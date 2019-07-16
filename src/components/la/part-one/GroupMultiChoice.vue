@@ -84,7 +84,7 @@ export default {
   computed: {
     ...mapGetters('app', ['api', 'volume']),
     ...mapGetters('app', ['time', 'timer', 'showNext']),
-    ...mapGetters('config', { partOneDebug: 'debug' })
+    ...mapGetters('config', { partOneDebug: 'partOneDebug' })
   },
   methods: {
     onInput (answer) {

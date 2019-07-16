@@ -47,7 +47,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('config', { partOneDebug: 'debug' })
+    ...mapGetters('config', { partOneDebug: 'partOneDebug' })
   },
   methods: {
     parseQuestion () {

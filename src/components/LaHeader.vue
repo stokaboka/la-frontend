@@ -12,7 +12,7 @@
 
       <q-toolbar-title>
         <strong>Language Assessment©</strong>
-        <div v-if="showTestTitle" class="text-h6 text-blue-grey-14 text-weight-medium">
+        <div v-if="showTestTitle" class="text-body1 text-blue-grey-14 text-weight-medium">
           {{testTitle}} <strong>{{description}}</strong>
         </div>
       </q-toolbar-title>
@@ -57,12 +57,6 @@
               </q-item-section>
               <q-item-section>Фаза I</q-item-section>
             </q-item>
-<!--            <q-item v-if="adminMode && attempt" clickable :to="{ name: 'part-two-user-results' }">-->
-<!--              <q-item-section avatar>-->
-<!--                <q-icon name="ballot" />-->
-<!--              </q-item-section>-->
-<!--              <q-item-section>Результат пользователя</q-item-section>-->
-<!--            </q-item>-->
             <q-item clickable :to="{ name: 'admin-courses' }">
               <q-item-section avatar>
                 <q-icon name="ballot" />
@@ -71,28 +65,6 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-
-<!--        <q-route-tab-->
-<!--          v-if="adminMode && attempt"-->
-<!--          :to="{ name: 'part-two-user-results' }"-->
-<!--          default-->
-<!--          hide="label"-->
-<!--          icon="ballot"-->
-<!--          label="Результат"-->
-<!--          name="part-two-user-results"-->
-<!--          replace-->
-<!--        ></q-route-tab>-->
-
-<!--        <q-route-tab-->
-<!--          v-if="adminMode"-->
-<!--          :to="{ name: 'part-one-home' }"-->
-<!--          default-->
-<!--          hide="label"-->
-<!--          icon="play_circle_outline"-->
-<!--          label="Фаза I"-->
-<!--          name="part-one-home"-->
-<!--          replace-->
-<!--        ></q-route-tab>-->
 
         <user-log-in-out-button
           color="dark"

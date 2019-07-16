@@ -67,7 +67,7 @@ export default {
     ...mapActions('results', { loadResults: 'load' })
   },
   computed: {
-    ...mapGetters('config', { partOneDebug: 'debug' }),
+    ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
     ...mapGetters('users', [
       'isLogged',
       'isClosed',
