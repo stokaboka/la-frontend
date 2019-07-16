@@ -4,7 +4,7 @@ export default {
   version: '0.2.0',
   mode: 'about',
   api: process.env.NODE_ENV === 'development' ? 'http://localhost:4444' : '',
-  apiVersion: 'v1',
+  apiVersion: 'api/v1',
   allowResume: true,
   allowCancel: false,
   lockResume: false,

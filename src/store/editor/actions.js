@@ -25,10 +25,10 @@ const getModuleDataRowValue = (options, playload) => {
 }
 
 export const load = ({ commit, getters, rootGetters }, playload) => {
-  const api = rootGetters['app/api']
   const { module, query } = playload
-  const url = `${api}/${module}${query}`
+  const url = `${module}${query}`
   commit('SET_LOADING')
+  console.log(axios.defaults)
   return axios.get(url)
     .then(response => {
       const data = response.data
@@ -54,8 +54,7 @@ export const reload = ({ getters, dispatch }, playload) => {
 
 export const insert = ({ commit, getters, rootGetters }, playload) => {
   const { module, data } = playload
-  const api = rootGetters['app/api']
-  const url = `${api}/${module}`
+  const url = `${module}`
   delete data.__index
   delete data.__state
   commit('SET_LOADING')
@@ -76,8 +75,7 @@ export const insert = ({ commit, getters, rootGetters }, playload) => {
 
 export const update = ({ commit, getters, rootGetters }, playload) => {
   const { module, data } = playload
-  const api = rootGetters['app/api']
-  const url = `${api}/${module}`
+  const url = `${module}`
   delete data.__index
   delete data.__state
   commit('SET_LOADING')
@@ -100,8 +98,7 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
 
 export const remove = ({ commit, getters, rootGetters }, playload) => {
   const { module, data } = playload
-  const api = rootGetters['app/api']
-  const url = `${api}/${module}`
+  const url = `${module}`
   delete data.__index
   delete data.__state
   commit('SET_LOADING')
