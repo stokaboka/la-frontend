@@ -34,6 +34,10 @@ export function api (state) {
   return state.api
 }
 
+export function apiVersion (state) {
+  return state.apiVersion
+}
+
 export function allowResume (state) {
   return state.allowResume
 }

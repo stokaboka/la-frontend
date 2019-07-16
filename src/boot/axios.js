@@ -2,7 +2,8 @@ import axios from 'axios'
 
 export default ({ app, router, store, Vue }) => {
   const api = store.getters['app/api']
-  axios.defaults.baseURL = api
+  const apiVersion = store.getters['app/apiVersion']
+  axios.defaults.baseURL = `${api}/${apiVersion}`
 
   const token = sessionStorage.getItem('token')
   if (token) {
