@@ -28,7 +28,7 @@ export const load = ({ commit, getters, rootGetters }, playload) => {
   const { module, query } = playload
   const url = `${module}${query}`
   commit('SET_LOADING')
-  console.log(axios.defaults)
+
   return axios.get(url)
     .then(response => {
       const data = response.data

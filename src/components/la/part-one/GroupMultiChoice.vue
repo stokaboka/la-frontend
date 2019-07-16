@@ -63,7 +63,7 @@ export default {
 
     audio = new AudioHelper(this.api, 'assets/sounds')
     // audio.init(this.api, 'assets/sounds').theme('')
-    audio.init('statics', '/sounds').theme('')
+    audio.init('statics', 'sounds').theme('')
     audio.volume(this.volume)
     audio.on('START', this.onAudioFired)
       .on('PROGRESS', this.onAudioFired)
