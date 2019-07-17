@@ -90,8 +90,9 @@ export default {
       {
         name: 'price',
         field: 'price',
-        label: 'Цена',
+        label: 'Стоимость',
         type: 'number',
+        summary: 'sum',
         required: true,
         sortable: true,
         visible: true,
@@ -104,12 +105,12 @@ export default {
         label: 'Стоимость',
         type: 'number',
         summary: 'sum',
-        required: true,
-        sortable: true,
-        visible: true,
-        update: true,
-        insert: true,
-        calculate: 'hours * price'
+        required: false,
+        sortable: false,
+        visible: false,
+        update: false,
+        insert: false
+        // calculate: 'hours * price'
       },
       {
         name: 'timing',
