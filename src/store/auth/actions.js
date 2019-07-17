@@ -82,6 +82,11 @@ export const signin = (
         error.response &&
         (error.response.status === 401 || error.response.status === 403)
       ) {
+        if (playload.login === '-') {
+
+        } else {
+          errorNotify('Не правильный пароль или имя пользователя')
+        }
       } else {
         errorNotify(error.message)
       }

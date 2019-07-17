@@ -29,26 +29,6 @@
 
 <script>
 
-/*
-  <div class="column justify-center items-center auth-form">
-    <q-avatar size="5rem">
-      <q-icon name="person_outline" size="5rem" color="secondary"></q-icon>
-    </q-avatar>
-
-    <base-form :form="form"
-                ref="form"
-                @on-form-input="onFormInput"
-    ></base-form>
-
-    <div class="row q-mt-md">
-      <q-btn @click="onRegistration" color="primary" class="q-mx-md">Регистрация</q-btn>
-      <q-btn @click="submit" color="primary" class="q-mx-md" :disabled="false">Войти</q-btn>
-      <q-btn @click="onCancel" class="q-mx-md">Отмена</q-btn>
-    </div>
-
-  </div>
- */
-
 import authMixin from './auth.mixin'
 import BaseForm from '../../components/ui/form/BaseForm'
 

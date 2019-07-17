@@ -59,13 +59,20 @@ export default {
         const form = {}
         // eslint-disable-next-line no-return-assign
         this.form.forEach(item => form[item.name] = item.value)
-        if (this.type === 'signin') {
-          await this.signin(form)
+
+        const authMethod = this[this.type]
+        if (authMethod) {
+          await authMethod(form)
         }
-        if (this.type === 'register') {
-          await this.register(form)
-        }
+        // if (this.type === 'signin') {
+        //   await this.signin(form)
+        // }
+        // if (this.type === 'register') {
+        //   await this.register(form)
+        // }
+        console.log('this.isLogged', this.isLogged)
         if (this.isLogged) {
+          console.log('TO HOME')
           this.$router.push({ name: 'home' })
         }
       } else {
