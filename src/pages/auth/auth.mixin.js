@@ -70,9 +70,7 @@ export default {
         // if (this.type === 'register') {
         //   await this.register(form)
         // }
-        console.log('this.isLogged', this.isLogged)
         if (this.isLogged) {
-          console.log('TO HOME')
           this.$router.push({ name: 'home' })
         }
       } else {
