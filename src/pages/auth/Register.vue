@@ -72,7 +72,7 @@ export default {
           autofocus: true,
           validations: [
             val => !!val || 'Имя пользователя должно быть заполнено',
-            val => (val && val.length > 1) || `Имя пользователя не менее 1 символа`,
+            val => (val && val.length >= 3) || `Имя пользователя не менее 3 символов`,
             val => (val && val.length < 50) || `Имя пользователя не более 50 символов`
           ],
           icons: [
@@ -139,7 +139,7 @@ export default {
           autofocus: false,
           validations: [
             val => !!val || 'Имя должно быть заполнено',
-            val => (val && val.length > 1) || `Имя не менее 1 символа`,
+            val => (val && val.length >= 1) || `Имя не менее 1 символа`,
             val => (val && val.length < 50) || `Имя не более 50 символов`
           ],
           icons: [
@@ -157,7 +157,7 @@ export default {
           autofocus: false,
           validations: [
             val => !!val || 'Отчество должно быть заполнено',
-            val => (val && val.length > 1) || `Отчество не менее 1 символа`,
+            val => (val && val.length >= 1) || `Отчество не менее 1 символа`,
             val => (val && val.length < 50) || `Отчество не более 50 символов`
           ],
           icons: [
@@ -175,7 +175,7 @@ export default {
           autofocus: false,
           validations: [
             val => !!val || 'Фамилия должно быть заполнено',
-            val => (val && val.length > 1) || `Фамилия не менее 1 символа`,
+            val => (val && val.length >= 1) || `Фамилия не менее 1 символа`,
             val => (val && val.length < 50) || `Фамилия не более 50 символов`
           ],
           icons: [
@@ -193,7 +193,12 @@ export default {
           mask: '##.##.####',
           autofocus: false,
           validations: [
-            val => (date.isValid(val)) || 'Неверный формат даты рождения'
+            val => {
+              if (val) {
+                return (date.isValid(val)) || 'Неверный формат даты рождения'
+              }
+              return true
+            }
           ],
           icons: [
             {

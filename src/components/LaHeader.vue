@@ -12,6 +12,7 @@
 
       <q-toolbar-title>
         <strong>Language Assessment©</strong>
+        <span class="q-ml-md text-subtitle2">v{{version}}</span>
         <div v-if="showTestTitle" class="text-body1 text-blue-grey-14 text-weight-medium">
           {{testTitle}} <strong>{{description}}</strong>
         </div>
@@ -104,7 +105,7 @@ export default {
       'isUser',
       'authUser'
     ]),
-    ...mapGetters('app', ['title', 'mode', 'leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description']),
+    ...mapGetters('app', ['title', 'mode', 'version', 'leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description']),
     ...mapGetters('attempts', { attempt: 'attempt' })
   }
 }

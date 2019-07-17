@@ -75,7 +75,7 @@ export default {
           autofocus: true,
           validations: [
             val => !!val || 'Имя пользователя должно быть заполнено',
-            val => (val && val.length > 1) || `Имя пользователя не менее 1 символа`,
+            val => (val && val.length >= 3) || `Имя пользователя не менее 3 символов`,
             val => (val && val.length < 50) || `Имя пользователя не более 50 символов`
           ],
           icons: [

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Notify } from 'quasar'
+import { oget } from '../../lib/utils'
 
 const errorNotify = function (error) {
   // eslint-disable-next-line no-console
@@ -129,10 +130,9 @@ export const register = ({ commit, getters, rootGetters }, playload) => {
       if (response.data.error) {
         commit('SET_TOKEN', '')
         commit('users/CLEAR_AUTH_USER', null, { root: true })
-        Notify.create({
-          message: response.data.error,
-          type: 'negative'
-        })
+        const errors = rootGetters['editor/errors']
+        const message = oget(errors, `auth.${response.data.error.code}.message`, response.data.error.message)
+        errorNotify(message)
       } else {
         commit('SET_TOKEN', response.data.token)
         commit('users/SET_AUTH_USER', response.data.user, { root: true })
