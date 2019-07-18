@@ -35,6 +35,12 @@ export default {
       this.$router.push({ name: 'home' })
     },
 
+    logger (...args) {
+      if (this.partOneDebug) {
+        console.log(args)
+      }
+    },
+
     resetState () {
       this.state = 'start'
       this.initStartState()
@@ -103,13 +109,14 @@ export default {
 
     async fixUserAttempt () {
       // eslint-disable-next-line no-console
-      console.log('fixUserAttempt')
+      // console.log('fixUserAttempt')
       await this.fixAttempt(this.authUser)
     },
 
     async onReady () {
       const result = await this.calculateResults()
-      console.log(result)
+      this.logger('onReady', result)
+
       if (result) {
         if (result.level > 0) {
           this.SET_LEVEL(result.level)
@@ -128,7 +135,8 @@ export default {
     },
 
     onAnswer (answer) {
-      console.log(answer.a, answer.aa, answer.q)
+      this.logger('onAnswer', answer.a, answer.aa, answer.q)
+
       if (answer) {
         const { part, phase, category } = this
         this.SET_ANSWER({
@@ -232,6 +240,7 @@ export default {
     ...mapActions('results', ['calculateResults', 'save'])
   },
   computed: {
+    ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
     ...mapGetters('users', ['isLogged', 'authUser']),
     ...mapGetters('app', [
       'api', 'module', 'modules', 'lastModule',
