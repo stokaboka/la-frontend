@@ -54,6 +54,11 @@ export default {
     onCancel () {
       this.$router.push({ name: 'home' })
     },
+    onReset () {
+      this.form = this.form.map(e => {
+        return { ...e, value: '' }
+      })
+    },
     async submit () {
       if (this.$refs.form.validate()) {
         const form = {}

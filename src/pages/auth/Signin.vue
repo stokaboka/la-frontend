@@ -9,10 +9,15 @@
     </q-card-section>
 
     <q-card-section>
-      <base-form :form="form"
-                 ref="form"
-                 @on-form-input="onFormInput"
-      ></base-form>
+      <q-form
+        @submit="submit"
+        @reset="onReset">
+        <base-form :form="form"
+                   ref="form"
+                   @on-form-input="onFormInput"
+                   @on-form-submit="submit"
+        ></base-form>
+      </q-form>
     </q-card-section>
 
     <q-separator />
@@ -50,7 +55,7 @@ export default {
         {
           name: 'login',
           label: 'Имя пользователя',
-          value: '111',
+          value: '',
           type: 'text',
           autofocus: true,
           validations: [
@@ -69,7 +74,7 @@ export default {
         {
           name: 'password',
           label: 'Пароль',
-          value: '111111',
+          value: '',
           type: 'password',
           autofocus: false,
           validations: [

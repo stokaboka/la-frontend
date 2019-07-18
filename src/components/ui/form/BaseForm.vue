@@ -43,6 +43,9 @@ export default {
     return {}
   },
   methods: {
+    submit () {
+      this.$emit('on-form-submit')
+    },
     onFormInput (name, value) {
       this.$emit('on-form-input', { name, value })
     },

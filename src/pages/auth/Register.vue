@@ -9,10 +9,15 @@
     </q-card-section>
 
     <q-card-section>
-      <base-form :form="form"
-                 ref="form"
-                 @on-form-input="onFormInput"
-      ></base-form>
+      <q-form
+        @submit="submit"
+        @reset="onReset">
+          <base-form :form="form"
+                     ref="form"
+                     @on-form-input="onFormInput"
+                     @on-form-submit="submit"
+          ></base-form>
+      </q-form>
     </q-card-section>
 
     <q-separator />
