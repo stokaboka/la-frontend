@@ -1,20 +1,28 @@
 <template>
-  <q-page class="q-pt-lg row justify-center items-start">
-    <div class="wrapper">
-      <la-about/>
+  <q-page class="q-pa-lg column justify-center items-center q-gutter-md">
 
-      <q-video class="part-two__video" :src="help.video"/>
+      <la-about class="part-two__about"/>
 
-      <div class="q=mt-lg column justify-start items-start">
         <q-btn
           label="Продолжить"
           color="primary"
           class="q-ma-md"
           @click="$router.push({ name: 'part-two-users' })"
         />
-      </div>
 
-    </div>
+    <p>Обучающие видео для первого знакомства:</p>
+
+      <q-card v-for="hv in help" :key="hv.video" class="part-two__about">
+        <q-card-section>
+          <div class="text-h6">{{hv.title}}</div>
+          <div class="text-subtitle2">{{hv.subTitle}}</div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section>
+          <q-video :src="hv.video"/>
+        </q-card-section>
+      </q-card>
+
   </q-page>
 </template>
 
@@ -54,9 +62,18 @@ export default {
     return {
       drawer: true,
       miniState: true,
-      help: {
-        video: 'https://www.youtube.com/embed/IT_eaD7Q6iM'
-      }
+      help: [
+        {
+          video: 'https://www.youtube.com/embed/b-XKEZptxKk',
+          title: 'Самостоятельный тест',
+          subTitle: 'Регистрация; Оценка словарного запаса; Оценка граматических знаний; Оценка восприятия на слух.'
+        },
+        {
+          video: 'https://www.youtube.com/embed/0cndopEcbac',
+          title: 'Устное тестирование',
+          subTitle: 'Управление пользователями; Устный тест; Результат тестирования; Программа занятий; Курсы;'
+        }
+      ]
     }
   },
 
@@ -72,7 +89,7 @@ export default {
 </script>
 
 <style scoped>
-  .part-two__video {
+  .part-two__about {
     width: 50vw;
     height: auto;
   }
