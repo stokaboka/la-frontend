@@ -63,7 +63,7 @@ export default {
                 data: a[1].replace('=', '').split('~'),
                 type: 'array',
                 // model: '\u200C',
-                model: this.debug ? ans : '\u200C',
+                model: this.partOneDebug ? ans : '\u200C',
                 answer: ans
               }
             }

@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'MultiChoice',
   props: {
@@ -99,13 +101,13 @@ export default {
   methods: {
     getAnswer (val) {
       let out = null
-      if (val) {
+      if (val !== null) {
         const a = this.data.answer.split('#')
         const w = this.data.weigths.split('#')
         out = {
           q: this.data.question,
-          a: w[val - 1],
-          aa: a[val - 1]
+          a: w[val],
+          aa: a[val]
         }
       } else {
         out = {
@@ -121,23 +123,31 @@ export default {
     },
     onNext () {
       this.$emit('on-answer', this.getAnswer(this.answer))
+    },
+
+    getRightAnswer (q) {
+      return q.split('#').findIndex(e => e > 0)
     }
   },
   computed: {
     answerOptions () {
       if (this.data && this.data.answer) {
         const out = this.data.answer.split('#').map((e, i) => {
-          return { label: e, value: i + 1 }
+          return { label: e, value: i }
         })
         return this.shuffle ? out.sort(() => Math.random() - 0.5) : out
       } else {
         return []
       }
-    }
+    },
+    ...mapGetters('config', { partOneDebug: 'partOneDebug' })
   },
   watch: {
     data (val) {
       this.answer = null
+      if (this.partOneDebug && val !== null) {
+        this.answer = this.getRightAnswer(val.weigths)
+      }
     }
   }
 }
