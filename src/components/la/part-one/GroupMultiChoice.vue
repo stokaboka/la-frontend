@@ -114,6 +114,7 @@ export default {
       switch (this.state) {
         case 1 :
           timer.start(2 * 60)
+          this.answers = []
           this.SET_TIMER_TOTAL(2 * 60)
           this.SET_TIMER_HINT('Осталось времени, чтобы ознакомиться с вопросами')
           break
@@ -146,7 +147,7 @@ export default {
               this.SET_TIMER_TOTAL(Math.round(event.duration))
             }
             this.SET_TIMER_TIME(Math.round(event.currentTime))
-            if (this.debug) {
+            if (this.partOneDebug) {
               this.SET_SHOW_NEXT(true)
             } else {
               this.SET_SHOW_NEXT(event.currentTime > event.duration / 2)
