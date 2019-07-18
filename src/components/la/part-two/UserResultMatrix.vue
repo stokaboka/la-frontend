@@ -379,12 +379,7 @@ export default {
     async initDescriptions () {
       const { test } = this.attempt
       const results = this.results.filter(e => e.phase < 7)
-      /*
-{
-        test: this.attempt.test,
-        results: this.results.filter(e => e.phase < 7)
-      }
- */
+
       this.descriptions = await this.loadDescription({ test, results })
         .then(data =>
           data.map(e => {
@@ -468,10 +463,11 @@ export default {
         return { ...e }
       }, this)
     },
-    onInteractiveCellClick (row, item) {
+    async onInteractiveCellClick (row, item) {
       if (row.mouseClick && this[row.mouseClick] !== undefined) {
         this.isInteractiveChangeCellData = true
         this[row.mouseClick] = item.value
+        await this.initDescriptions()
         this.showLevels()
       }
     },
