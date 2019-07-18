@@ -1,3 +1,7 @@
 export const SET_LEVEL = (state, playload) => {
-  state.level = playload
+  if (playload) {
+    state.level = playload
+  } else {
+    state.level = null
+  }
 }

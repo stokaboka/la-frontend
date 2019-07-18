@@ -4,6 +4,7 @@
       <q-card>
         <q-card-section class="q-py-sm bg-secondary text-white">
           <div class="text-h5">{{ data.question }}</div>
+          <span v-if="partOneDebug">{{trueAnswer}}</span>
         </q-card-section>
 
         <q-separator/>
@@ -123,13 +124,17 @@ export default {
     },
     onNext () {
       this.$emit('on-answer', this.getAnswer(this.answer))
-    },
-
-    getRightAnswer (q) {
-      return q.split('#').findIndex(e => e > 0)
     }
   },
   computed: {
+    trueAnswer () {
+      if (this.data && this.data.weigths && this.data.answer) {
+        const wIdx = this.data.weigths.split('#').findIndex(e => e > 0)
+        return wIdx >= 0 ? this.data.answer.split('#')[wIdx] : '??'
+      } else {
+        return '?'
+      }
+    },
     answerOptions () {
       if (this.data && this.data.answer) {
         const out = this.data.answer.split('#').map((e, i) => {
@@ -145,9 +150,6 @@ export default {
   watch: {
     data (val) {
       this.answer = null
-      if (this.partOneDebug && val !== null) {
-        this.answer = this.getRightAnswer(val.weigths)
-      }
     }
   }
 }
