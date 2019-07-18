@@ -386,8 +386,8 @@ export default {
       const { module } = this
       if (this.editor.mode === 'INSERT') {
         this.insertRow({ module, row })
-        await this.insertModule({ module, data: row })
-        this.rowClick(row)
+        const insertRow = await this.insertModule({ module, data: row })
+        this.rowClick(insertRow)
       }
       if (this.editor.mode === 'UPDATE') {
         this.onEditRow(row)

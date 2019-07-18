@@ -31,29 +31,6 @@ export const SET_ERROR = (state, error) => {
  */
 export const SET_MODULE_DATA_BY_ID = (state, playload) => {
   const rowId = playload.mode === 'UPDATE' ? playload.data.id : null
-  // if (state.modules[playload.module]) {
-  //   const moduleObject = state.modules[playload.module]
-  //   const rows = Array.isArray(moduleObject.data) ? moduleObject.data : moduleObject.data.rows
-  //
-  //   // rowId = playload.mode === 'UPDATE' ? playload.data.id : null
-  //
-  //   const idx = rows.findIndex(e => e.id === rowId)
-  //   if (idx >= 0) {
-  //     rows.splice(idx, 1, playload.data)
-  //   } else {
-  //     rows.push(playload.data)
-  //   }
-  //
-  //   if (Array.isArray(moduleObject.data)) {
-  //     moduleObject.data = rows
-  //   } else {
-  //     moduleObject.data.rows = rows
-  //   }
-  //
-  //   state.modules[playload.module] = moduleObject
-  // } else {
-  //   state.modules[playload.module] = playload
-  // }
 
   const idx = store.state[playload.module].model.data.findIndex(e => e.id === rowId)
   if (idx >= 0) {

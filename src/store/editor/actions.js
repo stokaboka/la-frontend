@@ -65,7 +65,7 @@ export const insert = ({ commit, getters, rootGetters }, playload) => {
       commit('INIT_METHODS_DATA', playload)
       commit('CALCULATE_SUMMARY', playload)
       commit('SET_RESULT', 'OK')
-      return true
+      return data
     })
     .catch(error => {
       commit('SET_ERROR', error)
@@ -86,7 +86,7 @@ export const update = ({ commit, getters, rootGetters }, playload) => {
       commit('INIT_METHODS_DATA', playload)
       commit('CALCULATE_SUMMARY', playload)
       commit('SET_RESULT', 'OK')
-      return true
+      return data
     })
     .catch(error => {
       commit('SET_ERROR', error)
