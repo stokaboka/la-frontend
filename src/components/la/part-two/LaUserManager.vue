@@ -68,8 +68,13 @@
       title="Уровень"
       :model="levelModel"
       :show-actions="false"
-      :show-messages="false"
+      :show-messages="!level"
     >
+      <template v-slot:message>
+        <q-banner rounded class="text-grey-10 bg-warning">
+          Тестирование устных навыков не производилось
+        </q-banner>
+      </template>
     </row-form>
     <row-form
       v-if="authUser"
