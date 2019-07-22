@@ -3,7 +3,7 @@
     <div class="row q-gutter-md q-my-md">
       <q-select v-model="test.value" :options="test.options" :label="test.label" emit-value map-options stack-label @input="onInput" />
       <q-select v-model="part.value" :options="part.options" :label="part.label" emit-value map-options stack-label  @input="onInput"/>
-      <q-select v-model="phase.value" :options="phase.options" :label="phase.label" emit-value map-options stack-label  @input="onInput"/>
+      <q-select v-model="phase.value" :options="phaseOptions" :label="phase.label" emit-value map-options stack-label  @input="onInput"/>
     </div>
     <editor
       module="questions"
@@ -20,6 +20,8 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import Editor from '../../../ui/table/Editor'
+import { partTwoCategories } from '../constants'
+
 export default {
   name: 'Questions',
   components: { Editor },
@@ -53,23 +55,34 @@ export default {
       },
       phase: {
         label: 'Проверяемый навык',
-        value: 1,
-        options: []
+        value: 1
       }
     }
   },
   computed: {
+    phaseOptions () {
+      if (this.part.value === 1) {
+        return this.modules.map(e => {
+          return {
+            label: e.description,
+            value: e.phase
+          }
+        })
+      }
+      if (this.part.value === 2) {
+        return partTwoCategories.map((e, i) => {
+          return {
+            label: e,
+            value: i + 1
+          }
+        })
+      }
+      return []
+    },
     ...mapGetters('questions', ['questionEditor']),
     ...mapGetters('app', ['modules'])
   },
   mounted () {
-    this.phase.options = this.modules.map(e => {
-      return {
-        label: e.description,
-        value: e.phase
-      }
-    })
-
     this.params = this.getFilterParams()
   },
   methods: {

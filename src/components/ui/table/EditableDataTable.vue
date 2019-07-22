@@ -44,7 +44,7 @@
               @input="onEditRow(props.row)"
             ></q-toggle>
           </div>
-          <span v-else v-cut-long-string="120">{{ format(props.row[column.field], column) }}</span>
+          <span v-else v-cut-long-string>{{ format(props.row[column.field], column) }}</span>
         </q-td>
       </q-tr>
     </template>
@@ -121,7 +121,7 @@
         <q-td auto-width key="selected">
           <strong>Итого:</strong>
         </q-td>
-        <q-td v-for="column in props.cols" :key="column.field" auto-width class="text-right" :class="{ 'text-left': column.align === 'left', 'text-center': column.align === 'center' }">
+        <q-td v-for="column in props.cols" :key="column.field" class="text-right" :class="{ 'text-left': column.align === 'left', 'text-center': column.align === 'center' }">
           <span><strong>{{ format(summary[column.field], column) }}</strong></span>
         </q-td>
       </q-tr>
@@ -554,6 +554,7 @@ export default {
 }
 
 .table-container {
-  max-width: 94vw;
+  position: relative;
+  max-width: calc(100vw - 80px);
 }
 </style>
