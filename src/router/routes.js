@@ -72,6 +72,11 @@ const routes = [
             path: 'courses',
             name: 'admin-courses',
             component: () => import('pages/admin/CoursesPage')
+          },
+          {
+            path: 'questions',
+            name: 'admin-questions',
+            component: () => import('pages/admin/QuestionsPage')
           }
         ]
       }

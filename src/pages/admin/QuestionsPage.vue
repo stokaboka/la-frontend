@@ -1,14 +1,14 @@
 <template>
   <q-page class="q-pt-lg row justify-center items-start">
-      <courses></courses>
+    <questions></questions>
   </q-page>
 </template>
 
 <script>
-import Courses from '../../components/la/part-two/admin/Courses'
+import Questions from '../../components/la/part-two/admin/Questions'
 export default {
-  components: { Courses },
-  name: 'CoursesPage'
+  name: 'QuestionsPage',
+  components: { Questions }
 }
 </script>
 

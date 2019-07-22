@@ -52,18 +52,14 @@
 
         <q-btn-dropdown v-if="adminMode" auto-close stretch flat icon="build" label="Инструменты">
           <q-list link>
-            <q-item clickable :to="{ name: 'part-one-home' }">
+
+            <q-item v-for="menuAdmin in menu.admin" :key="menuAdmin.route.name" clickable :to="menuAdmin.route">
               <q-item-section avatar>
-                <q-icon name="play_circle_outline" />
+                <q-icon :name="menuAdmin.icon" />
               </q-item-section>
-              <q-item-section>Фаза I</q-item-section>
+              <q-item-section>{{menuAdmin.label}}</q-item-section>
             </q-item>
-            <q-item clickable :to="{ name: 'admin-courses' }">
-              <q-item-section avatar>
-                <q-icon name="ballot" />
-              </q-item-section>
-              <q-item-section>Учебные куурсы</q-item-section>
-            </q-item>
+
           </q-list>
         </q-btn-dropdown>
 
@@ -85,7 +81,26 @@ export default {
   components: { UserLogInOutButton },
   data () {
     return {
-      selectedTab: 'about'
+      selectedTab: 'about',
+      menu: {
+        admin: [
+          {
+            label: 'Фаза I',
+            icon: 'play_circle_outline',
+            route: { name: 'part-one-home' }
+          },
+          {
+            label: 'Учебные куурсы',
+            icon: 'ballot',
+            route: { name: 'admin-courses' }
+          },
+          {
+            label: 'Вопросы тестов',
+            icon: 'edit',
+            route: { name: 'admin-questions' }
+          }
+        ]
+      }
     }
   },
   computed: {
