@@ -1,3 +1,7 @@
+export const SET_QUESTION_EDITOR = (state, playload) => {
+  state.questionEditor = playload
+}
+
 export const SET_QUESTIONS = (state, playload) => {
   state.questions = playload.sort(() => Math.random() - 0.5)
 }

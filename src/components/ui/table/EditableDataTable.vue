@@ -1,6 +1,7 @@
 <template>
   <div>
-  <q-table
+    <div class="table-container">
+      <q-table
     :loading="loading"
     :separator="separator"
     :selection="selection"
@@ -43,7 +44,7 @@
               @input="onEditRow(props.row)"
             ></q-toggle>
           </div>
-          <span v-else>{{ format(props.row[column.field], column) }}</span>
+          <span v-else v-cut-long-string="120">{{ format(props.row[column.field], column) }}</span>
         </q-td>
       </q-tr>
     </template>
@@ -120,13 +121,13 @@
         <q-td auto-width key="selected">
           <strong>Итого:</strong>
         </q-td>
-        <q-td v-for="column in props.cols" :key="column.field" class="text-right" :class="{ 'text-left': column.align === 'left', 'text-center': column.align === 'center' }">
+        <q-td v-for="column in props.cols" :key="column.field" auto-width class="text-right" :class="{ 'text-left': column.align === 'left', 'text-center': column.align === 'center' }">
           <span><strong>{{ format(summary[column.field], column) }}</strong></span>
         </q-td>
       </q-tr>
     </template>
   </q-table>
-
+    </div>
     <q-dialog v-model="editor.dialog"
       persistent
       square
@@ -190,11 +191,13 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { equalsObjects } from '../../../lib/utils'
 import { formatter } from '../../../lib/formatter'
+import { CutLongString } from '../../directives/cutLongString'
 import RowForm from './RowForm'
 
 export default {
   name: 'EditableDataTable',
   components: { RowForm },
+  directives: { CutLongString },
   props: {
     selection: {
       type: String,
@@ -545,8 +548,12 @@ export default {
   padding: 6px 12px;
 }
 
-  .dialog-form {
-    max-width: 60vw;
-    max-height: 90vh;
-  }
+.dialog-form {
+  max-width: 60vw;
+  max-height: 90vh;
+}
+
+.table-container {
+  max-width: 94vw;
+}
 </style>

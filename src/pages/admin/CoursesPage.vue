@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Courses from '../../components/la/part-two/admin/Courses'
+import Courses from '../../components/la/part-two/orders/Courses'
 export default {
   components: { Courses },
   name: 'CoursesPage'
