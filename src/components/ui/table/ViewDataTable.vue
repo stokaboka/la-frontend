@@ -1,6 +1,6 @@
 <template>
-  <div>
-  <q-table
+  <div class="table-container">
+    <q-table
     :loading="loading"
     :separator="separator"
     :selection="selection"
@@ -375,4 +375,9 @@ export default {
     max-width: 60vw;
     max-height: 90vh;
   }
+
+.table-container {
+  position: relative;
+  max-width: calc(100vw - 80px);
+}
 </style>
