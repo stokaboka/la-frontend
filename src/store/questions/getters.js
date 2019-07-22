@@ -1,3 +1,4 @@
+export const model = s => s.model
 export const questions = s => s.questions
 export const question = s => s.questions ? s.questions[s.questionIndex] : {}
 export const questionTest = s => s.test
