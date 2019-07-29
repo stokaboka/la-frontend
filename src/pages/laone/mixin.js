@@ -84,7 +84,16 @@ export default {
     initEndState () {
       this.SET_LEFT_DRAWER(false)
       this.SET_RIGHT_DRAWER(false)
-      this.saveResults()
+
+      if (this.isAnonymous) {
+        this.$q.notify({
+          message: 'Результат анонимного пользователя не будет сохранен',
+          color: 'warning',
+          textColor: 'black'
+        })
+      } else {
+        this.saveResults()
+      }
 
       if (this.phase === this.lastPhase) {
         this.fixUserAttempt()
@@ -241,7 +250,7 @@ export default {
   },
   computed: {
     ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
-    ...mapGetters('users', ['isLogged', 'authUser']),
+    ...mapGetters('users', ['isLogged', 'authUser', 'isAnonymous']),
     ...mapGetters('app', [
       'api', 'module', 'modules', 'lastModule',
       'description',

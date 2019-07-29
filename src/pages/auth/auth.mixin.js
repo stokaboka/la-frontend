@@ -79,7 +79,7 @@ export default {
           this.$router.push({ name: 'home' })
         }
       } else {
-        this.$q.notify({ message: 'Пожалуйста, заполните все поля.', type: 'warning' })
+        this.$q.notify({ message: 'Пожалуйста, заполните все поля.', color: 'warning' })
       }
     }
   }

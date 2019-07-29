@@ -42,3 +42,7 @@ export const SET_CLOSED = (state) => {
 export const SET_USERS_TOTAL_COUNT = (state, playload) => {
   state.totalCount = playload
 }
+
+export const SET_ANONYMOUS_USER = (state) => {
+  state.authUser = state.anonymous
+}

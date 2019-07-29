@@ -3,6 +3,15 @@ export default {
   user: null,
   users: [],
   totalCount: 0,
+  anonymous: {
+    id: 0,
+    login: 'Anonymous',
+    firstName: 'Anonymous',
+    secondName: '',
+    lastName: '',
+    closed: 0,
+    role: 'USER'
+  },
 
   model: {
     title: 'Пользователи',
