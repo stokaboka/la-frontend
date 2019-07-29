@@ -40,17 +40,24 @@ export default {
     async startLa () {
       let name = 'part-one-phase-one'
       if (this.isLogged) {
-        await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
-        if (this.savedResults.length > 0) {
-          // const lastResult = this.savedResults[this.savedResults.length - 1]
-          const lastResultList = this.savedResults
-            .filter(e => e.part === 1)
-            .sort((a, b) => b.phase - a.phase)
-          if (lastResultList.length > 0) {
-            const lastResult = lastResultList[0]
-            name = this.modules[lastResult.phase - 1].next
-          }
+        if (!this.isAnonymous) {
+          await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
         }
+        const lastSavedResult = this.lastSavedResult()
+        if (lastSavedResult) {
+          name = this.modules[lastSavedResult.phase - 1].next
+        }
+
+        // if (this.savedResults.length > 0) {
+        //   // const lastResult = this.savedResults[this.savedResults.length - 1]
+        //   const lastResultList = this.savedResults
+        //     .filter(e => e.part === 1)
+        //     .sort((a, b) => b.phase - a.phase)
+        //   if (lastResultList.length > 0) {
+        //     const lastResult = lastResultList[0]
+        //     name = this.modules[lastResult.phase - 1].next
+        //   }
+        // }
       }
 
       /**
@@ -74,10 +81,11 @@ export default {
       'isAdmin',
       'isOperator',
       'isUser',
+      'isAnonymous',
       'authUser'
     ]),
     ...mapGetters('app', ['title', 'modules', 'leftDrawer', 'rightDrawer']),
-    ...mapGetters('results', ['savedResults'])
+    ...mapGetters('results', ['savedResults', 'lastSavedResult'])
   }
 }
 </script>
