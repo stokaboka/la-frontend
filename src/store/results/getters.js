@@ -18,3 +18,7 @@ export const lastSavedResult = s => {
   }
   return false
 }
+
+export const anonymousResults = s => {
+  return s.anonymousResults
+}

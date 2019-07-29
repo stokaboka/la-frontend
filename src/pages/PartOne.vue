@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import LaAbout from '../components/LaAbout'
 export default {
   name: 'PhaseOne',
@@ -40,12 +40,15 @@ export default {
     async startLa () {
       let name = 'part-one-phase-one'
       if (this.isLogged) {
-        if (!this.isAnonymous) {
+        if (this.isAnonymous) {
+          this.CLEAR_ANONYMOUS_RESULT()
+        } else {
           await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
-        }
-        const lastSavedResult = this.lastSavedResult()
-        if (lastSavedResult) {
-          name = this.modules[lastSavedResult.phase - 1].next
+
+          const lastResult = this.lastSavedResult
+          if (lastResult) {
+            name = this.modules[lastResult.phase - 1].next
+          }
         }
 
         // if (this.savedResults.length > 0) {
@@ -71,6 +74,7 @@ export default {
       }
       this.$router.push({ name })
     },
+    ...mapMutations('results', ['CLEAR_ANONYMOUS_RESULT']),
     ...mapActions('results', { loadResults: 'load' })
   },
   computed: {

@@ -1,5 +1,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import { toDDMMYYYY } from '../../../lib/utils'
+import { calculateResultLevel } from '../methods'
 
 export default {
   data () {
@@ -18,9 +19,10 @@ export default {
   },
   methods: {
     calcResultsPart (part) {
-      return this.results
-        .filter(e => e.part === part)
-        .reduce((acc, e) => acc + e.level, 0)
+      return calculateResultLevel(this.results, part)
+      // return this.results
+      //   .filter(e => e.part === part)
+      //   .reduce((acc, e) => acc + e.level, 0)
     },
     parseTemplateString (template) {
       const date = new Date()

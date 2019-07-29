@@ -1,4 +1,5 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { calculateResultLevel } from '../../components/la/methods'
 
 import TimerHelper from '../../lib/TimerHelper'
 let timer = null
@@ -91,14 +92,28 @@ export default {
           color: 'warning',
           textColor: 'black'
         })
+        this.saveAnonymousResults()
       } else {
         this.saveResults()
       }
 
       if (this.phase === this.lastPhase) {
-        this.fixUserAttempt()
-        this.$router.push({ name: 'part-one-end' })
+        if (this.isAnonymous) {
+          this.showAnonymousResult()
+        } else {
+          this.fixUserAttempt()
+          this.$router.push({ name: 'part-one-end' })
+        }
       }
+    },
+
+    showAnonymousResult () {
+      calculateResultLevel(this.anonymousResults, 1)
+    },
+
+    saveAnonymousResults () {
+      const { test, part, phase, level } = this
+      this.SAVE_ANONYMOUS_RESULT({ test, part, phase, level })
     },
 
     async saveResults () {
@@ -117,8 +132,6 @@ export default {
     },
 
     async fixUserAttempt () {
-      // eslint-disable-next-line no-console
-      // console.log('fixUserAttempt')
       await this.fixAttempt(this.authUser)
     },
 
@@ -244,9 +257,10 @@ export default {
       'NEXT_QUESTION',
       'CLEAR_QUESTIONS'
     ]),
+    ...mapMutations('results', ['SAVE_ANONYMOUS_RESULT']),
     ...mapActions('users', ['fixAttempt']),
     ...mapActions('questions', { loadQuestions: 'load', loadCountQuestions: 'count' }),
-    ...mapActions('results', ['calculateResults', 'save'])
+    ...mapActions('results', ['calculateResults', 'save', 'saveAnonymous'])
   },
   computed: {
     ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
@@ -275,7 +289,8 @@ export default {
       'questionPart',
       'questionPhase',
       'category'
-    ])
+    ]),
+    ...mapGetters('results', ['anonymousResults'])
   },
 
   watch: {

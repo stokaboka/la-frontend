@@ -13,3 +13,11 @@ export const SET_COUNT = (state, playload) => {
 export const SET_MODEL_PARAMS = (state, playload) => {
   state.model.params = playload
 }
+
+export const CLEAR_ANONYMOUS_RESULT = (state) => {
+  state.anonymousResults = []
+}
+
+export const SAVE_ANONYMOUS_RESULT = (state, playload) => {
+  state.anonymousResults.push(playload)
+}

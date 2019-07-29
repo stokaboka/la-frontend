@@ -2,6 +2,7 @@ export default {
   results: [],
   count: 0,
   savedResults: [],
+  anonymousResults: [],
 
   model: {
     key: 'id',
