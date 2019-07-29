@@ -123,9 +123,9 @@ import mixin from './mixin'
 import {
   categories,
   autoTestLevels,
-  vocabularyLevels,
-  grammarLevels,
-  listeningLevels,
+  vocabularyLevelsMap,
+  grammarLevelsMap,
+  listeningLevelsMap,
   selfTestLevels,
   generalCommentOnOralAssessmentBands,
   confidenceInSpeaking,
@@ -141,6 +141,7 @@ import {
   finalTestResultSVSComplete
 } from './constants'
 import { findMinElementIndex, findMinElement } from '../../../lib/utils'
+import { getPartPhaseLevel } from '../methods'
 
 let currentNotify = null
 const selectionClass = 'bg-deep-orange text-white text-weight-bold shadow-3'
@@ -202,27 +203,30 @@ export default {
         {
           ...categories.vocabulary,
           rows: [
-            vocabularyLevels.map(e => {
-              return { value: e }
-            })
+            vocabularyLevelsMap
+            // vocabularyLevels.map(e => {
+            //   return { value: e }
+            // })
           ]
         },
 
         {
           ...categories.grammar,
           rows: [
-            grammarLevels.map(e => {
-              return { value: e }
-            })
+            grammarLevelsMap
+            // grammarLevels.map(e => {
+            //   return { value: e }
+            // })
           ]
         },
 
         {
           ...categories.listening,
           rows: [
-            listeningLevels.map(e => {
-              return { value: e }
-            })
+            listeningLevelsMap
+            // listeningLevels.map(e => {
+            //   return { value: e }
+            // })
           ]
         },
 
@@ -478,13 +482,14 @@ export default {
       }
     },
     getPartPhaseLevel (part, phase) {
-      if (this.results) {
-        const phaseObj = this.results.find(
-          e => e.part === part && e.phase === phase
-        )
-        if (phaseObj) return phaseObj.level
-      }
-      return 0
+      return getPartPhaseLevel(this.results, part, phase)
+      // if (this.results) {
+      //   const phaseObj = this.results.find(
+      //     e => e.part === part && e.phase === phase
+      //   )
+      //   if (phaseObj) return phaseObj.level
+      // }
+      // return 0
     },
 
     calcPartTwoFinalResult () {

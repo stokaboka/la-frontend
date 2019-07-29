@@ -182,6 +182,16 @@ export const vocabularyLevels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, null]
 export const grammarLevels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, null]
 export const listeningLevels = [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, null]
 
+export const vocabularyLevelsMap = vocabularyLevels.map(e => {
+  return { value: e }
+})
+export const grammarLevelsMap = grammarLevels.map(e => {
+  return { value: e }
+})
+export const listeningLevelsMap = listeningLevels.map(e => {
+  return { value: e }
+})
+
 // Part1_values
 // Part1_ID
 export const selfTestLevels = vocabularyLevels.map(

@@ -1,5 +1,4 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { calculateResultLevel } from '../../components/la/methods'
 
 import TimerHelper from '../../lib/TimerHelper'
 let timer = null
@@ -98,17 +97,12 @@ export default {
       }
 
       if (this.phase === this.lastPhase) {
-        if (this.isAnonymous) {
-          this.showAnonymousResult()
-        } else {
+        if (!this.isAnonymous) {
           this.fixUserAttempt()
-          this.$router.push({ name: 'part-one-end' })
         }
-      }
-    },
 
-    showAnonymousResult () {
-      calculateResultLevel(this.anonymousResults, 1)
+        this.$router.push({ name: 'part-one-end' })
+      }
     },
 
     saveAnonymousResults () {
@@ -260,7 +254,8 @@ export default {
     ...mapMutations('results', ['SAVE_ANONYMOUS_RESULT']),
     ...mapActions('users', ['fixAttempt']),
     ...mapActions('questions', { loadQuestions: 'load', loadCountQuestions: 'count' }),
-    ...mapActions('results', ['calculateResults', 'save', 'saveAnonymous'])
+    ...mapActions('results', ['calculateResults', 'save', 'saveAnonymous']),
+    ...mapActions('description', { loadDescription: 'load' })
   },
   computed: {
     ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
@@ -289,8 +284,7 @@ export default {
       'questionPart',
       'questionPhase',
       'category'
-    ]),
-    ...mapGetters('results', ['anonymousResults'])
+    ])
   },
 
   watch: {
