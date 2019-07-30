@@ -14,9 +14,9 @@
           </q-chip>
         <q-chip class="shadow-2">
           <q-avatar icon="euro_symbol" color="secondary" text-color="white" />
-          <strong>{{finalLevelCEF.level}}</strong>
+          <strong>{{finalLevelCEFR.level}}</strong>
           <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
-            Уровень CEF
+            Уровень CEFR
           </q-tooltip>
         </q-chip>
         <q-chip class="shadow-2">
@@ -163,7 +163,7 @@ export default {
       matrix: [
         {
           label:
-            'Общеевропейская Система Уровней Владения Иностранными Языками (CEF)',
+            'Общеевропейская Система Уровней Владения Иностранными Языками (CEFR)',
           labelClass: 'bg-orange-1',
           rowsClass: 'bg-orange-1',
           target: 'finalLevel',
@@ -424,11 +424,11 @@ export default {
         }
       }, this)
 
-      out['finalLevelCEF'] = findMinElementIndex(finalTestResultEurope, this.finalLevel, 'value')
+      out['finalLevelCEFR'] = findMinElementIndex(finalTestResultEurope, this.finalLevel, 'value')
       out['finalLevelSVS'] = findMinElementIndex(finalTestResultSVS, this.finalLevel, 'value')
       out['finalLevelSVSDetail'] = findMinElementIndex(finalTestResultSVSDetail, this.finalLevel, 'value')
 
-      out['finalLevelCEF_value'] = this.finalLevelCEF.level
+      out['finalLevelCEFR_value'] = this.finalLevelCEFR.level
       out['finalLevelSVS_value'] = this.finalLevelSVS.level
       out['finalLevel'] = findMinElementIndex(autoTestLevels, this.finalLevel)
       out['finalLevel_value'] = this.finalLevel
@@ -570,7 +570,7 @@ export default {
         fioAuthUser: manager,
         nameTrainer: trainer,
         finalLevel: level,
-        finalLevelCEF: levelCEF,
+        finalLevelCEFR: levelCEFR,
         finalLevelSVS: levelSVS
       } = this
 
@@ -579,7 +579,7 @@ export default {
         attempt,
         test,
         level,
-        levelCEF: levelCEF.level,
+        levelCEFR: levelCEFR.level,
         levelSVS: levelSVS.level,
         manager,
         trainer
@@ -596,7 +596,7 @@ export default {
         fioAuthUser: manager,
         nameTrainer: trainer,
         finalLevel: level,
-        finalLevelCEF: levelCEF,
+        finalLevelCEFR: levelCEFR,
         finalLevelSVS: levelSVS
       } = this
 
@@ -606,7 +606,7 @@ export default {
       const results = this.getReport()
 
       const data = { student, manager, trainer, date, results }
-      const report = { type, idUser, attempt, test, data, level, levelCEF, levelSVS }
+      const report = { type, idUser, attempt, test, data, level, levelCEFR, levelSVS }
 
       await this.saveReport(report)
     },
@@ -633,7 +633,7 @@ export default {
 
   },
   computed: {
-    finalLevelCEF () {
+    finalLevelCEFR () {
       const out = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
       return out || ''
     },

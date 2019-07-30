@@ -56,16 +56,16 @@ export default {
         }
       },
       {
-        name: 'levelCEF',
-        field: 'levelCEF',
-        label: 'Уровень CEF',
+        name: 'levelCEFR',
+        field: 'levelCEFR',
+        label: 'Уровень CEFR',
         sortable: true,
         visible: true,
         update: false,
         insert: false,
         gadget: {
           type: 'chip',
-          tooltip: 'Уровень CEF',
+          tooltip: 'Уровень CEFR',
           options: {
             icon: 'euro_symbol',
             color: 'secondary',

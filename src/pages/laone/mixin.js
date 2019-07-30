@@ -87,7 +87,7 @@ export default {
 
       if (this.isAnonymous) {
         this.$q.notify({
-          message: 'Результат анонимного пользователя не будет сохранен',
+          message: 'Результат анонимного пользователя не сохранен',
           color: 'warning',
           textColor: 'black'
         })

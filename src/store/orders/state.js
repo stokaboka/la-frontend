@@ -49,9 +49,9 @@ export default {
       },
 
       {
-        name: 'currentLevelCEF',
-        field: 'currentLevelCEF',
-        label: 'Уровень CEF',
+        name: 'currentLevelCEFR',
+        field: 'currentLevelCEFR',
+        label: 'Уровень CEFR',
         sortable: true,
         visible: true,
         update: true,
@@ -61,7 +61,7 @@ export default {
         source: {
           module: 'levels',
           getter: 'level',
-          property: 'levelCEF'
+          property: 'levelCEFR'
         }
       },
 
@@ -83,9 +83,9 @@ export default {
       },
 
       {
-        name: 'targetLevelCEF',
-        field: 'targetLevelCEF',
-        label: 'Цель CEF',
+        name: 'targetLevelCEFR',
+        field: 'targetLevelCEFR',
+        label: 'Цель CEFR',
         sortable: true,
         visible: true,
         update: true,
@@ -94,7 +94,7 @@ export default {
         align: 'left',
         editor: {
           type: 'combobox',
-          tooltip: 'Цель CEF',
+          tooltip: 'Цель CEFR',
           options: finalTestResultEurope.map(e => e.level)
         }
       },

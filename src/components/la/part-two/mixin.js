@@ -15,7 +15,7 @@ export default {
     ...mapGetters('results', ['savedResults']),
     ...mapGetters('attempts', ['attempt']),
     ...mapGetters('questions', ['questions']),
-    ...mapGetters('levels', ['date', 'test', 'levelScore', 'levelCEF', 'levelSVS', 'manager', 'trainer'])
+    ...mapGetters('levels', ['date', 'test', 'levelScore', 'levelCEFR', 'levelSVS', 'manager', 'trainer'])
   },
   methods: {
     calcResultsPart (part) {

@@ -9,41 +9,46 @@
           </div>
         </q-banner>
 
-    <div v-if="isAnonymous" class="column q-gutter-md q-mt-md text-grey-14">
-      <p>По результатам самостоятельного теста Вы набрали <strong class="text-black">{{finalLevel}}</strong> баллов.</p>
+    <div v-if="isAnonymous" class="column q-mt-md text-grey-14">
 
-      <div>
-        Это соответсвует:
-        <ul>
-          <li>уровень CEF:
-            <q-chip class="shadow-2">
-              <q-avatar icon="euro_symbol" color="secondary" text-color="white" />
-              <strong>{{ finalLevelCEF.label }}</strong>
-              <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Уровень CEF</q-tooltip>
-            </q-chip>
-            , набрано баллов: <strong class="text-black">{{finalLevelCEF.value}}</strong></li>
-          <li>уровень <q>Свобода слова</q>:
-            <q-chip class="shadow-2">
-              <q-avatar icon="forum" color="primary" text-color="white" />
-              <strong>{{ finalLevelSVS.level }}</strong>
-              <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Уровень "Свобода слова"</q-tooltip>
-            </q-chip>
-            , набрано баллов: <strong class="text-black">{{finalLevelSVS.value}}</strong></li>
-        </ul>
+      <div class="row justify-start items-baseline">По результатам самостоятельного теста Вы набрали
+        <q-chip square class="shadow-2">
+          <q-avatar  color="positive" text-color="white"><strong>{{finalLevel}}</strong></q-avatar>
+          <strong>баллов</strong>
+          <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Всего набрано баллов</q-tooltip>
+        </q-chip>
       </div>
 
-      <div>
-        Результаты по самостоятельному тесту:
+      <div class="column">
+
+        <div class="row justify-start items-baseline">
+          <span>Ваш уровень согласно общеевропейской компетенции владения иностранным языком (CEFR): </span>
+          <q-chip class="shadow-2">
+            <q-avatar icon="euro_symbol" color="secondary" text-color="white" />
+            <strong>{{ finalLevelCEFR.label }}</strong>
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Уровень CEFR</q-tooltip>
+          </q-chip>
+        </div>
+
+        <div class="row justify-start items-baseline">
+          <span>Ваш уровень по методике разработанной в <q>Свобода слова</q> - </span>
+          <q-chip class="shadow-2">
+            <q-avatar icon="forum" color="primary" text-color="white" />
+            <strong>{{ finalLevelSVS.level }}</strong>
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Уровень "Свобода слова"</q-tooltip>
+          </q-chip>
+        </div>
+
+      </div>
+
+      <div class="q-mt-md">
+        Комментарии по результатам самостоятельного теста:
         <div class="column text-black text-body2 shadow-3">
           <div class="row">
-            <div class="col-2 q-pa-sm text-center q-table--bordered">Тест</div>
-            <div class="col-1 q-pa-sm text-center q-table--bordered">Уровень</div>
-            <div class="col q-pa-sm text-center q-table--bordered">Комментарий</div>
+            <div v-for="c in model.columns" :key="c.name" :class="c.headerClass">{{c.title}}</div>
           </div>
-          <div v-for="m in matrix" :key="m.category.phase" class="row" :class="m.category.labelClass">
-            <div class="col-2 q-pa-sm q-table--bordered">{{m.category.label}}</div>
-            <div class="col-1 q-pa-sm text-center q-table--bordered">{{m.level.value}}</div>
-            <div class="col q-pa-sm q-table--bordered">{{m.description}}</div>
+          <div v-for="m in model.data" :key="m.phase" class="row" :class="m[model.rowClass]">
+            <div v-for="cc in model.columns" :key="cc.name" :class="cc.cellClass">{{m[cc.name]}}</div>
           </div>
         </div>
       </div>
@@ -85,10 +90,29 @@ export default {
 
   data () {
     return {
-      finalLevelCEF: '',
+      finalLevelCEFR: '',
       finalLevelSVS: '',
       finalLevel: 0,
       matrix: [],
+      model: {
+        key: 'phase',
+        rowClass: 'rowClass',
+        columns: [
+          { name: 'label',
+            title: 'Тест',
+            headerClass: 'col-2 q-py-md text-center q-table--bordered',
+            cellClass: 'col-2 q-pa-sm text-center q-table--bordered la-end__cell-wrap' },
+          { name: 'value',
+            title: 'Уровень',
+            headerClass: 'col-2 q-py-md text-center q-table--bordered',
+            cellClass: 'col-2 q-pa-sm text-center q-table--bordered' },
+          { name: 'description',
+            title: 'Комментарий',
+            headerClass: 'col q-py-md text-center q-table--bordered',
+            cellClass: 'col q-pa-sm q-table--bordered' }
+        ],
+        data: []
+      },
       descriptions: []
     }
   },
@@ -104,7 +128,7 @@ export default {
 
       this.finalLevel = calculateResultLevel(this.anonymousResults, part)
 
-      this.finalLevelCEF = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
+      this.finalLevelCEFR = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
       this.finalLevelSVS = findMinElement(finalTestResultSVSComplete, this.finalLevel, 'value')
 
       const vocabularyLevel = getPartPhaseLevel(this.anonymousResults, 1, 1)
@@ -129,22 +153,15 @@ export default {
         }
       ]
 
-      this.matrix = await this.loadDescription({ test, results })
+      this.model.data = await this.loadDescription({ test, results })
         .then(data =>
           matrix.map(m => {
             const d = data.find(d => d.part === m.category.part && d.phase === m.category.phase)
-            if (d) {
-              return { ...m, description: d.description }
-            }
-            return { ...m, description: '-' }
+            const { labelClass: rowClass, label, phase } = m.category
+            const { value } = m.level
+            const description = d ? d.description : '-'
+            return { phase, rowClass, label, value, description }
           })
-          // data.map(e => {
-          //   const category = Object.values(categories).find(
-          //     ee => ee.part === e.part && ee.phase === e.phase
-          //   )
-          //   if (category) return { ...e, ...category }
-          //   return e
-          // })
         )
     }
   }
@@ -162,6 +179,15 @@ export default {
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: auto;
     grid-template-areas: "counter main timer";
+  }
+
+  .la-end__cell-wrap {
+    overflow-wrap: break-word;
+  }
+
+  .la-block__rounded {
+    border-radius: 3px;
+    background-color: bisque;
   }
 
   @media (max-width: 762px) {
