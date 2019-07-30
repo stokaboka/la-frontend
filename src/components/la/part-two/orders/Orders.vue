@@ -55,8 +55,11 @@ export default {
     ...mapGetters('orderdetails', ['orderDetail'])
   },
   mounted () {
+    this.SET_ORDER(null)
+    this.SET_ORDER_DETAIL(null)
+
     this.setOrderParams(this.user)
-    this.setOrderDetailsParams(this.order)
+    // this.setOrderDetailsParams(this.order)
   },
   methods: {
     async saveAsFormat (format) {

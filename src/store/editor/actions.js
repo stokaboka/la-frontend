@@ -28,6 +28,7 @@ export const load = ({ commit, getters, rootGetters }, playload) => {
   const { module, query } = playload
   const url = `${module}${query}`
   commit('SET_LOADING')
+  commit('RESET_RELATIONS', playload)
 
   return axios.get(url)
     .then(response => {

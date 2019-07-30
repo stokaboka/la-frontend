@@ -94,5 +94,15 @@ export const CALCULATE_SUMMARY = (state, playload) => {
   }
 }
 
+export const RESET_RELATIONS = (state, playload) => {
+  if (store.state[playload.module].model.relations) {
+    const relations = store.state[playload.module].model.relations
+    relations.forEach(r => {
+      Vue.set(store.state[playload.module].model, 'data', [])
+      Vue.set(store.state[playload.module].model, 'rowsNumber', 0)
+    })
+  }
+}
+
 export const PREPARE_DATA = (state, playload) => {
 }

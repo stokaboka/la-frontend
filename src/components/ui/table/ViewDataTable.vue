@@ -237,6 +237,9 @@ export default {
     query () {
       return this.$store.state[this.module].model.query
     },
+    requireParams () {
+      return this.$store.state[this.module].model.params
+    },
     edit () {
       return this.$store.state[this.module].model.edit
     },
@@ -255,14 +258,25 @@ export default {
     init () {
       this.tableVisibleColumns = this.visibleColumns
     },
+    // initSelectedRow () {
+    //   const { selectedRow } = this
+    //   if (selectedRow) {
+    //     const idx = this.data.findIndex(e => equalsObjects(selectedRow, e), this)
+    //     this.selected = idx >= 0 ? [selectedRow] : []
+    //   } else {
+    //     this.selected = []
+    //   }
+    // },
     initSelectedRow () {
       const { selectedRow } = this
       if (selectedRow) {
-        const idx = this.data.findIndex(e => equalsObjects(selectedRow, e), this)
-        this.selected = idx >= 0 ? [selectedRow] : []
-      } else {
-        this.selected = []
+        const idx = this.data.findIndex(e => equalsObjects(selectedRow, e))
+        if (idx >= 0) {
+          this.rowClick(selectedRow)
+          return
+        }
       }
+      this.rowClick(null)
     },
     rowClick (row) {
       this.$emit('table-row-click', row)
@@ -295,6 +309,11 @@ export default {
 
     async request ({ pagination, filter }) {
       let query = ''
+
+      if (this.requireParams && !this.params) {
+        return
+      }
+
       const { module } = this
       if (this.query || this.loadedParams !== this.params) {
         if (this.query) {

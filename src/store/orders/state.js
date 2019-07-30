@@ -164,6 +164,10 @@ export default {
       }
     ],
 
+    relations: [
+      'orderdetails'
+    ],
+
     edit: {
       insert: true,
       update: true,
