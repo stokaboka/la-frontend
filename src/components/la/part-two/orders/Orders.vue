@@ -12,6 +12,7 @@
       module="orders"
       :selection="selection"
       :selected-row="order"
+      :filter="orderParams"
       hide-columns-selector
       hide-grid-selector
       @table-row-click="onOrdersTableRowClick"
@@ -20,7 +21,7 @@
       module="orderdetails"
       :selection="selection"
       :selected-row="orderDetail"
-      :filter="orderParams"
+      :filter="orderDetailsParams"
       :allow-insert="allowOrderDetailsInsert"
       hide-search-field
       hide-columns-selector
@@ -41,19 +42,21 @@ export default {
   data () {
     return {
       selection: 'single',
-      orderParams: ''
+      orderParams: '',
+      orderDetailsParams: ''
     }
   },
   computed: {
     allowOrderDetailsInsert () {
       return !!this.order
     },
-    ...mapGetters('users', ['fioUser']),
+    ...mapGetters('users', ['user', 'fioUser']),
     ...mapGetters('orders', { order: 'order', orderModel: 'model' }),
     ...mapGetters('orderdetails', ['orderDetail'])
   },
   mounted () {
-    this.setOrderFilterParams(this.order)
+    this.setOrderParams(this.user)
+    this.setOrderDetailsParams(this.order)
   },
   methods: {
     async saveAsFormat (format) {
@@ -70,19 +73,28 @@ export default {
     },
     onOrdersTableRowClick (row) {
       this.SET_ORDER(row)
-      this.setOrderFilterParams(row)
+      this.setOrderDetailsParams(row)
     },
     onOrderDetailsTableRowClick (row) {
       this.SET_ORDER_DETAIL(row)
     },
-    setOrderFilterParams (order) {
-      if (order) this.orderParams = `/order/${order.id}`
-      else this.orderParams = '/order/0'
+    setOrderParams (user) {
+      if (user) this.orderParams = `/user/${user.id}`
+      else this.orderParams = '/user/0'
+    },
+    setOrderDetailsParams (order) {
+      if (order) this.orderDetailsParams = `/order/${order.id}`
+      else this.orderDetailsParams = '/order/0'
     },
     ...mapMutations('orders', ['SET_ORDER']),
     ...mapMutations('orderdetails', ['SET_ORDER_DETAIL']),
     ...mapActions('orders', { orderSaveAs: 'saveAs' })
 
+  },
+  watch: {
+    user (val) {
+      this.setOrderParams(val.id)
+    }
   }
 }
 </script>

@@ -173,7 +173,7 @@ export default {
     rowsNumber: 0,
     filter: '',
 
-    params: false,
+    params: true,
     query: true
   }
 }
