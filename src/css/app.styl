@@ -1,1 +1,52 @@
 // app global css
+
+body
+  margin: 0
+  padding: 0
+
+  &:before
+    content: ''
+    position: fixed
+    width: 100vw
+    height: 100vh
+    background-color: whitesmoke
+    background-position: center center
+    background-repeat: no-repeat
+    background-attachment: fixed
+    background-size: cover
+    filter: blur(10px)
+
+a
+  &:link
+    color: $primary
+
+  &:visited
+    color: $primary
+
+  &:focus
+    color: $negative
+    background: aliceblue
+
+  &:hover
+    color: $negative
+    background: aliceblue
+
+  &:active
+    color: $negative
+
+
+  q
+    quotes: "\00ab" "\00bb"
+
+.form
+  padding: 2rem
+  border-radius: 1rem
+
+.form-white
+  background-color: white
+
+.form-transparent
+  background: rgba(0,0,0,0.6)
+
+.wrapper
+  max-width: 60vw

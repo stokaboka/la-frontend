@@ -1,11 +1,11 @@
 <template>
   <div class="q-mt-lg text-h5 text-grey-14">
     <p>
-      <span class="la-about__text">Language Assessment ©</span> - уникальная эффективная
+      <span class="text-primary text-weight-medium">Language Assessment ©</span> - уникальная эффективная
       система оценки знаний английского языка и отслеживания прогресса
       студента, изучающего язык.</p>
       <p>Разработана методистами языкового
-        тренингового центра <a href="https://www.lingvo-svoboda.ru/" target="_blank"><strong><q>Свобода слова</q></strong></a> на базе международных
+        тренингового центра <a href="https://www.lingvo-svoboda.ru/" target="_blank"><q><span class="text-weight-medium">Свобода слова</span></q></a> на базе международных
       стандартов.</p>
   </div>
 </template>
@@ -20,8 +20,4 @@ export default {
 </script>
 
 <style scoped>
-  .la-about__text {
-    color: #027be3;
-    font-weight: 700;
-  }
 </style>

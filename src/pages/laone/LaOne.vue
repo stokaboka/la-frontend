@@ -1,7 +1,7 @@
 <template>
   <div>
     <section v-if="state === 'start'">
-      <div class="q-pl-lg text-body1">
+      <div class="text-body1 text-grey-14">
         <p>Первая часть теста займет у Вас около 20 минут.</p>
         <p>
           Ваша задача выбрать один из четырех вариантов перевода для одного
@@ -18,12 +18,11 @@
           чтобы помочь вам лучше знать и использовать иностранный язык в
           повседневной жизни.
         </p>
-        <p>Спасибо</p>
       </div>
       <q-btn
         label="Далее"
         color="primary"
-        class="q-ma-md"
+        class="q-my-md"
         @click="nextState()"
       />
     </section>
@@ -36,25 +35,23 @@
       ></multi-choice>
     </section>
 
-    <section v-if="state === 'end'">
+    <section v-if="state === 'end'" class="text-grey-14">
       <div class="q-my-lg text-h4 text-weight-medium">Поздравляем!</div>
-      <div class="q-pl-lg text-body1">
+      <div class="text-body1">
         <p>Первая часть теста успешо пройдена.</p>
         <p>Сейчас, Вы можете:</p>
       </div>
 
-      <div v-if="!lastModule" class="row q-ma-md">
+      <div v-if="!lastModule" class="row q-gutter-md q-my-md">
         <q-btn
           label="Продолжить тестирование"
           color="primary"
-          class="q-ma-md"
           @click="nextPhase()"
         />
 
         <q-btn
           label="Прерваться и продолжить позже"
           color="secondary"
-          class="q-ma-md"
           @click="$router.push({ name: 'home' })"
         />
       </div>

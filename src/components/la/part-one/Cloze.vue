@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div>
+    <div class="text-grey-14">
       Ваша задача - выбрать подходящие варианты из выпадающих списков
     </div>
-    <q-card>
+    <q-card v-if="ready">
       <q-card-section>
         <span v-for="(str, index) in questionStrings" :key="index">
           <q-select
@@ -47,6 +47,9 @@ export default {
     }
   },
   computed: {
+    ready () {
+      return this.questionStrings.length > 0
+    },
     ...mapGetters('config', { partOneDebug: 'partOneDebug' })
   },
   methods: {

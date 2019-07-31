@@ -86,11 +86,11 @@ export default {
       this.SET_RIGHT_DRAWER(false)
 
       if (this.isAnonymous) {
-        this.$q.notify({
-          message: 'Результат анонимного пользователя не сохранен',
-          color: 'warning',
-          textColor: 'black'
-        })
+        // this.$q.notify({
+        //   message: 'Результат анонимного пользователя не сохранен',
+        //   color: 'warning',
+        //   textColor: 'black'
+        // })
         this.saveAnonymousResults()
       } else {
         this.saveResults()

@@ -15,17 +15,15 @@
             >зарегистрируйтесь</router-link
           >
         </div>
-        <div class="row  q-mt-md">
+        <div class="row q-gutter-md q-mt-md">
           <q-btn
             label="Войти"
             color="primary"
-            class="q-ma-md"
             @click="$router.push({ name: 'auth-signin' })"
           />
           <q-btn
             label="Зарегистрироваться"
             color="secondary"
-            class="q-ma-md"
             @click="$router.push({ name: 'auth-register' })"
           />
         </div>
@@ -38,7 +36,6 @@
           <q-btn
             label="Пройти тест без регистрации"
             color="secondary"
-            class="q-ma-md"
             @click="anonymousLogin"
           />
         </div>

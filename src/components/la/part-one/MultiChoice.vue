@@ -10,15 +10,15 @@
         <q-separator/>
 
         <q-card-section v-if="hint" class="q-py-none">
-          <div  class="text-h6">
+          <div  class="text-h6 text-grey-14">
             это:
-            <span class="text-grey-14 text-body2">
+            <span class="text-body2">
               (выберите один вариант ответа)
             </span>
           </div>
         </q-card-section>
 
-        <q-card-actions class="q-pa-none q-pl-md">
+        <q-card-actions class="q-px-none q-py-sm q-pl-md">
           <div
             :class="[
               { column: orientation === 'V' },
@@ -30,7 +30,7 @@
               :key="a.label"
               tag="label"
               v-ripple
-              class="q-pa-none q-ml-md"
+              class="q-py-none q-px-md"
             >
               <q-item-section avatar class="q-pr-none">
                 <q-radio v-model="answer" :val="a.value" @input="onInput" />
