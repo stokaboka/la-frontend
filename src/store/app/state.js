@@ -76,5 +76,7 @@ export default {
 
   showNext: true,
 
+  testState: '',
+
   lastPhase: 3
 }

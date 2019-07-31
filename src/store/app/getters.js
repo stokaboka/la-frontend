@@ -81,3 +81,5 @@ export const waitReady = s => s.module ? s.module.waitReady : false
 export const showNext = s => s.showNext
 
 export const lastPhase = s => s.lastPhase
+
+export const testState = s => s.testState

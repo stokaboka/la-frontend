@@ -99,3 +99,7 @@ export function SET_ALLOW_CANCEL (state, playload) {
 export function SET_LOCK_RESUME (state, playload) {
   state.lockResume = playload
 }
+
+export function SET_TEST_STATE (state, playload) {
+  state.testState = playload
+}

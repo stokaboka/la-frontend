@@ -48,6 +48,7 @@ export default {
 
     nextState () {
       this.state = nextState[this.state]
+      this.SET_TEST_STATE(this.state)
     },
 
     nextPhase () {
@@ -239,7 +240,8 @@ export default {
       'ADD_SECOND_TO_TIMER',
       'RESET_TIMER',
       'SET_TIMER_TOTAL',
-      'SET_SHOW_NEXT'
+      'SET_SHOW_NEXT',
+      'SET_TEST_STATE'
     ]),
     ...mapMutations('questions', [
       'SET_TEST',

@@ -17,18 +17,20 @@
 
       <router-view />
 
-      <div v-if="showNext" class="q-mt-md text-grey-14">
-        Если Вы не помните или не знаете ответа - просто нажмите кнопку
-        <q>Далее</q>
-      </div>
+      <div v-if="isTestState">
+        <div v-if="showNext" class="q-mt-md text-grey-14">
+          Если Вы не помните или не знаете ответа - просто нажмите кнопку
+          <q>Далее</q>
+        </div>
 
-      <div v-if="showBreak" class="q-my-md text-grey-14 text-body1">
-        <p>
-          Вы можете
-          <router-link :to="{ name: 'part-one-home' }">прервать</router-link> тест в
-          любой момент.<br>Текущий тест будет прерван, но Вы сможете продолжить
-          тестирование в следующий раз.
-        </p>
+        <div v-if="showBreak" class="q-my-md text-grey-14 text-body1">
+          <p>
+            Вы можете
+            <router-link :to="{ name: 'part-one-home' }">прервать</router-link> тест в
+            любой момент.<br>Текущий тест будет прерван, но Вы сможете продолжить
+            тестирование в следующий раз.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -62,7 +64,10 @@ export default {
     showTitle () {
       return this.$route.meta.title
     },
-    ...mapGetters('app', ['leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description', 'showNext'])
+    isTestState () {
+      return this.testState === 'test'
+    },
+    ...mapGetters('app', ['leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description', 'showNext', 'testState'])
   }
 }
 </script>
