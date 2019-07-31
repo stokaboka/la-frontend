@@ -5,7 +5,8 @@ export const categories = {
     label: 'Лексика / Vocabulary',
     labelClass: 'bg-green-2',
     rowsClass: 'col-1-11',
-    target: 'vocabularyLevel'
+    target: 'vocabularyLevel',
+    time: 20 * 60
   },
   grammar: {
     part: 1,
@@ -13,7 +14,8 @@ export const categories = {
     label: 'Грамматика / Grammar',
     labelClass: 'bg-deep-orange-2',
     rowsClass: 'col-1-11',
-    target: 'grammarLevel'
+    target: 'grammarLevel',
+    time: 20 * 60
   },
   listening: {
     part: 1,
@@ -21,7 +23,8 @@ export const categories = {
     label: 'Восприятие на слух / Listening',
     labelClass: 'bg-purple-2',
     rowsClass: 'col-1-11',
-    target: 'listeningLevel'
+    target: 'listeningLevel',
+    time: 30 * 60
   },
   generalCommentOnOralAssessmentBands: {
     part: 2,

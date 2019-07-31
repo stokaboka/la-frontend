@@ -108,7 +108,8 @@ export default {
 
     saveAnonymousResults () {
       const { test, part, phase, level } = this
-      this.SAVE_ANONYMOUS_RESULT({ test, part, phase, level })
+      // this.SAVE_ANONYMOUS_RESULT({ test, part, phase, level })
+      this.saveAnonymous({ test, part, phase, level })
     },
 
     async saveResults () {
@@ -253,7 +254,7 @@ export default {
       'NEXT_QUESTION',
       'CLEAR_QUESTIONS'
     ]),
-    ...mapMutations('results', ['SAVE_ANONYMOUS_RESULT']),
+    // ...mapMutations('results', ['SAVE_ANONYMOUS_RESULT']),
     ...mapActions('users', ['fixAttempt']),
     ...mapActions('questions', { loadQuestions: 'load', loadCountQuestions: 'count' }),
     ...mapActions('results', ['calculateResults', 'save', 'saveAnonymous']),

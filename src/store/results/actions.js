@@ -317,6 +317,29 @@ export const calculateResults = ({ rootGetters }) => {
   }
 }
 
+export const loadAnonymous = ({ commit }) => {
+  commit('CLEAR_ANONYMOUS_RESULT')
+  commit('CLEAR_SAVED_RESULTS')
+  const strObject = localStorage.getItem('la_anonymous_result')
+  if (strObject) {
+    const anonymousResults = JSON.parse(strObject)
+    if (anonymousResults) {
+      commit('SET_ANONYMOUS_RESULT', anonymousResults)
+      commit('SET_SAVED_RESULTS', anonymousResults)
+    }
+  }
+  return true
+}
+
+export const saveAnonymous = ({ getters, commit }, params) => {
+  const { test, part, phase, level } = params
+  commit('SAVE_ANONYMOUS_RESULT', { test, part, phase, level })
+  const anonymousResults = getters['anonymousResults']
+  const strObject = JSON.stringify(anonymousResults)
+  localStorage.setItem('la_anonymous_result', strObject)
+  return true
+}
+
 export const count = ({ commit, rootGetters }) => {
   const { id, attempt } = rootGetters['users/authUser']
 

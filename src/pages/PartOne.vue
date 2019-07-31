@@ -1,7 +1,6 @@
 <template>
   <q-page class="q-pt-lg row justify-center items-start">
     <div class="wrapper">
-      <la-about />
 
       <div v-if="isLogged" class="column">
         <div v-if="isClosed">
@@ -14,16 +13,41 @@
         </div>
         <div v-else class="q=mt-lg row justify-start items-center">
 
-            <div class="text-h6 text-grey-14">
-              Чтобы начать тест нажмите:
-            </div>
+          <div class="text-h6 text-grey-14">
+            <p>Ваша задача - пройти самостоятельно первую часть теста.</p>
+            <p>Первая часть состоит из трех заданий:</p>
+            <ul>
+              <li v-for="category in categories" :key="category.phase">
+                <span class="text-weight-bold">{{category.label}}</span>, примерное время {{category.time / 60}} минут;
+              </li>
+            </ul>
+            <p>Для прохождения первой части теста Вам потребуется примерно один час.</p>
+            <p>Вы можете проходить тест по частям, результаты законченной части теста будут сохранены и использованы при продолжении тестирования.</p>
+          </div>
+
+          <div class="text-h6 text-grey-14">
+            Чтобы начать тест нажмите:
+          </div>
 
           <q-btn
-            label="Продолжить"
+            label="Начать"
             color="primary"
             class="q-ma-md"
             @click="startLa()"
-          />
+          >
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Начать с начала</q-tooltip>
+          </q-btn>
+
+          <q-btn
+            v-if="existSavedResults"
+            label="Продолжить"
+            color="primary"
+            class="q-ma-md"
+            @click="resumeLa()"
+          >
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Продолжить прерванный тест</q-tooltip>
+          </q-btn>
+
         </div>
       </div>
     </div>
@@ -32,41 +56,28 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import LaAbout from '../components/LaAbout'
+// import LaAbout from '../components/LaAbout'
+import { categories } from '../components/la/part-two/constants'
+
 export default {
   name: 'PhaseOne',
-  components: { LaAbout },
-  methods: {
-    async startLa () {
-      let name = 'part-one-phase-one'
-      if (this.isLogged) {
-        if (this.isAnonymous) {
-          this.CLEAR_ANONYMOUS_RESULT()
-        } else {
-          await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
-
-          const lastResult = this.lastSavedResult
-          if (lastResult) {
-            name = this.modules[lastResult.phase - 1].next
-          }
-        }
-
-        // if (this.savedResults.length > 0) {
-        //   // const lastResult = this.savedResults[this.savedResults.length - 1]
-        //   const lastResultList = this.savedResults
-        //     .filter(e => e.part === 1)
-        //     .sort((a, b) => b.phase - a.phase)
-        //   if (lastResultList.length > 0) {
-        //     const lastResult = lastResultList[0]
-        //     name = this.modules[lastResult.phase - 1].next
-        //   }
-        // }
+  // components: { LaAbout },
+  data () {
+    return {
+      categories: Object.values(categories).filter(e => e.part === 1)
+    }
+  },
+  async mounted () {
+    if (this.isLogged) {
+      if (this.isAnonymous) {
+        await this.loadAnonymousResults()
+      } else {
+        await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
       }
-
-      /**
-       * TODO for debug
-       * @type {string}
-       */
+    }
+  },
+  methods: {
+    runLa (name) {
       if (this.partOneDebug) {
         name = 'part-one-phase-one'
         // name = 'part-one-phase-two'
@@ -74,8 +85,31 @@ export default {
       }
       this.$router.push({ name })
     },
-    ...mapMutations('results', ['CLEAR_ANONYMOUS_RESULT']),
-    ...mapActions('results', { loadResults: 'load' })
+    async startLa () {
+      let name = 'part-one-phase-one'
+      this.CLEAR_ANONYMOUS_RESULT()
+      this.CLEAR_SAVED_RESULTS()
+      this.runLa(name)
+    },
+    async resumeLa () {
+      let name = 'part-one-phase-one'
+      if (this.isLogged) {
+        // if (this.isAnonymous) {
+        //   await this.loadAnonymousResults()
+        // } else {
+        //   await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
+        // }
+
+        const lastResult = this.lastSavedResult
+        if (lastResult) {
+          name = this.modules[lastResult.phase - 1].next
+        }
+      }
+
+      this.runLa(name)
+    },
+    ...mapMutations('results', ['CLEAR_ANONYMOUS_RESULT', 'CLEAR_SAVED_RESULTS']),
+    ...mapActions('results', { loadResults: 'load', loadAnonymousResults: 'loadAnonymous' })
   },
   computed: {
     ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
@@ -89,7 +123,7 @@ export default {
       'authUser'
     ]),
     ...mapGetters('app', ['title', 'modules', 'leftDrawer', 'rightDrawer']),
-    ...mapGetters('results', ['savedResults', 'lastSavedResult'])
+    ...mapGetters('results', ['savedResults', 'lastSavedResult', 'existSavedResults', 'existAnonymousResults'])
   }
 }
 </script>

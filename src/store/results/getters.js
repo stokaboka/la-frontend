@@ -22,3 +22,11 @@ export const lastSavedResult = s => {
 export const anonymousResults = s => {
   return s.anonymousResults
 }
+
+export const existAnonymousResults = s => {
+  return s.anonymousResults.length > 0
+}
+
+export const existSavedResults = s => {
+  return s.savedResults.length > 0
+}
