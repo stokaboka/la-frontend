@@ -1,25 +1,25 @@
 <template>
   <q-page class="column items-center" :class="{ 'justify-start': isAnonymous, 'justify-center': !isAnonymous}">
 
-        <q-banner rounded class="banner__background text-white shadow-3 q-pa-lg">
-          <div class="q-mb-md text-h4 text-weight-medium text-center">Поздравляем!</div>
-          <div class="text-h5 text-center">
-            <div class="text-center">Тестирование успешно пройдено.</div>
-            <p v-if="!isAnonymous" class="text-center">Ваш менеджер свяжется с вами в течение суток</p>
-          </div>
-        </q-banner>
+    <q-banner v-if="isSessionComplete" rounded class="banner__background text-white shadow-3 q-pa-lg">
+      <div class="q-mb-md text-h4 text-weight-medium text-center">Поздравляем!</div>
+      <div class="text-h5 text-center">
+        <div class="text-center">Тестирование успешно пройдено.</div>
+        <p v-if="!isAnonymous" class="text-center">Ваш менеджер свяжется с вами в течение суток</p>
+      </div>
+    </q-banner>
 
     <div v-if="isAnonymous" class="column q-mt-md text-grey-14">
 
       <div class="row justify-start items-baseline">По результатам самостоятельного теста Вы набрали
         <q-chip square class="shadow-2">
           <q-avatar  color="positive" text-color="white"><strong>{{finalLevel}}</strong></q-avatar>
-          <strong>баллов</strong>
+          <strong>{{finalLevelUnitsText}}</strong>
           <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Всего набрано баллов</q-tooltip>
         </q-chip>
       </div>
 
-      <div class="column">
+      <div v-if="showSvsCfrLevel" class="column">
 
         <div class="row justify-start items-baseline">
           <span>Ваш уровень согласно общеевропейской компетенции владения иностранным языком (CEFR): </span>
@@ -83,13 +83,15 @@ export default {
     this.SET_SHOW_NEXT(false)
     this.CLEAR_QUESTIONS()
 
-    if (this.isAnonymous) {
-      this.showAnonymousResult()
-    }
+    this.showResult()
+    // if (this.isAnonymous) {
+    //   this.showAnonymousResult()
+    // }
   },
 
   data () {
     return {
+      showSvsCfrLevel: false,
       finalLevelCEFR: '',
       finalLevelSVS: '',
       finalLevel: 0,
@@ -118,22 +120,40 @@ export default {
   },
 
   computed: {
-    ...mapGetters('results', ['anonymousResults'])
+    isSessionComplete () {
+      return this.isAnonymous ? this.isAnonymousSessionComplete : this.isAuthorisedSessionComplete
+    },
+    finalLevelUnitsText () {
+      switch (this.finalLevel) {
+        case 1:
+          return 'балл'
+        case 2:
+        case 3:
+        case 4:
+          return 'балла'
+        default :
+          return 'баллов'
+      }
+    },
+    ...mapGetters('results', ['results', 'anonymousResults', 'isAnonymousSessionComplete', 'isAuthorisedSessionComplete'])
   },
 
   methods: {
-    async showAnonymousResult () {
-      const { test, part } = this
-      const results = this.anonymousResults.filter(e => e.phase < 7)
+    async showResult () {
+      const { test } = this
+      const part = 1
+      const results = this.isAnonymous
+        ? this.anonymousResults.filter(e => e.phase < 4)
+        : this.results.filter(e => e.phase < 4)
 
-      this.finalLevel = calculateResultLevel(this.anonymousResults, part)
+      this.finalLevel = calculateResultLevel(results, part)
 
       this.finalLevelCEFR = findMinElement(finalTestResultEurope, this.finalLevel, 'value')
       this.finalLevelSVS = findMinElement(finalTestResultSVSComplete, this.finalLevel, 'value')
 
-      const vocabularyLevel = getPartPhaseLevel(this.anonymousResults, 1, 1)
-      const grammarLevel = getPartPhaseLevel(this.anonymousResults, 1, 2)
-      const listeningLevel = getPartPhaseLevel(this.anonymousResults, 1, 3)
+      const vocabularyLevel = getPartPhaseLevel(results, part, 1)
+      const grammarLevel = getPartPhaseLevel(results, part, 2)
+      const listeningLevel = getPartPhaseLevel(results, part, 3)
 
       const matrix = [
         {
@@ -162,6 +182,7 @@ export default {
             const description = d ? d.description : '-'
             return { phase, rowClass, label, value, description }
           })
+            .filter(e => e.value > 0)
         )
     }
   }

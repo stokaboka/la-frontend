@@ -32,7 +32,13 @@ export default {
 
   methods: {
     breakTest () {
-      this.$router.push({ name: 'home' })
+      let name = 'home'
+      if (this.isLogged) {
+        if (this.existResults || this.existAnonymousResults) {
+          name = 'part-one-end'
+        }
+      }
+      this.$router.push({ name })
     },
 
     logger (...args) {
@@ -287,7 +293,8 @@ export default {
       'questionPart',
       'questionPhase',
       'category'
-    ])
+    ]),
+    ...mapGetters('results', ['existResults', 'existAnonymousResults', 'existSavedResults'])
   },
 
   watch: {

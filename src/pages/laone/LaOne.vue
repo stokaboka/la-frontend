@@ -52,7 +52,7 @@
         <q-btn
           label="Прерваться и продолжить позже"
           color="secondary"
-          @click="$router.push({ name: 'home' })"
+          @click="breakTest"
         />
       </div>
     </section>
@@ -60,6 +60,7 @@
 </template>
 
 <script>
+
 import mixin from './mixin'
 import MultiChoice from '../../components/la/part-one/MultiChoice'
 

@@ -69,14 +69,17 @@ export default {
   },
   async mounted () {
     if (this.isLogged) {
+      this.loadSavedResults()
+    }
+  },
+  methods: {
+    async loadSavedResults () {
       if (this.isAnonymous) {
         await this.loadAnonymousResults()
       } else {
         await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
       }
-    }
-  },
-  methods: {
+    },
     runLa (name) {
       if (this.partOneDebug) {
         name = 'part-one-phase-one'
@@ -94,11 +97,7 @@ export default {
     async resumeLa () {
       let name = 'part-one-phase-one'
       if (this.isLogged) {
-        // if (this.isAnonymous) {
-        //   await this.loadAnonymousResults()
-        // } else {
-        //   await this.loadResults({ id: this.authUser.id, attempt: this.authUser.attempt })
-        // }
+        this.loadSavedResults()
 
         const lastResult = this.lastSavedResult
         if (lastResult) {

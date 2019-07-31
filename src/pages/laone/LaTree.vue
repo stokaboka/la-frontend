@@ -59,7 +59,7 @@
         <q-btn
           label="Прерваться и продолжить позже"
           color="secondary"
-          @click="$router.push({ name: 'home' })"
+          @click="breakTest"
         />
       </div>
     </section>

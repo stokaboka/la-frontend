@@ -1,7 +1,7 @@
 // console.log(process.env)
 export default {
   title: 'Свобода слова - Language Assessment©',
-  version: '0.3.7',
+  version: '0.3.9',
   mode: 'about',
   api: process.env.NODE_ENV === 'development' ? 'http://localhost:4444' : '',
   apiVersion: 'api/v1',

@@ -23,10 +23,22 @@ export const anonymousResults = s => {
   return s.anonymousResults
 }
 
+export const existResults = s => {
+  return s.results.length > 0
+}
+
 export const existAnonymousResults = s => {
   return s.anonymousResults.length > 0
 }
 
 export const existSavedResults = s => {
   return s.savedResults.length > 0
+}
+
+export const isAnonymousSessionComplete = s => {
+  return s.anonymousResults.length === 3
+}
+
+export const isAuthorisedSessionComplete = s => {
+  return s.savedResults.length === 3
 }
