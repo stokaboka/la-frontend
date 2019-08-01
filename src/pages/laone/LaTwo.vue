@@ -2,26 +2,11 @@
   <div>
     <section v-if="state === 'start'">
       <div class="text-body1 text-grey-14">
-        <p>Вторая часть теста займет у Вас около 20 минут.</p>
-        <p>
-          Каждый тест состоит из текста с пропущенными словами. Всего три
-          варианта. Ваша задача выбрать 1 вариант ответа для каждого пропуска.
-          Если Вы не помните или не знаете значение слова — нажмите
-          <strong><q>Далее</q></strong>
-        </p>
-        <br />
-        <p>
-          При ответах, пожалуйста, не пользуйтесь переводчиком, помощью зала или
-          звонком другу.
-        </p>
-        <p>
-          Наша задача объективно оценить Ваш уровень знания английского языка,
-          чтобы помочь вам лучше знать и использовать иностранный язык в
-          повседневной жизни.
-        </p>
+        <div v-html="latwo.message"></div>
+        <div v-html="laonecontainer.remark" class="q-mt-lg"></div>
       </div>
       <q-btn
-        label="Далее"
+        :label="laonecontainer.buttons.next.label"
         color="primary"
         class="q-my-md"
         @click="nextState()"
@@ -33,21 +18,19 @@
     </section>
 
     <section v-if="state === 'end'" class="text-grey-14">
-      <div class="q-my-lg text-h4 text-weight-medium">Поздравляем!</div>
-      <div class="text-body1">
-        <p>Вторая часть теста успешо пройдена.</p>
-        <p>Сейчас, Вы можете:</p>
+      <div class="q-my-lg text-h4 text-weight-medium">{{latwo.end.title}}</div>
+      <div class="text-body1" v-html="latwo.end.message">
       </div>
 
       <div v-if="!lastModule" class="row q-gutter-md q-my-md">
         <q-btn
-          label="Продолжить тестирование"
+          :label="laonecontainer.buttons.resume.label"
           color="primary"
           @click="nextPhase()"
         />
 
         <q-btn
-          label="Прерваться и продолжить позже"
+          :label="laonecontainer.buttons.break.label"
           color="secondary"
           @click="breakTest"
         />

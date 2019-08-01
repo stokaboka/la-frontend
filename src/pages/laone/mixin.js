@@ -49,6 +49,7 @@ export default {
 
     resetState () {
       this.state = 'start'
+      this.SET_TEST_STATE(this.state)
       this.initStartState()
     },
 
@@ -271,7 +272,6 @@ export default {
     ...mapGetters('users', ['isLogged', 'authUser', 'isAnonymous']),
     ...mapGetters('app', [
       'api', 'module', 'modules', 'lastModule',
-      'description',
       'test',
       'part',
       'phase',
@@ -294,7 +294,8 @@ export default {
       'questionPhase',
       'category'
     ]),
-    ...mapGetters('results', ['existResults', 'existAnonymousResults', 'existSavedResults'])
+    ...mapGetters('results', ['existResults', 'existAnonymousResults', 'existSavedResults']),
+    ...mapGetters('text', ['laonecontainer', 'laone', 'latwo', 'latree'])
   },
 
   watch: {

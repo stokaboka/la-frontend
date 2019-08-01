@@ -23,9 +23,9 @@
     <q-separator />
 
     <q-card-actions align="right">
-      <q-btn @click="onRegistration" color="secondary" class="q-mx-md">Регистрация</q-btn>
-      <q-btn @click="submit" color="primary" class="q-mx-md" :disabled="false">Войти</q-btn>
-      <q-btn @click="onCancel" class="q-mx-md">Отмена</q-btn>
+      <q-btn @click="onRegistration" color="secondary" class="q-mx-md" :label="auth.buttons.register.label"></q-btn>
+      <q-btn @click="submit" color="primary" class="q-mx-md" :disabled="false" :label="auth.buttons.signIn.label"></q-btn>
+      <q-btn @click="onCancel" class="q-mx-md" :label="auth.buttons.cancel.label"></q-btn>
     </q-card-actions>
 
   </q-card>
@@ -42,8 +42,9 @@ export default {
   components: { BaseForm },
   mixins: [ authMixin ],
   mounted () {
+    this.initForm()
     this.$q.notify({
-      message: 'Для входа введите имя пользователя и пароль',
+      message: this.auth.message.signin,
       color: 'accent',
       textColor: 'white'
     })
@@ -54,15 +55,15 @@ export default {
       form: [
         {
           name: 'login',
-          label: 'Имя пользователя',
+          // label: 'Имя пользователя',
           value: '',
           type: 'text',
           autofocus: true,
-          validations: [
-            val => !!val || 'Имя пользователя должно быть заполнено',
-            val => (val && val.length >= 3) || `Имя пользователя не менее 3 символов`,
-            val => (val && val.length < 50) || `Имя пользователя не более 50 символов`
-          ],
+          // validations: [
+          //   val => !!val || 'Имя пользователя должно быть заполнено',
+          //   val => (val && val.length >= 3) || `Имя пользователя не менее 3 символов`,
+          //   val => (val && val.length < 50) || `Имя пользователя не более 50 символов`
+          // ],
           icons: [
             {
               name: 'person_outline',
@@ -73,15 +74,15 @@ export default {
         },
         {
           name: 'password',
-          label: 'Пароль',
+          // label: 'Пароль',
           value: '',
           type: 'password',
           autofocus: false,
-          validations: [
-            val => !!val || 'Пароль должен быть заполнен',
-            val => (val && val.length >= 6) || `Пароль не менее 6 символов`,
-            val => (val && val.length < 15) || `Пароль не более 15 символов`
-          ],
+          // validations: [
+          //   val => !!val || 'Пароль должен быть заполнен',
+          //   val => (val && val.length >= 6) || `Пароль не менее 6 символов`,
+          //   val => (val && val.length < 15) || `Пароль не более 15 символов`
+          // ],
           icons: [
             {
               name: 'vpn_key',

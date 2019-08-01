@@ -11,10 +11,10 @@
       />
 
       <q-toolbar-title>
-        <strong>Language Assessment©</strong>
+        <strong>{{about.title}}</strong>
         <span class="q-ml-md text-subtitle2">v{{version}}</span>
         <div v-if="showTestTitle" class="text-body1 text-blue-grey-14 text-weight-medium">
-          {{testTitle}} <strong>{{description}}</strong>
+          {{testTitle}} <strong>{{testDescription}}</strong>
         </div>
       </q-toolbar-title>
 
@@ -24,7 +24,7 @@
           <span>{{ authUser.firstName }} {{ authUser.secondName }} {{ authUser.lastName }}</span>
         </strong>
         <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">
-          Имя пользователя, выполнившего вход
+          {{header.toolbar.authUser.tooltip}}
         </q-tooltip>
       </q-chip>
 
@@ -34,7 +34,7 @@
           default
           hide="label"
           icon="home"
-          label="Главная"
+          :label="header.tabs.home"
           name="about"
           replace
         ></q-route-tab>
@@ -45,7 +45,7 @@
           default
           hide="label"
           icon="people"
-          label="Пользователи"
+          :label="header.tabs.users"
           name="part-two-users"
           replace
         ></q-route-tab>
@@ -85,16 +85,19 @@ export default {
       menu: {
         admin: [
           {
-            label: 'Фаза I',
+            id: 'part-one-home',
+            label: 'Фаза I+++',
             icon: 'play_circle_outline',
             route: { name: 'part-one-home' }
           },
           {
+            id: 'admin-courses',
             label: 'Учебные куурсы',
             icon: 'ballot',
             route: { name: 'admin-courses' }
           },
           {
+            id: 'admin-questions',
             label: 'Вопросы тестов',
             icon: 'edit',
             route: { name: 'admin-questions' }
@@ -103,12 +106,27 @@ export default {
       }
     }
   },
+  mounted () {
+    this.menu.admin = this.menu.admin.map(e => {
+      if (this.header.menu[e.id]) {
+        const label = this.header.menu[e.id]
+        return { ...e, label }
+      }
+      return e
+    })
+  },
   computed: {
+    testTitle () {
+      return this.header.modules[this.module.id] ? this.header.modules[this.module.id].title : ''
+    },
+    testDescription () {
+      return this.header.modules[this.module.id] ? this.header.modules[this.module.id].description : ''
+    },
     showTitle () {
       return this.$route.meta.title
     },
     showTestTitle () {
-      return this.showTitle && this.mode === 'test'
+      return this.showTitle && this.mode === 'test' && module !== null
     },
     adminMode () {
       return this.isLogged && (this.isAdmin || this.isOperator)
@@ -120,8 +138,9 @@ export default {
       'isUser',
       'authUser'
     ]),
-    ...mapGetters('app', ['title', 'mode', 'version', 'leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description']),
-    ...mapGetters('attempts', { attempt: 'attempt' })
+    ...mapGetters('app', ['title', 'mode', 'version', 'leftDrawer', 'rightDrawer', 'module']),
+    ...mapGetters('attempts', { attempt: 'attempt' }),
+    ...mapGetters('text', ['about', 'header'])
   }
 }
 </script>

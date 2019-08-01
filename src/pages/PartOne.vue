@@ -5,47 +5,44 @@
       <div v-if="isLogged" class="column">
         <div v-if="isClosed">
           <q-banner rounded class="bg-secondary text-white shadow-3">
-            <span class="text-h6">
-              К сожалению, Вы использовали все попытки.
-              <p>Обратитесь к своему менеджеру.</p>
-            </span>
+            <span class="text-h6" v-html="partone.noAttempts"></span>
           </q-banner>
         </div>
         <div v-else class="q=mt-lg row justify-start items-center">
 
           <div class="text-h6 text-grey-14">
-            <p>Ваша задача - пройти самостоятельно первую часть теста.</p>
-            <p>Первая часть состоит из трех заданий:</p>
+            <p>{{partone.message[0]}}</p>
+            <p>{{partone.message[1]}}</p>
             <ul>
               <li v-for="category in categories" :key="category.phase">
-                <span class="text-weight-bold">{{category.label}}</span>, примерное время {{category.time / 60}} минут;
+                <span class="text-weight-bold">{{category.label}}</span>, {{partone.message[4]}} {{category.time / 60}} {{partone.message[5]}};
               </li>
             </ul>
-            <p>Для прохождения первой части теста Вам потребуется примерно один час.</p>
-            <p>Вы можете проходить тест по частям, результаты законченной части теста будут сохранены и использованы при продолжении тестирования.</p>
+            <p>{{partone.message[2]}}</p>
+            <p>{{partone.message[3]}}</p>
           </div>
 
           <div class="text-h6 text-grey-14">
-            Чтобы начать тест нажмите:
+            {{partone.message[6]}}
           </div>
 
           <q-btn
-            label="Начать"
+            :label="partone.buttons.start.label"
             color="primary"
             class="q-ma-md"
             @click="startLa()"
           >
-            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Начать с начала</q-tooltip>
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">{{partone.buttons.start.tooltip}}</q-tooltip>
           </q-btn>
 
           <q-btn
             v-if="existSavedResults"
-            label="Продолжить"
+            :label="partone.buttons.resume.label"
             color="primary"
             class="q-ma-md"
             @click="resumeLa()"
           >
-            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">Продолжить прерванный тест</q-tooltip>
+            <q-tooltip content-class="bg-gray" content-style="font-size: 1rem">{{partone.buttons.resume.tooltip}}</q-tooltip>
           </q-btn>
 
         </div>
@@ -121,8 +118,9 @@ export default {
       'isAnonymous',
       'authUser'
     ]),
-    ...mapGetters('app', ['title', 'modules', 'leftDrawer', 'rightDrawer']),
-    ...mapGetters('results', ['savedResults', 'lastSavedResult', 'existSavedResults', 'existAnonymousResults'])
+    ...mapGetters('app', ['modules', 'leftDrawer', 'rightDrawer']),
+    ...mapGetters('results', ['savedResults', 'lastSavedResult', 'existSavedResults', 'existAnonymousResults']),
+    ...mapGetters('text', ['partone'])
   }
 }
 </script>

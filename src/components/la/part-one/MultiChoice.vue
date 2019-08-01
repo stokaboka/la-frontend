@@ -11,9 +11,9 @@
 
         <q-card-section v-if="hint" class="q-py-none">
           <div  class="text-h6 text-grey-14">
-            это:
+            {{multiChoice.message[0]}}
             <span class="text-body2">
-              (выберите один вариант ответа)
+              {{multiChoice.message[1]}}
             </span>
           </div>
         </q-card-section>
@@ -45,7 +45,7 @@
 
       <q-btn
         v-if="next"
-        label="Далее"
+        :label="laonecontainer.buttons.next.label"
         color="primary"
         class="q-mt-md"
         @click="onNext"
@@ -145,7 +145,8 @@ export default {
         return []
       }
     },
-    ...mapGetters('config', { partOneDebug: 'partOneDebug' })
+    ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
+    ...mapGetters('text', ['laonecontainer', 'multiChoice'])
   },
   watch: {
     data (val) {

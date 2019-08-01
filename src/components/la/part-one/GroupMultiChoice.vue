@@ -2,16 +2,16 @@
   <div>
     <div class="text-grey-14">
       <div v-if="state === 1">
-        <p>У вас есть <strong>2 минуты</strong> до начала прослушивания, чтобы ознакомиться с вопросами</p>
-        <p>Вы можете начать воспроизведение раньше:
-          <q-btn color="warning" text-color="text-grey-14" @click="initState(2)">начать воспроизведение</q-btn>
+        <span v-html="groupMultiChoice.message[0]"></span>
+        <p>{{groupMultiChoice.message[1]}}
+          <q-btn :label="groupMultiChoice.buttons.play.label" color="warning" text-color="text-grey-14" @click="initState(2)"></q-btn>
         </p>
       </div>
       <div v-if="state === 2">
-        <p>Просшлушайте трэк и выберите верные варианты ответов. Трэк повторяется два раза.</p>
+        <p>{{groupMultiChoice.message[2]}}</p>
       </div>
       <div v-if="state === 3">
-        <p>Выберите верные варианты ответов и нажмите кнопку <q>Далее</q> внизу</p>
+        <p>{{groupMultiChoice.message[3]}}</p>
       </div>
     </div>
     <div v-for="question in data" :key="question.question">
@@ -26,7 +26,7 @@
       ></multi-choice>
     </div>
 
-    <q-btn v-if="showNext" label="Далее" color="primary" class="q-mt-md" @click="onNext" />
+    <q-btn v-if="showNext" :label="laonecontainer.buttons.next.label" color="primary" class="q-mt-md" @click="onNext" />
 
   </div>
 </template>
@@ -86,7 +86,8 @@ export default {
   computed: {
     ...mapGetters('app', ['api', 'volume']),
     ...mapGetters('app', ['time', 'timer', 'showNext']),
-    ...mapGetters('config', { partOneDebug: 'partOneDebug' })
+    ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
+    ...mapGetters('text', ['laonecontainer', 'groupMultiChoice'])
   },
   methods: {
     onInput (answer) {
@@ -118,14 +119,14 @@ export default {
           timer.start(2 * 60)
           this.answers = []
           this.SET_TIMER_TOTAL(2 * 60)
-          this.SET_TIMER_HINT('Осталось времени, чтобы ознакомиться с вопросами')
+          this.SET_TIMER_HINT(this.groupMultiChoice.timer[0])
           break
         case 2 :
           const q = this.data.find(e => e.audio)
           if (q && q.audio) {
             this.SET_SOUND_VOLUME(1)
             audio.volume(this.volume).once().play(q.audio)
-            this.SET_TIMER_HINT('Осталось времени до окончания аудио записи')
+            this.SET_TIMER_HINT(this.groupMultiChoice.timer[1])
             this.SHOW_AUDIO_CONTROLS(true)
             this.SET_TIMER_TOTAL(0)
           }
@@ -134,7 +135,7 @@ export default {
           this.SET_SHOW_NEXT(true)
           timer.start(2 * 60)
           this.SET_TIMER_TOTAL(2 * 60)
-          this.SET_TIMER_HINT('Осталось времени на ответ')
+          this.SET_TIMER_HINT(this.groupMultiChoice.timer[2])
           break
       }
     },

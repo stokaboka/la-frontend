@@ -7,7 +7,7 @@
         :value="result"
       ></digital-animation-tablo>
       <div class="text-grey-14">
-        из <strong>{{ phaseQuestionsTotal }}</strong> ({{ category }}:
+        {{info.left.of}} <strong>{{ phaseQuestionsTotal }}</strong> ({{ category }}:
         {{ questionIndex + 1 }}/{{ questionsCount }})
       </div>
     </div>
@@ -41,7 +41,8 @@ export default {
       'questionsCount',
       'phaseQuestionsTotal'
     ]),
-    ...mapGetters('app', ['description', 'result'])
+    ...mapGetters('app', ['description', 'result']),
+    ...mapGetters('text', ['info'])
   }
 }
 </script>

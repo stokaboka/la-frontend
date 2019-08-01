@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-grey-14">
-      Ваша задача - выбрать подходящие варианты из выпадающих списков
+      {{cloze.message}}
     </div>
     <q-card v-if="ready">
       <q-card-section>
@@ -21,7 +21,7 @@
       </q-card-section>
     </q-card>
 
-    <q-btn label="Далее" color="primary" class="q-mt-md" @click="onNext" />
+    <q-btn :label="laonecontainer.buttons.next.label" color="primary" class="q-mt-md" @click="onNext" />
 
   </div>
 </template>
@@ -50,7 +50,8 @@ export default {
     ready () {
       return this.questionStrings.length > 0
     },
-    ...mapGetters('config', { partOneDebug: 'partOneDebug' })
+    ...mapGetters('config', { partOneDebug: 'partOneDebug' }),
+    ...mapGetters('text', ['laonecontainer', 'cloze'])
   },
   methods: {
     parseQuestion () {

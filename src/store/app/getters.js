@@ -1,6 +1,6 @@
-export function title (state) {
-  return state.title
-}
+// export function title (state) {
+//   return state.title
+// }
 
 export function leftDrawer (state) {
   return state.leftDrawer
@@ -56,8 +56,8 @@ export const mode = s => s.mode
 export const volume = s => s.volume
 export const showAudioControls = s => s.showAudioControls
 
-export const testTitle = s => s.module ? s.module.title : ''
-export const description = s => s.module ? s.module.description : ''
+// export const testTitle = s => s.module ? s.module.title : ''
+// export const description = s => s.module ? s.module.description : ''
 export const part = s => s.module ? s.module.part : 0
 export const phase = s => s.module ? s.module.phase : 0
 export const maxCategory = s => s.module ? s.module.maxCategory : 0

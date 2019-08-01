@@ -2,32 +2,11 @@
   <div>
     <section v-if="state === 'start'">
       <div class="text-body1 text-grey-14">
-        <p>Третья часть теста займет у Вас около 30 минут.</p>
-        <p>
-          Перед Вами тест по восприятию на слух. Ваша задача:
-        </p>
-        <ul>
-          <li>Внимательно прочитать задание</li>
-          <li>Внимательно просмотреть предложенные варианты ответов</li>
-          <li>Включить соответствующую тексту аудио-запись</li>
-          <li>Прослушать текст до конца (текст будет проигран 2 раза)</li>
-          <li>Ответить на вопросы задания</li>
-        </ul>
-        Если Вы не помните или не знаете значение слова — нажмите
-        <strong><q>Далее</q></strong>
-        <br />
-        <p>
-          При ответах, пожалуйста, не пользуйтесь переводчиком, помощью зала или
-          звонком другу.
-        </p>
-        <p>
-          Наша задача объективно оценить Ваш уровень знания английского языка,
-          чтобы помочь вам лучше знать и использовать иностранный язык в
-          повседневной жизни.
-        </p>
+        <div v-html="latree.message"></div>
+        <div v-html="laonecontainer.remark" class="q-mt-lg"></div>
       </div>
       <q-btn
-        label="Далее"
+        :label="laonecontainer.buttons.next.label"
         color="primary"
         class="q-my-md"
         @click="nextState()"
@@ -43,21 +22,19 @@
     </section>
 
     <section v-if="state === 'end'">
-      <div class="q-my-lg text-h4 text-weight-medium">Поздравляем!</div>
-      <div class="text-body1">
-        <p>Тестирование успешно пройдено.</p>
-        <p>Ваш менеджер свяжется с вами в течение суток</p>
+      <div class="q-my-lg text-h4 text-weight-medium">{{latree.end.title}}</div>
+      <div class="text-body1" v-html="latree.end.message">
       </div>
 
       <div v-if="!lastModule" class="row q-gutter-md q-my-md">
         <q-btn
-          label="Продолжить тестирование"
+          :label="laonecontainer.buttons.resume.label"
           color="primary"
           @click="nextPhase()"
         />
 
         <q-btn
-          label="Прерваться и продолжить позже"
+          :label="laonecontainer.buttons.break.label"
           color="secondary"
           @click="breakTest"
         />

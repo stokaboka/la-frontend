@@ -36,7 +36,7 @@ export default {
     },
 
     userLabel () {
-      return this.isLogged ? 'Выход' : 'Вход'
+      return this.isLogged ? this.header.loginLogout.logout : this.header.loginLogout.login
     },
 
     userRoute () {
@@ -44,7 +44,8 @@ export default {
       return { name }
     },
 
-    ...mapGetters('users', ['isLogged', 'authUser'])
+    ...mapGetters('users', ['isLogged', 'authUser']),
+    ...mapGetters('text', ['header'])
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <q-footer elevated class="bg-grey-8 text-white">
     <q-toolbar>
-      {{ title }}
+      {{ about.title }}
     </q-toolbar>
   </q-footer>
 </template>
@@ -20,7 +20,8 @@ export default {
     showTestTitle () {
       return this.showTitle && this.mode === 'test'
     },
-    ...mapGetters('app', ['title', 'mode', 'description'])
+    ...mapGetters('app', ['title', 'mode']),
+    ...mapGetters('text', ['about'])
   }
 }
 </script>

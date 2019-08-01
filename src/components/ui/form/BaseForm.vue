@@ -1,5 +1,5 @@
 <template>
-  <div class="q-gutter-xs q-pa-md column justify-center items-start" style="max-width: 50vw">
+  <div class="q-gutter-md q-pa-md column justify-center items-start" style="max-width: 50vw">
 
     <q-input v-for="item in form" :key="item.name"
              v-model="item.value"

@@ -9,11 +9,20 @@ export default {
 
   computed: {
     ...mapGetters('users', ['isLogged', 'authUser']),
-    ...mapGetters('app', ['api'])
+    ...mapGetters('app', ['api']),
+    ...mapGetters('text', ['auth'])
   },
 
   methods: {
     ...mapActions('auth', ['signin', 'register']),
+    initForm () {
+      this.form = this.form.map(e => {
+        if (this.auth.form[e.name]) {
+          return { ...e, ...this.auth.form[e.name] }
+        }
+        return e
+      }, this)
+    },
     getFormItemIndexByName (name) {
       return this.getItemByName(this.form, name)
     },
@@ -69,12 +78,6 @@ export default {
         if (authMethod) {
           await authMethod(form)
         }
-        // if (this.type === 'signin') {
-        //   await this.signin(form)
-        // }
-        // if (this.type === 'register') {
-        //   await this.register(form)
-        // }
         if (this.isLogged) {
           this.$router.push({ name: 'home' })
         }

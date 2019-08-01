@@ -8,33 +8,33 @@
 
       <div v-if="!isLogged" class="column q-mt-md text-grey-14">
         <div>
-          Для продолжения
-          <router-link :to="{ name: 'auth-signin' }">войдите</router-link>
-          или
+          {{home.user.forResume}}
+          <router-link :to="{ name: 'auth-signin' }">{{home.user.signIn}}</router-link>
+          {{home.user.or}}
           <router-link :to="{ name: 'auth-register' }"
-            >зарегистрируйтесь</router-link
+            >{{home.user.register}}</router-link
           >
         </div>
         <div class="row q-gutter-md q-mt-md">
           <q-btn
-            label="Войти"
+            :label="home.buttons.signIn"
             color="primary"
             @click="$router.push({ name: 'auth-signin' })"
           />
           <q-btn
-            label="Зарегистрироваться"
+            :label="home.buttons.register"
             color="secondary"
             @click="$router.push({ name: 'auth-register' })"
           />
         </div>
 
         <div class="q-mt-lg text-grey-14">
-          <p>Вы можете пройти первую (самостоятельную) часть теста анонимно. По окончании теста будет определен ваш ориентировочный уровень по методикам <a :href="links.cef" target="_blank"><q>CEFR</q></a> и <a :href="links.svs" target="_blank"><q>Свобода слова</q></a></p>
-          <p>Для получения точного результата и рекомендаций необходимо <router-link :to="{ name: 'auth-signin' }">войти</router-link> или <router-link :to="{ name: 'auth-register' }">зарегистрироваться</router-link> и пройти самостоятельную и устную часть теста (общение с преподавателем).</p>
+          <p >{{home.message.part1}} <a :href="links.cef" target="_blank"><q>CEFR</q></a> {{home.message.part2}} <a :href="links.svs" target="_blank"><q>{{home.message.part3}}</q></a></p>
+          <p>{{home.message.part4}} <router-link :to="{ name: 'auth-signin' }">{{home.buttons.signIn}}</router-link> {{home.message.part5}} <router-link :to="{ name: 'auth-register' }">{{home.buttons.register}}</router-link> {{home.message.part6}}</p>
         </div>
         <div class="row">
           <q-btn
-            label="Пройти тест без регистрации"
+            :label="home.buttons.anonymous"
             color="secondary"
             @click="anonymousLogin"
           />
@@ -67,10 +67,8 @@ export default {
     ...mapMutations('users', ['SET_ANONYMOUS_USER'])
   },
   computed: {
-    ...mapGetters('users', [
-      'isLogged',
-      'authUser'
-    ])
+    ...mapGetters('users', ['isLogged', 'authUser']),
+    ...mapGetters('text', ['home'])
   }
 }
 </script>

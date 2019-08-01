@@ -18,20 +18,15 @@
       <router-view />
 
       <div v-if="isTestState">
-        <div v-if="showNext" class="q-mt-md text-grey-14">
-          Если Вы не помните или не знаете ответа - просто нажмите кнопку
-          <q>Далее</q>
+        <div v-if="showNext" class="q-mt-md text-grey-14" v-html="laonecontainer.message[0]">
         </div>
 
-        <div v-if="showBreak" class="q-my-md text-grey-14 text-body1">
-          <p>
-            Вы можете прервать тест в любой момент.<br/>Текущий тест будет прерван, но Вы сможете продолжить
-            тестирование в следующий раз.<br/>
+        <div v-if="showBreak && isTestState" class="q-my-md text-grey-14 text-body1">
+          <span v-html="laonecontainer.message[1]"></span>
             <q-btn
-              label="Прерваться и продолжить позже"
+              :label="laonecontainer.buttons.break.label"
               @click="breakTest"
             />
-          </p>
         </div>
       </div>
     </div>
@@ -69,13 +64,13 @@ export default {
     isTestState () {
       return this.testState === 'test'
     },
-    ...mapGetters('app', ['leftDrawer', 'rightDrawer', 'module', 'testTitle', 'description', 'showNext', 'testState']),
+    ...mapGetters('app', ['leftDrawer', 'rightDrawer', 'module', 'showNext', 'testState']),
     ...mapGetters('users', ['isLogged', 'authUser', 'isAnonymous']),
-    ...mapGetters('results', ['existResults', 'existAnonymousResults', 'existSavedResults'])
+    ...mapGetters('results', ['existResults', 'existAnonymousResults', 'existSavedResults']),
+    ...mapGetters('text', ['laonecontainer'])
   },
   methods: {
     breakTest () {
-      // <router-link :to="{ name: 'part-one-home' }">прервать</router-link>
       let name = 'home'
       if (this.isLogged) {
         if (this.existResults || this.existAnonymousResults) {

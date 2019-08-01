@@ -1,20 +1,22 @@
 <template>
   <div class="q-mt-lg text-h5 text-grey-14">
     <p>
-      <span class="text-primary text-weight-medium">Language Assessment ©</span> - уникальная эффективная
-      система оценки знаний английского языка и отслеживания прогресса
-      студента, изучающего язык.</p>
-      <p>Разработана методистами языкового
-        тренингового центра <a href="https://www.lingvo-svoboda.ru/" target="_blank"><q><span class="text-weight-medium">Свобода слова</span></q></a> на базе международных
-      стандартов.</p>
+      <span class="text-primary text-weight-medium" v-html="about.title"></span>
+      <span v-html="about.description"></span>
+    </p>
+    <p v-html="about.production"></p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'LaAbout',
   data () {
     return {}
+  },
+  computed: {
+    ...mapGetters('text', ['about'])
   }
 }
 </script>

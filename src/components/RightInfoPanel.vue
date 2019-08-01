@@ -18,7 +18,7 @@
     <div class="text-center">{{timerHint}}</div>
 
     <div v-if="time > 0" class="text-grey-14">
-      Всего времени: <strong>{{timeText}}</strong>
+      {{info.right.totalTime}} <strong>{{timeText}}</strong>
     </div>
 
     <div v-if="showAudioControls" class="q-mt-lg">
@@ -60,6 +60,7 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['showAudioControls', 'volume', 'time', 'timer', 'timerHint']),
+    ...mapGetters('text', ['info']),
     timeText () {
       return secondsToTimeTextLong(this.timer.total)
     },

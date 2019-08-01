@@ -16,6 +16,7 @@ import levels from './levels'
 import courses from './courses'
 import orders from './orders'
 import orderdetails from './order-details'
+import text from './text'
 
 Vue.use(Vuex)
 
@@ -51,7 +52,8 @@ const store = new Vuex.Store({
     levels,
     courses,
     orders,
-    orderdetails
+    orderdetails,
+    text
   },
 
   strict: process.env.NODE_ENV !== 'production'
