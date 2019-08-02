@@ -9,21 +9,24 @@
       size="7rem"
       :thickness="0.3"
       :color="colorTime"
-      track-color="grey-4"
+      track-color="grey-3"
+      center-color="white"
     >
       <q-icon name="access_time" size="2rem" class="q-mr-xs" :color="colorTime"/>
       {{ timerText }}
     </q-circular-progress>
 
-    <div class="text-center">{{timerHint}}</div>
+    <q-banner rounded class="text-grey-14 bg-white shadow-3">
+      <div class="text-center">{{timerHint}}</div>
 
-    <div v-if="time > 0" class="text-grey-14">
-      {{info.right.totalTime}} <strong>{{timeText}}</strong>
-    </div>
+      <div v-if="time > 0" class="text-grey-14">
+        {{info.right.totalTime}} <strong>{{timeText}}</strong>
+      </div>
 
-    <div v-if="showAudioControls" class="q-mt-lg">
-      <sound-level :volume="volume" @input="onSoundLevelInput"></sound-level>
-    </div>
+      <div v-if="showAudioControls" class="q-mt-lg">
+        <sound-level :volume="volume" @input="onSoundLevelInput"></sound-level>
+      </div>
+    </q-banner>
 
   </div>
 </template>

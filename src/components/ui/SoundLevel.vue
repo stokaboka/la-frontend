@@ -1,4 +1,6 @@
 <template>
+  <div class="column justify-center items-center">
+    <span>{{info.right.soundLevel}}</span>
   <div class="row">
     <q-item >
       <q-item-section side class="cursor-pointer" @click="setVolume(0)">
@@ -20,9 +22,11 @@
     </q-item>
 
   </div>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'SoundLevel',
   props: {
@@ -38,6 +42,9 @@ export default {
   },
   mounted () {
     this.value = Math.round(this.volume * 100)
+  },
+  computed: {
+    ...mapGetters('text', ['info'])
   },
   methods: {
     setVolume (val) {

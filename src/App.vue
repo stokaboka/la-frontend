@@ -29,4 +29,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+  #q-app {
+    background-image: url("statics/images/london-1572444_1920.jpg");
+  }
+</style>

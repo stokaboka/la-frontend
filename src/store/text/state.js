@@ -56,7 +56,8 @@ export default {
           of: 'из'
         },
         right: {
-          totalTime: 'Всего времени:'
+          totalTime: 'Всего времени:',
+          soundLevel: 'Уровень громкости'
         }
       },
       auth: {

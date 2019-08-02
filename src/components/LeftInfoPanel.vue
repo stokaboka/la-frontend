@@ -6,10 +6,10 @@
         text-color="white"
         :value="result"
       ></digital-animation-tablo>
-      <div class="text-grey-14">
+      <q-banner rounded class="text-grey-14 bg-white shadow-3">
         {{info.left.of}} <strong>{{ phaseQuestionsTotal }}</strong> ({{ category }}:
         {{ questionIndex + 1 }}/{{ questionsCount }})
-      </div>
+      </q-banner>
     </div>
 </template>
 
