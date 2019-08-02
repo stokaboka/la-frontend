@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pt-lg row justify-center items-start">
-    <div class="wrapper">
+    <q-banner rounded  class="wrapper shadow-3">
 
       <div v-if="isLogged" class="column">
         <div v-if="isClosed">
@@ -47,7 +47,7 @@
 
         </div>
       </div>
-    </div>
+    </q-banner>
   </q-page>
 </template>
 
