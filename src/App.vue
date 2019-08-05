@@ -1,35 +1,18 @@
 <template>
-  <div id="q-app" class="app__background-animation" :style="{ 'background-image': `url(${bgImage})` }">
+  <div id="q-app" class="app__background app__background-animation" :style="{ 'background-image': `url(${backgroundImage})` }">
     <router-view/>
   </div>
 </template>
 
 <script>
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import TimerHelper from './lib/TimerHelper'
 
 let timer = null
-let imageIndex = 0
-const bgShowSeconds = 5
-const imagesPath = 'statics/images/'
-const images = [
-  'london-1572444_1920_1280.jpg',
-  'bus-3913228_1920_1280.jpg',
-  'capital-2653_1920_1280.jpg',
-  'london-2540059_1920_1280.jpg',
-  'lovat-lane-1903023_1920_1280.jpg',
-  'phone-booth-203492_1920_1280.jpg',
-  'tower-bridge-1938684_1920_1280.jpg'
-].sort(() => Math.random() - 0.5)
 
 export default {
   name: 'App',
-  data () {
-    return {
-      bgImage: `${imagesPath}${images[imageIndex]}`
-    }
-  },
   async mounted () {
     await this.loadConfig()
     await this.signin()
@@ -46,24 +29,25 @@ export default {
       // .on('RESUME', this.onTimerFired)
       // .on('PROGRESS', this.onTimerFired)
       .on('COMPLETE', this.onTimerFired)
-      .start(bgShowSeconds)
+      .start(this.appBackgroundShowSeconds)
   },
   computed: {
+    ...mapGetters('app', ['backgroundImage', 'appBackgroundShowSeconds']),
     ...mapGetters('users', ['isLogged', 'isAdmin', 'isOperator'])
   },
   methods: {
-    nextAppStyle () {
-      imageIndex = ++imageIndex % images.length
-      this.bgImage = `${imagesPath}${images[imageIndex]}`
-      timer.start(bgShowSeconds)
+    changeBackgroundImage () {
+      this.NEXT_BACKGROUND_IMAGE()
+      timer.start(this.appBackgroundShowSeconds)
     },
     onTimerFired (event) {
       switch (event.event) {
         case 'COMPLETE':
-          this.nextAppStyle()
+          this.changeBackgroundImage()
           break
       }
     },
+    ...mapMutations('app', ['NEXT_BACKGROUND_IMAGE']),
     ...mapActions('auth', ['signin']),
     ...mapActions('config', { loadConfig: 'load' })
   },
@@ -78,6 +62,14 @@ export default {
 </script>
 
 <style scoped>
+
+  .app__background {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
   .app__background-animation {
     transition: background-image 1s ease-in-out;
   }

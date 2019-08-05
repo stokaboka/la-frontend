@@ -1,6 +1,4 @@
-// export function title (state) {
-//   return state.title
-// }
+const imagesPath = 'statics/images/'
 
 export function leftDrawer (state) {
   return state.leftDrawer
@@ -83,3 +81,9 @@ export const showNext = s => s.showNext
 export const lastPhase = s => s.lastPhase
 
 export const testState = s => s.testState
+
+export const appBackgroundShowSeconds = s => s.background.timeout
+
+export const backgroundImage = s => {
+  return `${imagesPath}${s.background.images[s.background.index]}`
+}

@@ -78,5 +78,19 @@ export default {
 
   testState: '',
 
-  lastPhase: 3
+  lastPhase: 3,
+
+  background: {
+    timeout: 15,
+    index: 0,
+    images: [
+      'london-1572444_1920_1280.jpg',
+      'bus-3913228_1920_1280.jpg',
+      'capital-2653_1920_1280.jpg',
+      'london-2540059_1920_1280.jpg',
+      'lovat-lane-1903023_1920_1280.jpg',
+      'phone-booth-203492_1920_1280.jpg',
+      'tower-bridge-1938684_1920_1280.jpg'
+    ].sort(() => Math.random() - 0.5)
+  }
 }

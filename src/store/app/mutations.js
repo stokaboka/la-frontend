@@ -103,3 +103,7 @@ export function SET_LOCK_RESUME (state, playload) {
 export function SET_TEST_STATE (state, playload) {
   state.testState = playload
 }
+
+export function NEXT_BACKGROUND_IMAGE (state) {
+  state.background.index = ++state.background.index % state.background.images.length
+}
