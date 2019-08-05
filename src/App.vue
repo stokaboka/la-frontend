@@ -14,10 +14,14 @@ let imageIndex = 0
 const bgShowSeconds = 5
 const imagesPath = 'statics/images/'
 const images = [
-  'london-1572444_1920.jpg',
+  'london-1572444_1920_1280.jpg',
   'bus-3913228_1920_1280.jpg',
-  'capital-2653_1920_1280.jpg'
-]
+  'capital-2653_1920_1280.jpg',
+  'london-2540059_1920_1280.jpg',
+  'lovat-lane-1903023_1920_1280.jpg',
+  'phone-booth-203492_1920_1280.jpg',
+  'tower-bridge-1938684_1920_1280.jpg'
+].sort(() => Math.random() - 0.5)
 
 export default {
   name: 'App',
