@@ -1,10 +1,11 @@
 <template>
-  <div>
-    <div class="row q-gutter-md q-my-md">
+  <q-card>
+    <q-card-section class="row q-gutter-md q-my-md q-bg-white">
       <q-select v-model="test.value" :options="test.options" :label="test.label" emit-value map-options stack-label @input="onInput" />
       <q-select v-model="part.value" :options="part.options" :label="part.label" emit-value map-options stack-label  @input="onInput"/>
       <q-select v-model="phase.value" :options="phaseOptions" :label="phase.label" emit-value map-options stack-label  @input="onInput"/>
-    </div>
+    </q-card-section>
+    <q-card-section>
     <editor
       module="questions"
       :filter="params"
@@ -14,7 +15,8 @@
       hide-grid-selector
       @table-row-click="onTableRowClick"
     ></editor>
-  </div>
+    </q-card-section>
+  </q-card>
 </template>
 
 <script>
@@ -63,11 +65,12 @@ export default {
     phaseOptions () {
       if (this.part.value === 1) {
         return this.modules.map(e => {
+          const label = this.header.modules[e.id].description
           return {
-            label: e.description,
+            label,
             value: e.phase
           }
-        })
+        }, this)
       }
       if (this.part.value === 2) {
         return partTwoCategories.map((e, i) => {
@@ -80,13 +83,17 @@ export default {
       return []
     },
     ...mapGetters('questions', ['questionEditor']),
-    ...mapGetters('app', ['modules'])
+    ...mapGetters('app', ['modules']),
+    ...mapGetters('text', ['header'])
   },
   mounted () {
     this.params = this.getFilterParams()
   },
   methods: {
     onInput () {
+      if (this.phase.value > this.phaseOptions.length) {
+        this.phase.value = 1
+      }
       this.params = this.getFilterParams()
     },
     getFilterParams () {
