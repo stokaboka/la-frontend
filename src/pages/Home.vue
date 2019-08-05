@@ -29,8 +29,9 @@
         </div>
 
         <div class="q-mt-lg text-grey-14">
-          <p >{{home.message.part1}} <a :href="links.cef" target="_blank"><q>CEFR</q></a> {{home.message.part2}} <a :href="links.svs" target="_blank"><q>{{home.message.part3}}</q></a></p>
-          <p>{{home.message.part4}} <router-link :to="{ name: 'auth-signin' }">{{home.buttons.signIn}}</router-link> {{home.message.part5}} <router-link :to="{ name: 'auth-register' }">{{home.buttons.register}}</router-link> {{home.message.part6}}</p>
+          <p >{{home.message.part1}}</p>
+          <p>{{home.message.part2}} <a :href="links.cef" target="_blank"><q>CEFR</q></a> {{home.message.part3}} <a :href="links.svs" target="_blank"><q>{{home.message.part4}}</q></a>
+          {{home.message.part5}} <router-link :to="{ name: 'auth-signin' }">{{home.buttons.signIn}}</router-link> {{home.message.part6}} <router-link :to="{ name: 'auth-register' }">{{home.buttons.register}}</router-link> {{home.message.part7}}</p>
         </div>
         <div class="row">
           <q-btn
