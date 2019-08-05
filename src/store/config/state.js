@@ -8,12 +8,18 @@ export default {
     },
     'part': {
       'one': {
-        'debug': true
+        'debug': true,
+        'video': {
+          'about': 'https://www.youtube.com/embed/b-XKEZptxKk'
+        }
       },
       'two': {
         'categoryDefaultValue': 3,
         'questionsNum': 10,
-        'debug': true
+        'debug': true,
+        'video': {
+          'about': 'https://www.youtube.com/embed/0cndopEcbac'
+        }
       }
     }
   }

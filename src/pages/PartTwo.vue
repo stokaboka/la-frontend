@@ -28,33 +28,10 @@
 
 <script>
 
-/*
-<div class="text-body1 text-grey-14">
-          Порядок работы с клиентом:
-          <ol>
-            <li>Выбрать пользователя в разделе <q>Пользователи</q>
-              <ul>
-                <li>если успешно пройдена <q>Часть 1</q>
-                  <ol>
-                    <li>пройти <q>Часть 2</q></li>
-                    <li>проанализировать результаты тестирования</li>
-                    <li>оформить учебную программу</li>
-                  </ol>
-                </li>
-              </ul>
-              <ul>
-                <li><q>Часть 1</q> не пройдена или требуется повторное тестирование
-                  <ol>
-                    <li>разрешить пройти <q>Часть 1</q> еще раз</li>
-                  </ol>
-                </li>
-              </ul>
-            </li>
-          </ol>
-        </div>
- */
-
+import { mapGetters } from 'vuex'
 import LaAbout from '../components/LaAbout'
+import { oget } from '../lib/utils'
+
 export default {
   name: 'PhaseTwo',
   components: { LaAbout },
@@ -64,17 +41,26 @@ export default {
       miniState: true,
       help: [
         {
-          video: 'https://www.youtube.com/embed/b-XKEZptxKk',
+          video: '',
           title: 'Самостоятельный тест',
           subTitle: 'Регистрация; Оценка словарного запаса; Оценка граматических знаний; Оценка восприятия на слух.'
         },
         {
-          video: 'https://www.youtube.com/embed/0cndopEcbac',
+          video: '',
           title: 'Устное тестирование',
           subTitle: 'Управление пользователями; Устный тест; Результат тестирования; Программа занятий; Курсы;'
         }
       ]
     }
+  },
+
+  mounted () {
+    this.help[0].video = oget(this.config, 'part.one.video.about', '')
+    this.help[1].video = oget(this.config, 'part.two.video.about', '')
+  },
+
+  computed: {
+    ...mapGetters('config', ['config'])
   },
 
   methods: {
