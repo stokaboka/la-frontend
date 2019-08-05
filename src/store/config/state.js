@@ -18,7 +18,7 @@ export default {
         'questionsNum': 10,
         'debug': true,
         'video': {
-          'about': 'https://www.youtube.com/embed/0cndopEcbac'
+          'about': 'https://www.youtube.com/embed/wVGnnjMit7s'
         }
       }
     }

@@ -280,7 +280,7 @@ export default {
     },
     rowClick (row) {
       this.$emit('table-row-click', row)
-      this.selected = [row]
+      this.selected = row === null ? [] : [row]
     },
     rowMark () {
       if (this.selected.length > 0) {

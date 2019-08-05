@@ -12,7 +12,7 @@
 
     <p>Обучающие видео для первого знакомства:</p>
 
-      <q-card v-for="hv in help" :key="hv.video" class="part-two__about">
+      <q-card v-for="hv in help" :key="hv.id" class="part-two__about">
         <q-card-section>
           <div class="text-h6">{{hv.title}}</div>
           <div class="text-subtitle2">{{hv.subTitle}}</div>
@@ -41,11 +41,13 @@ export default {
       miniState: true,
       help: [
         {
+          id: 'partOneAbout',
           video: '',
           title: 'Самостоятельный тест',
           subTitle: 'Регистрация; Оценка словарного запаса; Оценка граматических знаний; Оценка восприятия на слух.'
         },
         {
+          id: 'partTwoAbout',
           video: '',
           title: 'Устное тестирование',
           subTitle: 'Управление пользователями; Устный тест; Результат тестирования; Программа занятий; Курсы;'
